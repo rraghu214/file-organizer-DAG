@@ -172,7 +172,7 @@ def observe(
         prompt=prompt,
         system=SYSTEM,
         auto_route="perception",
-        provider="g",
+        # provider="g",# Removed: pins to Gemini, blocks fallback when Gemini is in cooldown
         response_format={
             "type": "json_schema",
             "schema": schema,
