@@ -163,21 +163,39 @@ Phase 0.
 
 ### Phase 0a — Five base queries (req 1 + req 4 partial) — START HERE NEXT
 The five queries are verbatim in `base_queries.md`. Run them in order and
-capture each session's output to `logs/<query>.txt`. Key points:
-  - **hello** (2 nodes, <3 s) — smallest possible DAG
-  - **Query A** (Wikipedia Shannon, 4 nodes) — Researcher + Distiller + auto-Critic
-  - **Query I** (London/Paris/Berlin, 7 nodes) — PARALLEL fan-out (3 Researchers
-    concurrent) + **Coder + SandboxExecutor** (req 4). The Coder must emit
-    `{"code": "...", "rationale": "..."}` with stdlib-only Python; the
-    worked example in `prompts/coder.md` is exactly this query.
-    Route: `coder: groq` in agent_routing.yaml works; ensure groq isn't
-    rate-limited from prior runs.
-  - **Query J** (graceful failure, 2 nodes) — Planner emits Formatter directly
-  - **Query K** (Lagos/Cairo/Kinshasa + resume after kill) — run it, let 2
-    Researchers complete, Ctrl+C, note the session ID, then
-    `flow.py --resume <sid>` to complete. Demonstrates persistence.
-Logs directory: `code/logs/` (create if absent). Capture full stdout for
-each query. Add to README.md with timing numbers.
+capture each session's output to `code/logs/<query>.txt` (mkdir if absent).
+
+Commands (run from `code/` with the gateway already up on :8108):
+
+  1. hello — smallest DAG (planner → formatter, <3 s)
+       .venv\Scripts\python.exe flow.py "Say hello." 2>&1 | Tee-Object logs\hello.txt
+
+  2. Query A — Claude Shannon Wikipedia (researcher → distiller → critic → formatter)
+       .venv\Scripts\python.exe flow.py "Fetch https://en.wikipedia.org/wiki/Claude_Shannon and tell me his birth date, death date, and three key contributions to information theory." 2>&1 | Tee-Object logs\query_A.txt
+
+  3. Query I — London/Paris/Berlin (3 parallel researchers + Coder + SandboxExecutor)
+       .venv\Scripts\python.exe flow.py "find the populations of London, Paris, and Berlin and tell me which two are closest in size" 2>&1 | Tee-Object logs\query_I.txt
+     NOTE: Coder (req 4) must emit {"code":"...","rationale":"..."}. The worked
+     example in prompts/coder.md is exactly this query. If Coder returns {},
+     ensure `coder: groq` in gateway/agent_routing.yaml and restart the gateway.
+
+  4. Query J — graceful failure (planner → formatter directly, no tool call)
+       .venv\Scripts\python.exe flow.py "Read /nonexistent/path.txt and tell me what's in it." 2>&1 | Tee-Object logs\query_J.txt
+
+  5. Query K — resume after kill (THREE steps):
+     Step 1: Start the run, let 2 Researchers complete, then Ctrl+C
+       .venv\Scripts\python.exe flow.py "For Lagos, Cairo, and Kinshasa, find current populations and growth rates and tell me which is growing fastest." 2>&1 | Tee-Object logs\query_K_partial.txt
+     Step 2: Note the session ID printed at the top (s8-xxxxxxxx). Rename it:
+       Rename-Item state\sessions\<your-sid> s8_K_resumed_v2
+     Step 3: Resume with the exact command from the assignment spec:
+       .venv\Scripts\python.exe flow.py --resume s8_K_resumed_v2 2>&1 | Tee-Object logs\query_K_resume.txt
+
+     WHY rename: the assignment spec shows `flow.py --resume s8_K_resumed_v2`
+     verbatim. Your auto-generated session ID will differ; renaming the folder
+     makes the resume command match the spec exactly for the demo log.
+
+After all logs captured: update README.md with timing numbers + session IDs,
+then `git add code\logs\ README.md && git commit`.
 
 ### Phase 0 — DONE ✅ (2026-05-31)
 All five steps completed. Key fixes required (see WHATS_NEW.md for full
