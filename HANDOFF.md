@@ -161,20 +161,29 @@ Phase 0.
 
 ## 7. Phased task list — START HERE
 
-### Phase 0 — Make it run live (highest value; I could not do this)
-1. Drop the seed files into `S8SharedCode/`; append
-   `agent_config_additions.yaml` to `agent_config.yaml`.
-2. Build/start `llm_gatewayV8`; set provider keys in `.env`. Configure an
-   ollama provider for the privacy pins (or temporarily switch the two
-   pins to `groq` to run without ollama — but note the privacy property
-   only holds local).
-3. Run the 5 base queries (`hello, A, I, J, K`) → capture `logs/`
-   (assignment req 1 + 7).
-4. Run the organiser query against `demo_messy_drive`. Watch the planner
-   JSON parse cleanly. Fix prompt issues (expect 2–3 tweaks) — prompt
-   edits only, no code changes.
-5. Confirm the parallel fan-out in the trace (classifier ×2 +
-   sensitive_detector + pattern_analyzer all start together) — req 2.
+### Phase 0 — DONE ✅ (2026-05-31)
+All five steps completed. Key fixes required (see WHATS_NEW.md for full
+root-cause analysis of each):
+- `persistence.py`: UTF-8 encoding on Windows (cp1252 crash on non-ASCII chars)
+- `skills.py parse_skill_json`: `strict=False` so Gemini/cerebras multi-line
+  strings in JSON values don't silently return `{}`
+- `skills.py _format_memory_hits`: filter `source=user_query` hits so the
+  planner never sees stored past queries as "prior answers"
+- `skills.py render_prompt`: INPUTS cap 20k→8k chars (formatter prompt was
+  21k chars, blowing past cerebras/github 8k context limits)
+- `gateway/main.py`: agent routing changed from hard pin (no failover) to
+  soft preference (preferred provider first, full failover chain active)
+- `agent_routing.yaml`: each parallel file-organiser skill soft-pinned to a
+  DIFFERENT starting provider; formatter→nvidia (100k ctx)
+- `agent_config.yaml`: max_tokens raised — formatter 1500→4000,
+  classifier+coder 1500→2500 (JSON truncation was silencing outputs)
+- `prompts/planner.md`: skip coder when SCAN_RESULT has `duplicate_groups`
+  (scanner pre-computes dedup; coder→{} was causing an infinite recovery loop)
+
+Run command: `cd code && .venv\Scripts\python.exe run_organiser.py`
+Gateway command: `cd gateway && .venv\Scripts\python.exe -m uvicorn main:app --host 0.0.0.0 --port 8108`
+Confirmed: 7-node DAG (planner→classifier×3+sensitive_detector+pattern_analyzer→formatter),
+all parallel nodes fire simultaneously, FINAL shows real Phase-1 report.
 
 ### Phase 1 — Critic fail case (req 3)
 - Add a deliberately-misclassified file (e.g. a photo-dump `.txt` the
