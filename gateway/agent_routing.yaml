@@ -1,0 +1,28 @@
+# V8 agent → provider pinning. Map a skill name (the `agent` field on
+# /v1/chat) to a preferred provider. Callers can override per-call.
+#
+# Session 8 student additions are at the bottom. The headline decision:
+# sensitive_detector and classifier are pinned to a LOCAL provider
+# (ollama, e.g. gemma) so that any prompt touching the user's files
+# never leaves the machine. This is the privacy boundary expressed as
+# routing config — no code change, just a pin.
+
+planner: gemini
+researcher: gemini
+distiller: gemini
+summariser: gemini
+critic: groq
+formatter: gemini
+retriever: github
+sandbox_executor: github
+coder: gemini
+browser: gemini
+
+# ── Session 8 student additions (file-organiser product) ─────────────────────
+# Privacy-critical: pin to local Ollama so file metadata/content never
+# reaches a cloud provider. If you do not have ollama configured, change
+# these to `groq` to run the demo, but note the privacy property only
+# holds with a local provider.
+sensitive_detector: ollama
+classifier: ollama
+pattern_analyzer: gemini
