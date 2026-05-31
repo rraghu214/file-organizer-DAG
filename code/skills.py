@@ -161,7 +161,13 @@ def render_prompt(skill: Skill, query: str, resolved: list[dict],
 
 def parse_skill_json(text: str) -> dict:
     """Skills return a single top-level JSON object. Strip markdown fences
-    if the model added them despite being told not to."""
+    if the model added them despite being told not to.
+
+    strict=False: Gemini 2.5 Flash emits actual newline/tab characters
+    inside JSON string values (final_answer, code, plan text) instead of
+    the \\n escape. strict=False allows those control characters so
+    multi-line skill outputs are not silently lost.
+    """
     t = (text or "").strip()
     if t.startswith("```"):
         t = t.strip("`")
@@ -169,12 +175,12 @@ def parse_skill_json(text: str) -> dict:
         if t.endswith("```"):
             t = t[:-3]
     try:
-        return json.loads(t)
+        return json.loads(t, strict=False)
     except json.JSONDecodeError:
         start, end = t.find("{"), t.rfind("}")
         if start >= 0 and end > start:
             try:
-                return json.loads(t[start:end + 1])
+                return json.loads(t[start:end + 1], strict=False)
             except json.JSONDecodeError:
                 pass
     return {}

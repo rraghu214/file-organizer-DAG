@@ -57,12 +57,14 @@ insert a `critic` node between the writing node and the formatter.
 Its input is the writing node id. Its metadata.question repeats
 the constraint. If the critic fails, the orchestrator re-plans.
 
-If MEMORY HITS appear in the prompt, the agent already has indexed
-material relevant to this query. Prefer routing the answer through the
-existing knowledge base: emit a `retriever` or, when the hits clearly
-answer the query already, go straight to a `formatter` that synthesises
-from MEMORY HITS — do NOT emit a `researcher` to re-fetch material the
-agent has already indexed.
+If MEMORY HITS appear in the prompt, check the `source` field.
+Hits with `source: user_query` are stored past queries, NOT stored
+answers — ignore them for routing purposes and plan normally.
+Hits with any other source (fact, tool_outcome, preference) may
+contain indexed material: prefer a `retriever` or, when the hits
+clearly answer the query already, go straight to a `formatter` that
+synthesises from MEMORY HITS — do NOT emit a `researcher` to re-fetch
+material the agent has already indexed.
 
 If FAILURE appears in the prompt, do not re-emit the failing step
 on the same inputs.
