@@ -161,6 +161,24 @@ Phase 0.
 
 ## 7. Phased task list — START HERE
 
+### Phase 0a — Five base queries (req 1 + req 4 partial) — START HERE NEXT
+The five queries are verbatim in `base_queries.md`. Run them in order and
+capture each session's output to `logs/<query>.txt`. Key points:
+  - **hello** (2 nodes, <3 s) — smallest possible DAG
+  - **Query A** (Wikipedia Shannon, 4 nodes) — Researcher + Distiller + auto-Critic
+  - **Query I** (London/Paris/Berlin, 7 nodes) — PARALLEL fan-out (3 Researchers
+    concurrent) + **Coder + SandboxExecutor** (req 4). The Coder must emit
+    `{"code": "...", "rationale": "..."}` with stdlib-only Python; the
+    worked example in `prompts/coder.md` is exactly this query.
+    Route: `coder: groq` in agent_routing.yaml works; ensure groq isn't
+    rate-limited from prior runs.
+  - **Query J** (graceful failure, 2 nodes) — Planner emits Formatter directly
+  - **Query K** (Lagos/Cairo/Kinshasa + resume after kill) — run it, let 2
+    Researchers complete, Ctrl+C, note the session ID, then
+    `flow.py --resume <sid>` to complete. Demonstrates persistence.
+Logs directory: `code/logs/` (create if absent). Capture full stdout for
+each query. Add to README.md with timing numbers.
+
 ### Phase 0 — DONE ✅ (2026-05-31)
 All five steps completed. Key fixes required (see WHATS_NEW.md for full
 root-cause analysis of each):
