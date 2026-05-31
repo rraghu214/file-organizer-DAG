@@ -301,14 +301,20 @@ async def chat(req: ChatRequest):
     required_caps = _required_caps(req)
 
     # V8: if the caller tagged the request with an agent name and did not
-    # pin a provider explicitly, apply agent_routing.yaml's preferred provider.
-    # This mutates req.provider so the rest of the function (router-pick,
-    # candidate-narrowing, single-candidate-wait) sees the pin.
+    # pin a provider explicitly, apply agent_routing.yaml's preferred provider
+    # as a SOFT PREFERENCE — the preferred provider goes first in the failover
+    # chain but is NOT locked as an explicit override.  With a hard pin
+    # (explicit_override=True), a single provider 429/502 kills the request;
+    # with a soft preference, the gateway rotates to the next live provider.
+    # Consequence for parallel calls: when 5 skills start simultaneously and
+    # cerebras returns 429 for the 2nd call, the 3rd call finds cerebras in
+    # cooldown and picks gemini — each concurrent call naturally lands on a
+    # different provider without any orchestrator-level coordination.
+    _agent_preferred: str | None = None
     if req.agent and not req.provider:
         pinned = AGENT_ROUTING.get(req.agent)
         if pinned and pinned in router.providers:
-            req.provider = pinned
-            explicit_override = True
+            _agent_preferred = pinned  # remembered below for candidate reorder
 
     # V8: retry-on-5xx with `retries` surfaced in the response. The
     # per-provider failover loop below already rotates providers on
@@ -336,8 +342,13 @@ async def chat(req: ChatRequest):
         # what's actually wired in this gateway.
         tier_order = TIER_TO_ORDER[router_decision.tier]
         candidates = [p for p in tier_order if p in router.providers]
+    elif req.provider:
+        candidates = router.candidates(req.provider)
+    elif _agent_preferred:
+        # Soft preference: preferred provider first, full failover chain after.
+        candidates = [_agent_preferred] + [p for p in router.order if p != _agent_preferred]
     else:
-        candidates = router.candidates(req.provider) if req.provider else list(router.order)
+        candidates = list(router.order)
 
     if req.provider and not candidates:
         raise HTTPException(400, f"unknown provider '{req.provider}'. Try one of: {list(router.providers)} or shortcuts {list(SHORTCUTS)}")

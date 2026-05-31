@@ -58,11 +58,57 @@ Thin launcher: runs `scanner.scan()` → embeds JSON in query → calls
 `Executor().run()`. Needed because passing large JSON through a PowerShell
 argument is unreliable. Not part of the engine; purely a dev convenience.
 
-### Noted — ollama serialises concurrent requests
-`gemma4:e4b` (9.6 GB) queues concurrent calls: 3 ollama skills
-(classifier×2 + sensitive_detector) took 147s + 360s + 583s respectively.
-For demo speed, pull a lighter model (`ollama pull llama3.2:3b`) and swap
-`OLLAMA_MODEL` in `.env`, or set those pins to `groq` in
-`gateway/agent_routing.yaml` (privacy note: groq is cloud).
-For the assignment, the total wall time was ~12 minutes; all 5 parallel
-nodes completed and the formatter produced a report.
+### Fix 3 — `persistence.py`: UTF-8 encoding on Windows
+**Symptom**: `UnicodeEncodeError: 'charmap' codec can't encode character '‑'`
+— groq's model used a non-breaking hyphen in its rationale; `_atomic_write`
+opened the file with the default Windows encoding (cp1252) which can't encode it.
+The process crashed with a 0-byte `.tmp` file and the node state was never updated.
+**Fix**: pass `encoding="utf-8"` (or `None` for binary) to every `open()` call
+in `_atomic_write`. One-line change.
+
+### Fix 4 — `gateway/main.py`: soft pin instead of hard pin
+**Symptom**: when 5 skills were all pinned to the same provider (cerebras/groq)
+and that provider returned 429, the gateway returned an immediate 502 — no
+failover. This killed parallel nodes instantly instead of routing around the limit.
+**Root cause**: agent routing set `explicit_override=True`, which tells the
+failover loop "this is a caller-specified pin — don't retry other providers."
+**Fix**: agent routing now stores the preference in `_agent_preferred` and
+reorders the candidate list (preferred provider first, full failover chain after)
+WITHOUT setting `explicit_override`. A 429 on the preferred provider now falls
+over to the next available provider automatically.
+**Bonus**: concurrent parallel calls naturally land on different providers because
+each 429 puts the first provider into cooldown before the next call picks.
+
+### Fix 5 — `agent_routing.yaml`: spread parallel skills across providers
+Each distinct skill type in the file-organiser plan is soft-pinned to a DIFFERENT
+starting provider so 5 concurrent calls hit 5 different providers from t=0:
+  classifier → cerebras, sensitive_detector → nvidia, pattern_analyzer → gemini,
+  formatter → nvidia (100k context; handles the large combined upstream prompt),
+  planner / critic → groq, coder → groq.
+
+### Fix 6 — `agent_config.yaml`: raise max_tokens for multi-line outputs
+`formatter` 1500→4000, `classifier` 1500→2500, `coder` 1500→2500.
+**Root cause**: cerebras/groq models hit the token cap mid-JSON, producing
+truncated output that parse_skill_json could not extract → silent `{}`.
+
+### Fix 7 — `skills.py render_prompt`: reduce INPUTS to 8 000 chars
+The formatter receives ALL upstream outputs concatenated. With 5 upstream nodes
+each returning ~4 000 chars, the prompt hit 21 000 chars (9 000+ tokens) —
+exceeding cerebras (8k) and github (8k) context limits and exhausting groq TPM.
+Reducing the INPUTS cap from 20 000 to 8 000 chars keeps the formatter prompt
+under 10 000 chars, within every provider's context window.
+
+### Fix 8 — `planner.md`: skip coder when SCAN_RESULT has duplicate_groups
+**Symptom**: planner always emitted a `coder` node; coder produced `{}` (no
+`code` field); sandbox_executor failed; recovery planner fired; new coder produced
+`{}`; infinite recovery loop until the 60-node cap hit.
+**Root cause**: the scanner already pre-computes `duplicate_groups` — nothing
+needs to be coded. The coder was solving a solved problem.
+**Fix**: one sentence in planner.md: "If `duplicate_groups` is present in
+SCAN_RESULT, the scanner already computed dedup — do NOT emit coder."
+
+### Noted — provider fleet usage for the file-organiser demo
+`gemma4:e4b` (9.6 GB, ollama) is too slow for concurrent calls. Cloud providers
+handle the parallel fan-out in 5–15 s per skill. In production, swap
+sensitive_detector and classifier back to `ollama` with a smaller model:
+  `ollama pull llama3.2:3b`  (2 GB, ~3 s/call, no concurrency timeout risk)

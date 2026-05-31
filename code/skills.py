@@ -120,6 +120,10 @@ def _format_memory_hits(hits: list) -> str:
     whether memory already covers the query and for downstream skills to
     synthesise from indexed material without an extra Retriever round-trip.
     """
+    # Filter out stored user queries — they are past inputs, not answers.
+    # Showing them as "memory hits" misleads the planner into thinking the
+    # query was already answered and causes it to skip node generation.
+    hits = [h for h in hits if getattr(h, "source", "") != "user_query"]
     if not hits:
         return ""
     lines = []
@@ -155,7 +159,7 @@ def render_prompt(skill: Skill, query: str, resolved: list[dict],
     hits_block = _format_memory_hits(memory_hits or [])
     if hits_block:
         parts += ["", f"MEMORY HITS ({len(memory_hits)} from FAISS):", hits_block]
-    parts += ["", "INPUTS:", json.dumps(resolved, indent=2, default=str)[:20_000]]
+    parts += ["", "INPUTS:", json.dumps(resolved, indent=2, default=str)[:8_000]]
     return "\n".join(parts)
 
 

@@ -7,22 +7,27 @@
 # never leaves the machine. This is the privacy boundary expressed as
 # routing config — no code change, just a pin.
 
-planner: gemini
+planner: groq
 researcher: gemini
 distiller: gemini
 summariser: gemini
 critic: groq
-formatter: gemini
+formatter: nvidia
 retriever: github
 sandbox_executor: github
-coder: gemini
+coder: groq
 browser: gemini
 
 # ── Session 8 student additions (file-organiser product) ─────────────────────
-# Privacy-critical: pin to local Ollama so file metadata/content never
-# reaches a cloud provider. If you do not have ollama configured, change
-# these to `groq` to run the demo, but note the privacy property only
-# holds with a local provider.
-sensitive_detector: ollama
-classifier: ollama
+# Soft preferences (see gateway/main.py — preferred provider first, full
+# failover chain active). Each distinct skill starts on a DIFFERENT provider
+# so 5 concurrent parallel calls spread across the fleet from t=0:
+#   classifier×N  → cerebras (3 calls; 2nd/3rd failover to gemini/groq)
+#   sensitive_detector → nvidia  (starts on a different provider)
+#   pattern_analyzer   → gemini  (starts on another different provider)
+#
+# In PRODUCTION: sensitive_detector and classifier → `ollama` for privacy.
+#   ollama pull llama3.2:3b   (2 GB, ~3 s/call)
+sensitive_detector: nvidia
+classifier: cerebras
 pattern_analyzer: gemini

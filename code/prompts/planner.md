@@ -44,8 +44,10 @@ work fans out in parallel:
   - When the user wants a diagnosis or asks "how should I organise this"
     or wants effort options, emit a `pattern_analyzer` node.
   - When the answer needs computation over files (dedup by hash, total
-    size, count comparisons), emit a `coder` node; it routes to
-    sandbox_executor automatically.
+    size, count comparisons) AND the SCAN_RESULT does not already contain
+    pre-computed `duplicate_groups`, emit a `coder` node; it routes to
+    sandbox_executor automatically. If `duplicate_groups` is present in
+    SCAN_RESULT, the scanner already computed dedup — do NOT emit coder.
   - Folders that look like installer extracts or already-organised zones
     need no per-file work — say so in the rationale and do not emit child
     nodes to read inside them.
