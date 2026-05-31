@@ -25,3 +25,5 @@ gateway/usage.json
 .vscode/
 .idea/
 .DS_Store
+
+.venv

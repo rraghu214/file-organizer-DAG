@@ -140,3 +140,40 @@ verified end-to-end on the same code you have here.
 
 If your `uv run python flow.py "hello"` produces a final answer, the
 build runs cleanly on your machine. The next step is ASSIGNMENT.md.
+
+---
+
+## Phase 0a — Five base query results (2026-06-01)
+
+Logs in `code/logs/`. All runs use the gateway on :8108 with providers
+spread across groq, gemini, nvidia, cerebras (soft-pin routing from
+`gateway/agent_routing.yaml`).
+
+| Query | Session ID | Nodes | Wall-clock | Log |
+|---|---|---|---|---|
+| hello | s8-f6737e25 | 2 (planner→formatter) | ~4s | `logs/hello.txt` |
+| A — Shannon Wikipedia | s8-caab497e | 4 (planner→researcher→distiller→formatter) | ~62s | `logs/query_A.txt` |
+| I — London/Paris/Berlin | s8-a7853431 | 7 (planner→3×researcher∥→coder→formatter+sandbox) | ~80s | `logs/query_I.txt` |
+| J — graceful failure | s8-5d61f0e1 | 4 (planner→coder→formatter+sandbox) | ~24s | `logs/query_J.txt` |
+| K — resume after kill | s8-8d8d2867 → s8_K_resumed_v2 | 7 (4 nodes partial + 3 resumed) | ~110s + 15s | `logs/query_K_partial.txt`, `logs/query_K_resume.txt` |
+
+### Node timing detail
+
+**Query A (Shannon):** planner 5.9 s · researcher 42.9 s · distiller 4.3 s ·
+formatter 8.9 s
+
+**Query I (cities — parallel fan-out):** planner 4.1 s ·
+researcher×3 parallel (80.1 s / 52.0 s / 39.7 s) · coder 4.0 s ·
+formatter 33.0 s · sandbox_executor 0.1 s  
+Wall-clock ≈ 80 s limited by slowest researcher (vs ~125 s sequential).
+
+**Query J (graceful failure):** planner 3.7 s · coder 3.8 s · formatter 16.1 s ·
+sandbox_executor 0.3 s.  
+Note: the planner dispatched a coder to attempt the read programmatically
+rather than fail-fast to formatter directly; the coder and sandbox returned
+a "file not found" result, and the formatter correctly reported the failure.
+
+**Query K (resume):** partial run — planner 4.3 s, researchers 36.7 s / 82.4 s /
+73.8 s (all 3 complete before kill); coder was in `running` state at kill.
+Resume re-ran coder (4.9 s) + formatter (9.6 s) + sandbox_executor (0.1 s).
+Final answer: Kinshasa is growing fastest at 4.40 % per year.

@@ -1,0 +1,14 @@
+﻿QUERY: Fetch https://en.wikipedia.org/wiki/Claude_Shannon and tell me his birth date, death date, and three key contributions to information theory.
+
+==============================================================================
+session s8-caab497e  -  query: Fetch https://en.wikipedia.org/wiki/Claude_Shannon and tell me his birth date, death date, and three key contributions to information theory.
+==============================================================================
+[memory.read] 8 hit(s) visible to every skill this run
+[n:1] planner            complete (5.9s)
+[n:2] researcher         complete (42.9s)
+[n:3] distiller          complete (4.3s)
+[n:4] formatter          complete (8.9s)
+
+==============================================================================
+FINAL: Claude Shannon was born on April 30, 1916, and died on February 24, 2001. His three key contributions to information theory are: (1) the 1948 paper "A Mathematical Theory of Communication," which introduced information entropy and a quantitative framework for communication; (2) defining the bit as the fundamental unit of information, establishing the binary basis for digital communication and computing; and (3) formulating the channel capacity theorem (Shannon limit), which determines the maximum reliable data transmission rate over a noisy channel and underpins modern coding theory and data compression.
+==============================================================================
