@@ -55,7 +55,7 @@ class Skill:
     def prompt_template(self) -> str:
         if not self.prompt_path.exists():
             return f"You are the {self.name} skill. (Prompt file missing.)"
-        return self.prompt_path.read_text()
+        return self.prompt_path.read_text(encoding="utf-8")
 
 
 class SkillRegistry:

@@ -61,10 +61,14 @@ work fans out in parallel:
     need no per-file work — say so in the rationale and do not emit child
     nodes to read inside them.
   - The final node is always a `formatter` that assembles the report.
-  - On critic_fail recovery: the FAILURE text will name the misrouted
-    file and its correct destination. Re-emit only a corrected
-    `classifier` (with a question that explicitly names the fix) plus a
-    new `formatter`. Do not re-emit the whole plan.
+  - On critic_fail recovery: FAILURE will contain the critic's rationale
+    naming the misrouted file and its correct destination. Emit a SINGLE
+    corrected `classifier` whose metadata.question says exactly:
+    "Re-classify this batch. IMPORTANT: <filename> has extension .<ext>
+    and must be routed to Documents/ — do NOT route it to Pictures/ or any
+    image folder regardless of its filename or content." Then emit a
+    `formatter` that takes that classifier as input. Do NOT re-emit the
+    whole plan; only fix the specific misrouted file.
 
 When the user demands a strict format constraint the writer might
 miss ("exactly 5-7-5 syllables", "valid JSON", "<= 280 characters"),
