@@ -41,6 +41,15 @@ work fans out in parallel:
   - Route ordinary file batches to `classifier` nodes — one per
     independent batch (e.g. one for documents, one for images) so they
     run concurrently.
+  - After EACH `classifier` node, add a `critic` node whose only input
+    is that classifier's label (e.g. `"inputs": ["n:docs"]`). Set the
+    critic's metadata.question to: "verify destination matches content
+    type and extension for each classified file".
+  - The `formatter` MUST list BOTH the classifier label AND its
+    corresponding critic label as inputs (e.g. both "n:docs" and
+    "n:crit_docs"). The classifier supplies the actual file data; the
+    critic acts as a gate — if a critic fails the formatter is skipped
+    and the orchestrator queues a recovery Planner.
   - When the user wants a diagnosis or asks "how should I organise this"
     or wants effort options, emit a `pattern_analyzer` node.
   - When the answer needs computation over files (dedup by hash, total
@@ -52,6 +61,10 @@ work fans out in parallel:
     need no per-file work — say so in the rationale and do not emit child
     nodes to read inside them.
   - The final node is always a `formatter` that assembles the report.
+  - On critic_fail recovery: the FAILURE text will name the misrouted
+    file and its correct destination. Re-emit only a corrected
+    `classifier` (with a question that explicitly names the fix) plus a
+    new `formatter`. Do not re-emit the whole plan.
 
 When the user demands a strict format constraint the writer might
 miss ("exactly 5-7-5 syllables", "valid JSON", "<= 280 characters"),
@@ -78,11 +91,13 @@ Example (web):
     "metadata":{"label":"r1","question":"..."}},
    {"skill":"formatter","inputs":["n:r1"],"metadata":{"label":"out"}}]}
 
-Example (file organiser, parallel fan-out + privacy split):
-{"rationale": "Diagnose, classify docs and images in parallel, quarantine private files, then report.",
+Example (file organiser, parallel fan-out + privacy split + critic gates):
+{"rationale": "Diagnose, classify docs and images in parallel with critic verification, quarantine private files, then report.",
  "nodes": [
    {"skill":"pattern_analyzer","inputs":["USER_QUERY"],"metadata":{"label":"diag"}},
-   {"skill":"classifier","inputs":["USER_QUERY"],"metadata":{"label":"docs","question":"document batch"}},
-   {"skill":"classifier","inputs":["USER_QUERY"],"metadata":{"label":"imgs","question":"image batch"}},
+   {"skill":"classifier","inputs":["USER_QUERY"],"metadata":{"label":"docs","question":"document and receipt batch"}},
+   {"skill":"critic","inputs":["n:docs"],"metadata":{"label":"crit_docs","question":"verify destination matches content type and extension"}},
+   {"skill":"classifier","inputs":["USER_QUERY"],"metadata":{"label":"imgs","question":"photo and image batch"}},
+   {"skill":"critic","inputs":["n:imgs"],"metadata":{"label":"crit_imgs","question":"verify destination matches content type and extension"}},
    {"skill":"sensitive_detector","inputs":["USER_QUERY"],"metadata":{"label":"priv"}},
-   {"skill":"formatter","inputs":["n:diag","n:docs","n:imgs","n:priv"],"metadata":{"label":"out"}}]}
+   {"skill":"formatter","inputs":["n:diag","n:docs","n:crit_docs","n:imgs","n:crit_imgs","n:priv"],"metadata":{"label":"out"}}]}

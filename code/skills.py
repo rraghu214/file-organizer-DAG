@@ -159,7 +159,17 @@ def render_prompt(skill: Skill, query: str, resolved: list[dict],
     hits_block = _format_memory_hits(memory_hits or [])
     if hits_block:
         parts += ["", f"MEMORY HITS ({len(memory_hits)} from FAISS):", hits_block]
-    parts += ["", "INPUTS:", json.dumps(resolved, indent=2, default=str)[:8_000]]
+    # When every resolved input is USER_QUERY the full query text is already
+    # shown in the USER_QUERY: header above. Re-encoding it in INPUTS doubles
+    # the prompt size and can push it past provider context limits. Skip the
+    # INPUTS block in that case; only add it when there are upstream-node
+    # outputs (n:xxx) or artifact handles that bring genuinely new data.
+    has_upstream = any(
+        r.get("id", "").startswith("n:") or r.get("id", "").startswith("art:")
+        for r in resolved
+    )
+    if has_upstream:
+        parts += ["", "INPUTS:", json.dumps(resolved, indent=2, default=str)[:8_000]]
     return "\n".join(parts)
 
 

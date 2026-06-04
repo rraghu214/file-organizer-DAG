@@ -62,7 +62,7 @@ summariser:
 critic:
   prompt: prompts/critic.md
   temperature: 0.0         # pass/fail; we want determinism
-  max_tokens: 500
+  max_tokens: 800
   description: Evaluates an upstream node's output; emits pass or fail with rationale.
 
 formatter:

@@ -47,6 +47,14 @@ SENSITIVE_SIGNALS = re.compile(
 
 INSTALLER_MARKERS = (".exe", ".dll", ".msi", ".manifest")
 
+# Extensions and size threshold for cheap content-preview extraction.
+# Preview gives the classifier a stronger signal than filename alone and
+# lets the Critic cross-check destination vs actual content.
+# Sensitive files are NEVER previewed regardless of extension.
+_PREVIEW_EXTS = {".txt", ".md", ".py", ".js", ".html", ".css"}
+_PREVIEW_MAX_BYTES = 600  # skip large files; preview only stubs / small docs
+_PREVIEW_CHARS = 300
+
 
 def _sha256(path: Path, chunk: int = 65536) -> str:
     h = hashlib.sha256()
@@ -128,7 +136,18 @@ def scan(root: str | Path) -> dict:
                 sensitive.append(desc)
                 # Sensitive files are still hashed (dedup is safe — hashing
                 # is not "reading content" in any semantic sense) but never
-                # classified.
+                # classified or previewed.
+            else:
+                # Cheap content preview for the classifier / critic.
+                # Only small, non-sensitive text files; never reads sensitive ones.
+                if ext in _PREVIEW_EXTS and st.st_size <= _PREVIEW_MAX_BYTES:
+                    try:
+                        with open(p, "r", encoding="utf-8", errors="replace") as fh:
+                            snippet = fh.read(_PREVIEW_CHARS).strip()
+                        if snippet:
+                            desc["preview"] = snippet
+                    except OSError:
+                        pass
             files.append(desc)
             try:
                 hashes[_sha256(p)].append(rel)
