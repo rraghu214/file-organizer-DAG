@@ -20,12 +20,17 @@ file-organiser additions merged in. Start from HANDOFF.md.
 - `README_FileOrganiser.md` — the product/assignment README.
 
 ## Untouched from original
-flow.py, skills.py, schemas.py, recovery.py, persistence.py, sandbox.py,
+flow.py, schemas.py, recovery.py, persistence.py, sandbox.py,
 mcp_runner.py, memory.py, artifacts.py, vector_index.py, replay.py,
-gateway.py, all other prompts, the whole gateway/ app, tests/test_recovery.py.
+gateway.py, tests/test_recovery.py.
+
+Note: skills.py was modified in Phase 0 (parse_skill_json strict=False,
+render_prompt INPUTS cap 8k, _format_memory_hits source filter) and again
+in Phase 1 (prompt_template UTF-8 encoding, render_prompt skips INPUTS
+for USER_QUERY-only prompts). It is no longer "untouched from original".
 
 ## Verify
-    cd S8SharedCode/code && python -m pytest tests/ -q     # 28 pass
+    cd code && .venv\Scripts\python.exe -m pytest tests/ -q     # 28 pass
 
 ---
 
@@ -112,3 +117,56 @@ SCAN_RESULT, the scanner already computed dedup — do NOT emit coder."
 handle the parallel fan-out in 5–15 s per skill. In production, swap
 sensitive_detector and classifier back to `ollama` with a smaller model:
   `ollama pull llama3.2:3b`  (2 GB, ~3 s/call, no concurrency timeout risk)
+
+---
+
+## Phase 1 live-run fixes (2026-06-04)
+
+Discovered while wiring the critic on the classifier→formatter edge (req 3).
+
+### Fix 1 — `skills.py prompt_template`: read prompts as UTF-8
+**Symptom**: UnicodeDecodeError 'charmap' codec can't decode byte 0x90 — any
+prompt file containing non-ASCII characters (e.g. box-drawing chars `═`) crashed
+on Windows where the default encoding is cp1252.
+**Fix**: pass `encoding="utf-8"` to `self.prompt_path.read_text()`.
+
+### Fix 2 — `skills.py render_prompt`: skip INPUTS for USER_QUERY-only skills
+**Symptom**: Planner and classifiers silently returned `{}` on cerebras/gemini.
+Prompt was ~19 000 chars because the full SCAN_RESULT (6 500 chars) appeared twice:
+once in the `USER_QUERY:` header and again JSON-encoded in `INPUTS:`.
+**Fix**: when every resolved input is USER_QUERY (no upstream `n:xxx` outputs),
+skip the INPUTS block entirely. The full query is already in the USER_QUERY header;
+re-encoding it in INPUTS just doubled the prompt and exceeded smaller context windows.
+
+### Fix 3 — `code/agent_config.yaml`: critic max_tokens 500→800
+**Symptom**: critics returned `{}` when processing 18-item classified lists —
+800 tokens isn't large but it's enough headroom for a one-sentence verdict.
+
+### Fix 4 — `code/prompts/critic.md`: PRIORITY RULE for classifier checks
+**Symptom**: critics returned `{}` (no verdict) even when the classified list
+clearly contained a `.txt` file routed to `Pictures/`. Root causes: (a) the
+file-organiser check was buried at the end of the prompt after the general
+fabrication/contradiction check; (b) `UPSTREAM_OUTPUT` was referenced but no
+section by that name exists — models had to guess the mapping to `INPUTS[0].output`.
+**Fix**: complete rewrite putting a PRIORITY RULE first with explicit
+`INPUTS[0].output.classified` reference; Step A catches empty classifier output,
+Step B scans for `.txt-in-Pictures` mismatch and cross-references `preview` from
+SCAN_RESULT in USER_QUERY. PHOTO-* placeholder stubs are the documented exception.
+FALLBACK general check preserved for distiller / format critic use cases.
+
+### Fix 5 — `code/prompts/planner.md`: formatter must list BOTH classifier AND critic labels
+**Symptom**: formatter received only critic verdicts (`{"verdict":"pass"}`) as inputs,
+not the actual classified file lists. The planner was following a contradictory instruction
+("formatter must list the CRITIC labels, not the classifier labels") that overrode the
+example DAG which correctly showed both.
+**Fix**: updated the instruction to say "list BOTH the classifier label AND its critic
+label — classifiers supply the actual file data; critics act as gates."
+
+### Fix 6 — `demo_messy_drive/Downloads/IMG_20260601_165420.txt` (new file)
+Deliberately-misclassified file demonstrating the critic fail case:
+- Name: `IMG_20260601_165420.txt` (classic phone-photo naming convention)
+- Content: 954-byte sprint meeting notes (>600 B threshold, so scanner emits NO preview)
+- Classifier sees IMG_YYYYMMDD name only → routes to `Pictures/2026` (misclassification)
+- Critic Step B fires: ext=.txt, no preview, destination=Pictures/ → `verdict:fail`
+- Recovery planner receives: "correct destination is Documents/"
+Evidence: session s8-e0cc1855, node n_030.json in state/sessions.
