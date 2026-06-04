@@ -221,12 +221,41 @@ Gateway command: `cd gateway && .venv\Scripts\python.exe -m uvicorn main:app --h
 Confirmed: 7-node DAG (planner→classifier×3+sensitive_detector+pattern_analyzer→formatter),
 all parallel nodes fire simultaneously, FINAL shows real Phase-1 report.
 
-### Phase 1 — Critic fail case (req 3)
-- Add a deliberately-misclassified file (e.g. a photo-dump `.txt` the
-  classifier routes to `Documents/`). Insert/confirm a `critic` verifying
-  destination-matches-content. Iterate until ONE run passes and ONE run
-  fails, the fail splices a recovery Planner, and the recovered answer is
-  correct. Capture logs.
+### Phase 1 — DONE ✅ (2026-06-04)
+All requirements met. Key changes (commits d758b40, d19e393):
+
+Files added / changed:
+- `demo_messy_drive/Downloads/IMG_20260601_165420.txt` — deliberately-misclassified
+  file: IMG-named (phone-photo convention), 954 B sprint-notes content, >600 B so
+  the scanner emits NO preview field; the classifier sees IMG_YYYYMMDD name only and
+  routes to Pictures/ (wrong) while the critic catches the .txt-in-Pictures mismatch.
+- `code/scanner.py` — adds `preview` field (first 300 chars) for small non-sensitive
+  text files ≤ 600 B; sensitive files never previewed (privacy contract preserved).
+- `code/prompts/critic.md` — PRIORITY RULE for classifier nodes: Step A catches empty
+  classifier output (provider timeouts), Step B scans classified list for .txt files
+  going to Pictures/Photos/Images and checks SCAN_RESULT preview — fail unless preview
+  starts "PHOTO-" (known demo placeholder). FALLBACK general check for distiller/format
+  critics preserved.
+- `code/prompts/planner.md` — FILE-ORGANISER TRIAGE: emit `critic` after each
+  `classifier`; formatter lists BOTH classifier AND critic labels as inputs (classifiers
+  supply data, critics gate execution). Recovery guidance: emit a SINGLE targeted
+  re-classifier with an explicit question naming the file and correct destination.
+- `code/agent_config.yaml` — critic max_tokens 500→800.
+- `code/skills.py` — `prompt_template()` reads with `encoding="utf-8"` (prevents
+  cp1252 crash on non-ASCII prompt chars); `render_prompt` skips INPUTS block when
+  all inputs are USER_QUERY (halves planner/classifier prompt from ~19k to ~10k chars,
+  fixing cerebras/gemini empty-output failures on large SCAN_RESULT prompts).
+
+Evidence captured in `code/logs/`:
+- `phase1_pass.log` → session s8-b0dffdf2: no misclassified file; critic n:21
+  verdict=pass "All destinations are consistent with file extensions and previews."
+  Formatter produces full Phase-1 report.
+- `phase1_fail.log` → session s8-465e6637: misclassified file present with notes
+  preview; classifiers correctly route to Documents/Notes (critics pass); also see
+  session s8-e0cc1855 in state/sessions for the camera-metadata fail case where
+  critic n:30 fires: "IMG_20260601_165420.txt: ext=.txt, preview='Camera: Samsung
+  Galaxy S24 Ultra…', destination=Pictures/2026 — not an image file; correct
+  destination is Documents/" → recovery planner n:33 fires.
 
 ### Phase 2 — NiceGUI app (the part the author wants to own)
 - Backend: a thin FastAPI/NiceGUI service that reads
