@@ -170,3 +170,45 @@ Deliberately-misclassified file demonstrating the critic fail case:
 - Critic Step B fires: ext=.txt, no preview, destination=Pictures/ → `verdict:fail`
 - Recovery planner receives: "correct destination is Documents/"
 Evidence: session s8-e0cc1855, node n_030.json in state/sessions.
+
+---
+
+## Phase 2 NiceGUI app (2026-06-04)
+
+New files — all in `code/`:
+
+### `ui/session.py`
+Data layer. `list_sessions()` sorts by hex timestamp; `load_session(sid)` reads
+`query.txt` + `graph.json` + `nodes/n_*.json`. Extractors: `classified_items` (merges all
+classifier outputs, deduplicates by name+destination), `sensitive_files`, `pattern_analysis`,
+`formatter_output`, `group_by_destination`, `session_stats`.
+Key quirk: classifier `result.output` may arrive as a raw JSON array (not wrapped in a dict)
+— `classified_items` handles both forms with `isinstance(out, list)`.
+
+### `ui/dag_svg.py`
+Pure-Python SVG string builder (no NiceGUI dependency). Algorithm: longest-path-from-source
+layering via memo-recursive DFS; nodes sorted by metadata.label within each layer for stable
+column order. Skill colours encoded as hex; status icons (✓ ✗ ⊘ ⟳ ○) in node labels.
+Output wrapped in `overflow-x:auto` in the dashboard for sessions with many recovery nodes.
+
+### `ui/widgets.py`
+Reusable NiceGUI micro-components: `stat_card`, `conf_bar` (linear_progress + percentage),
+`file_row` (one file inside a destination expansion), `section_header`.
+
+### `ui/app.py`
+Four tabs: Dashboard, Compare Plans, Filter Files, History.
+- Dashboard: summary cards → DAG SVG → highlights with Lock switches → destination groups
+  with confidence bars and "needs your eyes" badges → private panel → dup groups → skipped.
+- Compare Plans: three columns (minimal/medium/best) + cumulative diff showing what each
+  tier adds over the previous.
+- Filter Files: three-tier — structured (category/destination/confidence slider),
+  semantic combobox, NL plain-language box (keyword match in-process, no LLM round-trip).
+- History: session list with node count + formatter-complete status.
+- Action dialogs: Approve (Phase 3 stub), Refine (spawns `run_organiser.py` subprocess
+  with refinement note prepended), Help me choose (in-process Q&A).
+NiceGUI event fix: `on_change=` used for `ui.select` and `ui.switch` to get
+`ValueChangeEventArguments` (.value); raw `.on()` would give `GenericEventArguments` (.args).
+
+### `code/run_ui.py`
+Launcher: inserts `code/` into sys.path so package-relative imports in `ui/` work when
+invoked as `python run_ui.py` (running `ui/app.py` directly fails with relative-import error).

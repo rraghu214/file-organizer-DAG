@@ -257,22 +257,30 @@ Evidence captured in `code/logs/`:
   Galaxy S24 Ultra…', destination=Pictures/2026 — not an image file; correct
   destination is Documents/" → recovery planner n:33 fires.
 
-### Phase 2 — NiceGUI app (the part the author wants to own)
-- Backend: a thin FastAPI/NiceGUI service that reads
-  `state/sessions/<sid>/` JSON. No new agent logic.
-- Rebuild these screens as NiceGUI components (the design spec is in the
-  conversation — report dashboard, group drill-down, compare-plans,
-  three-tier filters, locked-zones toggles):
-  - report dashboard: scan summary cards, the DAG render (`ui.html()` +
-    SVG), grouped findings with confidence bars + "see files & why".
-  - drill-down: per-file reasoning + destination + confidence;
-    low-confidence flagged "needs your eyes"; "tell me what to select" →
-    natural-language selection.
-  - compare-plans: cumulative diff table + locked-zones toggles.
-  - filters: structured selects + semantic combobox + NL box.
-- Wire approve/refine buttons to re-invoke the engine (refine = re-plan
-  the affected subgraph only; the persisted graph lets unaffected branches
-  stay cached).
+### Phase 2 — DONE ✅ (2026-06-04)
+All screens implemented. Run command:
+`cd code && .venv\Scripts\python.exe run_ui.py`  → http://localhost:8110
+
+Files added:
+- `code/ui/__init__.py`
+- `code/ui/session.py`   — data layer: list/load sessions, extract scan, classifiers, sensitive, pattern, stats
+- `code/ui/dag_svg.py`   — pure-Python SVG builder (longest-path layering, skill-colour nodes, status icons)
+- `code/ui/widgets.py`   — reusable NiceGUI micro-components (stat_card, conf_bar, file_row)
+- `code/ui/app.py`       — four tabs + action dialogs + engine re-invocation
+- `code/run_ui.py`       — launcher (adds code/ to sys.path so package imports work)
+
+Screens delivered:
+- **Dashboard**: scan summary cards, `ui.html()` DAG SVG (scrollable), already-organised
+  highlights with Lock toggles, classified findings grouped by destination with confidence
+  bars + "needs your eyes" flags, private-files panel, duplicate groups, skipped folders.
+- **Compare Plans**: three-column minimal/medium/best cards with recommended badge,
+  cumulative diff showing what each tier adds over the previous.
+- **Filter Files**: three-tier filters — structured (category/destination/confidence-slider),
+  semantic combobox (destination labels), NL plain-language box ("just ask").
+- **History**: session list with node count + formatter-complete indicator.
+- **Approve Medium Plan**: dialog shows plan actions; Phase 3 stub notice.
+- **Refine**: dialog + spawns new `run_organiser.py` subprocess with refinement prefix.
+- **Help me choose**: in-process Q&A (keyword match, no LLM round-trip) for common queries.
 
 ### Phase 3 — Product mechanics (real engineering)
 - `scan_config.yaml` include/exclude (Triage Planner honors it).
