@@ -1,4 +1,4 @@
-"""Phase 2 — NiceGUI report dashboard for FileOrganiser DAG.
+"""Phase 2 / 3 — NiceGUI report dashboard for FileOrganiser DAG.
 
 Run from code/:
     .venv\\Scripts\\python.exe ui/app.py
@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import asyncio
 import json
+import sys
 from pathlib import Path
 
 from nicegui import ui
@@ -27,6 +28,26 @@ from .widgets import CATEGORY_COLOR, conf_bar, file_row, stat_card
 
 ROOT = Path(__file__).parent.parent
 APP_PORT = 8110
+
+# ── scan_config helpers ───────────────────────────────────────────────────────
+# Import scanner's config I/O so Lock toggles can persist to scan_config.yaml
+sys.path.insert(0, str(ROOT))
+from scanner import _load_scan_config, _save_scan_config  # noqa: E402
+
+
+def _toggle_locked_zone(path: str, add: bool) -> None:
+    """Add or remove *path* from locked_zones in scan_config.yaml."""
+    cfg = _load_scan_config()
+    zones: list[str] = list(cfg.get("locked_zones", []))
+    if add and path not in zones:
+        zones.append(path)
+    elif not add and path in zones:
+        zones.remove(path)
+    cfg["locked_zones"] = zones
+    try:
+        _save_scan_config(cfg)
+    except Exception as exc:
+        ui.notify(f"Could not save scan_config.yaml: {exc}", type="warning")
 
 
 # ── Dashboard tab ─────────────────────────────────────────────────────────────
@@ -82,7 +103,8 @@ def render_dashboard(session: dict, locked_zones: set[str]) -> None:
                         "Lock",
                         value=(path in locked_zones),
                         on_change=lambda e, p=path: (
-                            locked_zones.add(p) if e.value else locked_zones.discard(p)
+                            locked_zones.add(p) if e.value else locked_zones.discard(p),
+                            _toggle_locked_zone(p, e.value),
                         ),
                     ).props("dense color=green")
 
@@ -393,27 +415,165 @@ def render_history(sessions: list[str]) -> None:
 
 # ── Action dialogs ────────────────────────────────────────────────────────────
 
+def _build_move_ops(session: dict):
+    """Build MoveOp list from classified items + scan root.
+
+    Returns (ops, warnings) where warnings is a list of names that
+    couldn't be resolved to an on-disk path.
+    """
+    from executor import MoveOp
+
+    scan      = extract_scan(session["query"])
+    scan_root = scan.get("root", "")
+    if not scan_root:
+        return [], ["No scan root found in session — cannot build move list."]
+
+    # Build name → relative-path lookup from scan result
+    name_to_rel: dict[str, str] = {}
+    for f in scan.get("files", []):
+        name_to_rel.setdefault(f["name"], f["path"])
+
+    classed  = classified_items(session)
+    ops: list[MoveOp] = []
+    warnings: list[str] = []
+
+    for item in classed:
+        name = item.get("name", "")
+        dest = item.get("destination", "")
+        if not name or not dest:
+            continue
+        if name not in name_to_rel:
+            warnings.append(f"{name}: not found in scan manifest — skipped")
+            continue
+        src = Path(scan_root) / name_to_rel[name]
+        dst = Path(scan_root) / dest / name
+        if src == dst:
+            continue  # already at destination
+        ops.append(MoveOp(src=src, dst=dst, reason=item.get("reason", "")))
+
+    return ops, warnings
+
+
 def _dlg_approve(session: dict) -> None:
-    with ui.dialog() as dlg, ui.card().classes("w-[440px]"):
+    """Full Phase-3 flow: dry-run → confirm dialog → apply → undo button."""
+    from executor import MoveExecutor
+
+    ops, build_warnings = _build_move_ops(session)
+
+    with ui.dialog() as dlg, ui.card().classes("w-[560px] max-h-[85vh] overflow-y-auto"):
         with ui.row().classes("items-center gap-2 mb-3"):
             ui.icon("check_circle", color="green", size="lg")
             ui.label("Approve Medium Plan").classes("text-lg font-bold")
-        pattern = pattern_analysis(session)
-        if pattern:
-            actions = (pattern.get("plans") or {}).get("medium", {}).get("actions", [])
-            ui.label("The following actions will be applied:").classes(
-                "text-sm text-gray-600 mb-2"
-            )
-            for a in actions:
-                with ui.row().classes("items-start gap-1 mb-1"):
-                    ui.label("•").classes("text-gray-400 text-xs mt-0.5 shrink-0")
-                    ui.label(a).classes("text-xs text-gray-700")
-        ui.separator().classes("my-3")
+
+        if not ops:
+            ui.label(
+                "No file moves to execute for this session."
+            ).classes("text-sm text-gray-500")
+            if build_warnings:
+                for w in build_warnings:
+                    ui.label(f"⚠ {w}").classes("text-xs text-amber-700")
+            ui.button("Close", on_click=dlg.close).classes("mt-3")
+            dlg.open()
+            return
+
+        executor = MoveExecutor(ops, sid=session["sid"])
+        report   = executor.dry_run()
+
+        # ── dry-run report ─────────────────────────────────────────────────
         ui.label(
-            "Phase 3 (transactional move-executor with dry-run + undo log) "
-            "is not yet implemented — wired in Phase 3."
-        ).classes("text-xs text-amber-700 bg-amber-50 p-2 rounded")
-        ui.button("Close", on_click=dlg.close).classes("mt-3")
+            f"Dry-run: {len(report.ops)} move(s) planned, "
+            f"{len(report.conflicts)} conflict(s)"
+        ).classes("text-sm font-semibold text-gray-700 mb-2")
+
+        if report.reclaimable_bytes:
+            mb = report.reclaimable_bytes / (1024 * 1024)
+            ui.label(
+                f"♻ {mb:.1f} MB reclaimable (identical files already at destination)"
+            ).classes("text-xs text-green-700 mb-2")
+
+        if report.conflicts:
+            with ui.card().classes("w-full bg-red-50 border border-red-200 mb-3 p-2"):
+                ui.label(f"{len(report.conflicts)} Conflict(s) — must resolve before executing").classes(
+                    "text-xs font-semibold text-red-700 mb-1"
+                )
+                for c in report.conflicts[:10]:
+                    ui.label(
+                        f"[{c.kind}] {Path(c.src).name} → {Path(c.dst).name}: {c.detail}"
+                    ).classes("text-xs text-red-600 font-mono py-0.5")
+                if len(report.conflicts) > 10:
+                    ui.label(f"… {len(report.conflicts) - 10} more").classes("text-xs text-red-400")
+
+        # Preview of ops (first 15)
+        with ui.expansion(f"Preview moves ({len(report.ops)} total)", value=False).classes("w-full mb-3"):
+            for op in report.ops[:15]:
+                ui.label(
+                    f"{op.src.name}  →  {op.dst.parent.name}/{op.dst.name}"
+                ).classes("text-xs font-mono text-gray-600 py-0.5")
+            if len(report.ops) > 15:
+                ui.label(f"… {len(report.ops) - 15} more").classes("text-xs text-gray-400")
+
+        if build_warnings:
+            with ui.expansion(f"{len(build_warnings)} file(s) skipped", value=False).classes("w-full mb-3"):
+                for w in build_warnings:
+                    ui.label(f"⚠ {w}").classes("text-xs text-amber-700 py-0.5")
+
+        ui.separator().classes("my-2")
+
+        # undo log reference for the callback
+        undo_state: dict = {"log": None}
+        status_lbl  = ui.label("").classes("text-sm text-gray-600 mt-2")
+        undo_btn    = ui.button("Undo last apply", icon="undo", color="orange").classes("mt-2 hidden")
+
+        async def _do_undo() -> None:
+            from executor import MoveExecutor
+            log = undo_state.get("log")
+            if not log:
+                ui.notify("No undo log available.", type="warning")
+                return
+            try:
+                await asyncio.get_event_loop().run_in_executor(
+                    None, lambda: MoveExecutor.undo(log)
+                )
+                ui.notify("Undo complete — files restored.", type="positive")
+                undo_btn.classes(add="hidden")
+                status_lbl.set_text("Undo complete. Files restored to original locations.")
+            except Exception as exc:
+                ui.notify(f"Undo failed: {exc}", type="negative")
+
+        undo_btn.on_click(_do_undo)
+
+        async def _do_apply() -> None:
+            execute_btn.disable()
+            status_lbl.set_text("Applying moves…")
+            try:
+                log = await asyncio.get_event_loop().run_in_executor(
+                    None, executor.apply
+                )
+                undo_state["log"] = log
+                moved = len(log.moves)
+                status_lbl.set_text(
+                    f"Done — {moved} file(s) moved. "
+                    f"Undo log: state/undo_{session['sid']}.json"
+                )
+                undo_btn.classes(remove="hidden")
+                ui.notify(f"{moved} file(s) moved successfully.", type="positive")
+            except Exception as exc:
+                status_lbl.set_text(f"Error: {exc}")
+                ui.notify(f"Apply failed: {exc}", type="negative")
+                execute_btn.enable()
+
+        with ui.row().classes("gap-2 mt-2"):
+            execute_btn = ui.button(
+                "Execute moves",
+                icon="send",
+                color="green" if report.is_clean() else "grey",
+                on_click=_do_apply,
+            )
+            if not report.is_clean():
+                execute_btn.disable()
+                ui.label("Resolve conflicts first").classes("text-xs text-red-500 self-center")
+            ui.button("Cancel", on_click=dlg.close)
+
     dlg.open()
 
 

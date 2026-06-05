@@ -9,6 +9,9 @@ code/state/memory.json
 code/state/index.faiss
 code/state/index_ids.json
 code/state/artifacts/
+code/state/scan_state.json
+code/state/ledger.json
+code/state/undo_*.json
 code/sandbox/*.txt
 code/.venv/
 gateway/.venv/
@@ -27,3 +30,4 @@ gateway/usage.json
 .DS_Store
 
 .venv
+.claude
