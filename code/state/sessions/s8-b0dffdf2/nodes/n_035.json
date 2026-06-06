@@ -1,0 +1,23 @@
+{
+  "node_id": "n:35",
+  "skill": "classifier",
+  "status": "failed",
+  "inputs": [
+    "USER_QUERY"
+  ],
+  "result": {
+    "success": false,
+    "agent_name": "classifier",
+    "output": {},
+    "artifacts": [],
+    "successors": [],
+    "cost": 0.0,
+    "elapsed_s": 0.0,
+    "provider": "",
+    "error": "exception: TypeError: pop expected at most 1 argument, got 2"
+  },
+  "prompt_sent": "(exception before prompt-render)",
+  "started_at": 1780540529.1189027,
+  "completed_at": 1780540529.1189053,
+  "retries": 0
+}

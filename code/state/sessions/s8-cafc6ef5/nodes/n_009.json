@@ -1,0 +1,23 @@
+{
+  "node_id": "n:9",
+  "skill": "critic",
+  "status": "failed",
+  "inputs": [
+    "n:8"
+  ],
+  "result": {
+    "success": false,
+    "agent_name": "critic",
+    "output": {},
+    "artifacts": [],
+    "successors": [],
+    "cost": 0.0,
+    "elapsed_s": 0.0,
+    "provider": "",
+    "error": "exception: UnicodeDecodeError: 'charmap' codec can't decode byte 0x90 in position 279: character maps to <undefined>"
+  },
+  "prompt_sent": "(exception before prompt-render)",
+  "started_at": 1780545424.6348286,
+  "completed_at": 1780545424.6348298,
+  "retries": 0
+}

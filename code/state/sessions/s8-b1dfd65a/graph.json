@@ -1,0 +1,335 @@
+{
+  "directed": true,
+  "multigraph": false,
+  "graph": {},
+  "nodes": [
+    {
+      "skill": "planner",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {},
+      "status": "complete",
+      "result": {
+        "success": true,
+        "agent_name": "planner",
+        "output": {
+          "rationale": "Fetch data for each city in parallel, then summarise and format the answer.",
+          "nodes": [
+            {
+              "skill": "researcher",
+              "inputs": [
+                "USER_QUERY"
+              ],
+              "metadata": {
+                "label": "lagos",
+                "question": "Current population and growth rate for Lagos"
+              }
+            },
+            {
+              "skill": "researcher",
+              "inputs": [
+                "USER_QUERY"
+              ],
+              "metadata": {
+                "label": "cairo",
+                "question": "Current population and growth rate for Cairo"
+              }
+            },
+            {
+              "skill": "researcher",
+              "inputs": [
+                "USER_QUERY"
+              ],
+              "metadata": {
+                "label": "kinshasa",
+                "question": "Current population and growth rate for Kinshasa"
+              }
+            },
+            {
+              "skill": "summariser",
+              "inputs": [
+                "n:lagos",
+                "n:cairo",
+                "n:kinshasa"
+              ],
+              "metadata": {
+                "label": "summary",
+                "question": "Compare populations and growth rates, identify fastest-growing city"
+              }
+            },
+            {
+              "skill": "formatter",
+              "inputs": [
+                "n:summary"
+              ],
+              "metadata": {
+                "label": "out"
+              }
+            }
+          ]
+        },
+        "artifacts": [],
+        "successors": [
+          {
+            "skill": "researcher",
+            "inputs": [
+              "USER_QUERY"
+            ],
+            "metadata": {
+              "label": "lagos",
+              "question": "Current population and growth rate for Lagos"
+            }
+          },
+          {
+            "skill": "researcher",
+            "inputs": [
+              "USER_QUERY"
+            ],
+            "metadata": {
+              "label": "cairo",
+              "question": "Current population and growth rate for Cairo"
+            }
+          },
+          {
+            "skill": "researcher",
+            "inputs": [
+              "USER_QUERY"
+            ],
+            "metadata": {
+              "label": "kinshasa",
+              "question": "Current population and growth rate for Kinshasa"
+            }
+          },
+          {
+            "skill": "summariser",
+            "inputs": [
+              "n:lagos",
+              "n:cairo",
+              "n:kinshasa"
+            ],
+            "metadata": {
+              "label": "summary",
+              "question": "Compare populations and growth rates, identify fastest-growing city"
+            }
+          },
+          {
+            "skill": "formatter",
+            "inputs": [
+              "n:summary"
+            ],
+            "metadata": {
+              "label": "out"
+            }
+          }
+        ],
+        "cost": 0.0,
+        "elapsed_s": 4.02794337272644,
+        "provider": "groq",
+        "error": null
+      },
+      "_result_typed": true,
+      "id": "n:1"
+    },
+    {
+      "skill": "researcher",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "label": "lagos",
+        "question": "Current population and growth rate for Lagos"
+      },
+      "status": "complete",
+      "result": {
+        "success": true,
+        "agent_name": "researcher",
+        "output": {
+          "question": "For Lagos, Cairo, and Kinshasa, find current populations and growth rates and tell me which is growing fastest.",
+          "sources": [
+            {
+              "url": "https://en.wikipedia.org/wiki/List_of_African_countries_by_population_growth_rate",
+              "title": "List of African countries by population growth rate - Wikipedia"
+            },
+            {
+              "url": "https://desapublications.un.org/publications/world-population-prospects-2024-summary-results",
+              "title": "World Population Prospects 2024: Summary of Results"
+            },
+            {
+              "url": "https://www.macrotrends.net/global-metrics/cities/22007/lagos/population",
+              "title": "Lagos, Nigeria Metro Area Population (1950-2026) - Macrotrends"
+            }
+          ],
+          "findings": "According to available sources, Lagos, Nigeria, has a population exceeding 15 million and is one of the fastest-growing cities in Africa with a high growth rate driven by urban migration and natural increase. Cairo, Egypt, has a population of about 20 million, with a lower but steady growth rate due to urbanization and demographic factors. Kinshasa, Democratic Republic of Congo, has a population close to 15 million with a high population growth rate attributed to high birth rates and rural-urban migration. Among the three cities, Kinshasa is generally considered to have the fastest population growth rate, followed by Lagos, with Cairo growing at a slower pace comparatively."
+        },
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 72.17468333244324,
+        "provider": "github",
+        "error": null
+      },
+      "_result_typed": true,
+      "id": "n:2"
+    },
+    {
+      "skill": "researcher",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "label": "cairo",
+        "question": "Current population and growth rate for Cairo"
+      },
+      "status": "complete",
+      "result": {
+        "success": true,
+        "agent_name": "researcher",
+        "output": {
+          "question": "For Lagos, Cairo, and Kinshasa, find current populations and growth rates and tell me which is growing fastest.",
+          "sources": [
+            {
+              "url": "https://www.macrotrends.net/global-metrics/cities/22007/lagos/population",
+              "title": "Lagos, Nigeria Metro Area Population (1950-2026) | MacroTrends"
+            },
+            {
+              "url": "https://www.macrotrends.net/global-metrics/cities/22812/cairo/population",
+              "title": "Cairo, Egypt Metro Area Population (1950-2026) | MacroTrends"
+            },
+            {
+              "url": "https://worldpopulationreview.com/cities/dr-congo/kinshasa",
+              "title": "Kinshasa Population 2026"
+            }
+          ],
+          "findings": "Lagos (Nigeria) had an estimated metro area population of 16,536,000 in 2024, growing at approximately 3.7% per year. Cairo (Egypt) had an estimated metro area population of 22,624,000 in 2024, growing at about 1.99% per year. Kinshasa (Democratic Republic of the Congo) had an estimated metro area population of about 19,770,000 in 2024, growing at approximately 5.13% per year. Among the three cities, Kinshasa exhibits the highest annual growth rate."
+        },
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 179.52240133285522,
+        "provider": "openrouter",
+        "error": null
+      },
+      "_result_typed": true,
+      "id": "n:3"
+    },
+    {
+      "skill": "researcher",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "label": "kinshasa",
+        "question": "Current population and growth rate for Kinshasa"
+      },
+      "status": "complete",
+      "result": {
+        "success": true,
+        "agent_name": "researcher",
+        "output": {
+          "question": "For Lagos, Cairo, and Kinshasa, find current populations and growth rates and tell me which is growing fastest.",
+          "sources": [
+            {
+              "url": "https://worldpopulationreview.com/cities/nigeria/lagos",
+              "title": "Lagos Population 2026 - World Population Review"
+            },
+            {
+              "url": "https://www.macrotrends.net/global-metrics/cities/22812/cairo/population",
+              "title": "Cairo, Egypt Metro Area Population (1950-2026) | MacroTrends"
+            },
+            {
+              "url": "https://www.macrotrends.net/global-metrics/cities/20853/kinshasa/population",
+              "title": "Kinshasa, Republic of Congo Metro Area Population (1950-2026) | MacroTrends"
+            }
+          ],
+          "findings": "Lagos has a 2026 estimated population of about 14.88 million with an annual growth rate of approximately 2.48%. Cairo's metro area population in 2023 is about 22.18 million with a growth rate near 1.99%. Kinshasa's metro area population in 2023 is about 16.32 million with a notably higher growth rate of around 4.4% from 2022 to 2023. Among these three cities, Kinshasa is growing the fastest based on the latest available growth rate data."
+        },
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 91.29073286056519,
+        "provider": "github",
+        "error": null
+      },
+      "_result_typed": true,
+      "id": "n:4"
+    },
+    {
+      "skill": "summariser",
+      "inputs": [
+        "n:2",
+        "n:3",
+        "n:4"
+      ],
+      "metadata": {
+        "label": "summary",
+        "question": "Compare populations and growth rates, identify fastest-growing city"
+      },
+      "status": "complete",
+      "result": {
+        "success": true,
+        "agent_name": "summariser",
+        "output": {
+          "summary": "Recent data show that Lagos, Nigeria's metro area has about 16.5\u202fmillion residents and is growing at roughly 3.7\u202f% per year. Cairo, Egypt's metro area holds about 22.6\u202fmillion people and expands at about 2\u202f% annually. Kinshasa, Democratic Republic of the Congo, has an estimated 19.8\u202fmillion inhabitants and is growing fastest, at approximately 5.1\u202f% per year. Across all sources, Kinshasa consistently ranks as the city with the highest population growth rate, followed by Lagos, with Cairo growing the slowest.",
+          "preserved_facts": [
+            "Lagos metro population \u2248 16,536,000 (2024) with ~3.7\u202f% annual growth",
+            "Cairo metro population \u2248 22,624,000 (2024) with ~1.99\u202f% annual growth",
+            "Kinshasa metro population \u2248 19,770,000 (2024) with ~5.13\u202f% annual growth",
+            "Kinshasa has the highest growth rate among the three cities"
+          ]
+        },
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 5.145168304443359,
+        "provider": "cerebras",
+        "error": null
+      },
+      "_result_typed": true,
+      "id": "n:5"
+    },
+    {
+      "skill": "formatter",
+      "inputs": [
+        "n:5"
+      ],
+      "metadata": {
+        "label": "out"
+      },
+      "status": "complete",
+      "result": {
+        "success": true,
+        "agent_name": "formatter",
+        "output": {
+          "final_answer": "Based on the data, Kinshasa is growing the fastest. Its metro area has an estimated 19.8 million residents and is expanding at about 5.1% per year. Lagos has about 16.5 million people with a 3.7% growth rate, while Cairo has about 22.6 million people with a 2% growth rate."
+        },
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 6.4056665897369385,
+        "provider": "nvidia",
+        "error": null
+      },
+      "_result_typed": true,
+      "id": "n:6"
+    }
+  ],
+  "edges": [
+    {
+      "source": "n:2",
+      "target": "n:5"
+    },
+    {
+      "source": "n:3",
+      "target": "n:5"
+    },
+    {
+      "source": "n:4",
+      "target": "n:5"
+    },
+    {
+      "source": "n:5",
+      "target": "n:6"
+    }
+  ]
+}

@@ -1,0 +1,173 @@
+{
+  "directed": true,
+  "multigraph": false,
+  "graph": {},
+  "nodes": [
+    {
+      "skill": "planner",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {},
+      "status": "complete",
+      "result": {
+        "success": true,
+        "agent_name": "planner",
+        "output": {
+          "rationale": "Fetch the Wikipedia page, extract the required biographical data and contributions, then format the answer.",
+          "nodes": [
+            {
+              "skill": "researcher",
+              "inputs": [
+                "USER_QUERY"
+              ],
+              "metadata": {
+                "label": "r1",
+                "question": "Retrieve the content of Claude Shannon's Wikipedia page."
+              }
+            },
+            {
+              "skill": "distiller",
+              "inputs": [
+                "n:r1"
+              ],
+              "metadata": {
+                "label": "d1",
+                "question": "Extract Claude Shannon's birth date, death date, and three key contributions to information theory."
+              }
+            },
+            {
+              "skill": "formatter",
+              "inputs": [
+                "n:d1"
+              ],
+              "metadata": {
+                "label": "out"
+              }
+            }
+          ]
+        },
+        "artifacts": [],
+        "successors": [
+          {
+            "skill": "researcher",
+            "inputs": [
+              "USER_QUERY"
+            ],
+            "metadata": {
+              "label": "r1",
+              "question": "Retrieve the content of Claude Shannon's Wikipedia page."
+            }
+          },
+          {
+            "skill": "distiller",
+            "inputs": [
+              "n:r1"
+            ],
+            "metadata": {
+              "label": "d1",
+              "question": "Extract Claude Shannon's birth date, death date, and three key contributions to information theory."
+            }
+          },
+          {
+            "skill": "formatter",
+            "inputs": [
+              "n:d1"
+            ],
+            "metadata": {
+              "label": "out"
+            }
+          }
+        ],
+        "cost": 0.0,
+        "elapsed_s": 4.16921067237854,
+        "provider": "groq",
+        "error": null
+      },
+      "_result_typed": true,
+      "id": "n:1"
+    },
+    {
+      "skill": "researcher",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "label": "r1",
+        "question": "Retrieve the content of Claude Shannon's Wikipedia page."
+      },
+      "status": "complete",
+      "result": {
+        "success": true,
+        "agent_name": "researcher",
+        "output": {
+          "question": "Fetch https://en.wikipedia.org/wiki/Claude_Shannon and tell me his birth date, death date, and three key contributions to information theory.",
+          "sources": [
+            {
+              "url": "https://en.wikipedia.org/wiki/Claude_Shannon",
+              "title": "Claude Shannon - Wikipedia"
+            },
+            {
+              "url": "https://www.britannica.com/biography/Claude-Shannon",
+              "title": "Claude Shannon | Father of Information Theory, American Engineer - Britannica"
+            }
+          ],
+          "findings": "Claude Elwood Shannon was born on April 30, 1916, in Petoskey, Michigan, U.S., and died on February 24, 2001, in Medford, Massachusetts. He was an American mathematician, electrical engineer, and polymath known as the father of information theory. \n\nHis three key contributions to information theory include: \n1. Founding the field of information theory with his seminal 1948 paper \"A Mathematical Theory of Communication,\" which laid the theoretical foundations for digital circuits and communication systems.\n2. Introducing the concept of the \"bit\" as the basic unit of information and establishing the mathematical relationship between information, entropy, and communication efficiency.\n3. Developing practical applications of information theory in digital circuit design, coding theory, and cryptography, influencing various fields like linguistics, biology, and computer science.\n\nShannon's work revolutionized communication technology and paved the way for modern digital communication and data compression techniques."
+        },
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 39.806458711624146,
+        "provider": "github",
+        "error": null
+      },
+      "_result_typed": true,
+      "id": "n:2"
+    },
+    {
+      "skill": "distiller",
+      "inputs": [
+        "n:2"
+      ],
+      "metadata": {
+        "label": "d1",
+        "question": "Extract Claude Shannon's birth date, death date, and three key contributions to information theory."
+      },
+      "status": "failed",
+      "result": {
+        "success": false,
+        "agent_name": "distiller",
+        "output": {},
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 0.0,
+        "provider": "",
+        "error": "exception: HTTPStatusError: Server error '502 Bad Gateway' for url 'http://localhost:8108/v1/chat'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/502"
+      },
+      "_result_typed": true,
+      "id": "n:3"
+    },
+    {
+      "skill": "formatter",
+      "inputs": [
+        "n:3"
+      ],
+      "metadata": {
+        "label": "out"
+      },
+      "status": "pending",
+      "id": "n:4"
+    }
+  ],
+  "edges": [
+    {
+      "source": "n:2",
+      "target": "n:3"
+    },
+    {
+      "source": "n:3",
+      "target": "n:4"
+    }
+  ]
+}

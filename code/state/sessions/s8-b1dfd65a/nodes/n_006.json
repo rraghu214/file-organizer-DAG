@@ -1,0 +1,25 @@
+{
+  "node_id": "n:6",
+  "skill": "formatter",
+  "status": "complete",
+  "inputs": [
+    "n:5"
+  ],
+  "result": {
+    "success": true,
+    "agent_name": "formatter",
+    "output": {
+      "final_answer": "Based on the data, Kinshasa is growing the fastest. Its metro area has an estimated 19.8 million residents and is expanding at about 5.1% per year. Lagos has about 16.5 million people with a 3.7% growth rate, while Cairo has about 22.6 million people with a 2% growth rate."
+    },
+    "artifacts": [],
+    "successors": [],
+    "cost": 0.0,
+    "elapsed_s": 6.4056665897369385,
+    "provider": "nvidia",
+    "error": null
+  },
+  "prompt_sent": "You are the Formatter skill. You are the conventional TERMINAL node of\nevery DAG. Your job is to produce the final user-facing answer from\nwhatever upstream nodes have provided.\n\nYou make no tool calls. The user's original query appears under\nUSER_QUERY. Upstream results appear under INPUTS.\n\nProcedure:\n  1. Read USER_QUERY.\n  2. Read INPUTS and decide which fields / findings answer the query.\n  3. Write the user-facing answer in plain English. Adapt the format\n     (numbered list, comparison table, one paragraph) to what the\n     question actually asked.\n\nOutput schema (JSON, no prose, no markdown fences):\n\n  {\n    \"final_answer\": \"<the answer the user sees>\"\n  }\n\nRules:\n  - This is the LAST node. Do not add successors.\n  - The answer must be answerable from INPUTS alone. If an upstream\n    node returned `(not found)` or marked itself failed, say so plainly\n    to the user rather than inventing.\n  - Cite sources only when an upstream node included them (Researcher\n    nodes do; Retriever nodes do). Do not invent URLs.\n\nUSER_QUERY: For Lagos, Cairo, and Kinshasa, find current populations and growth rates and tell me which is growing fastest.\n\nINPUTS:\n[\n  {\n    \"id\": \"n:5\",\n    \"kind\": \"upstream\",\n    \"skill\": \"summariser\",\n    \"output\": {\n      \"summary\": \"Recent data show that Lagos, Nigeria's metro area has about 16.5\\u202fmillion residents and is growing at roughly 3.7\\u202f% per year. Cairo, Egypt's metro area holds about 22.6\\u202fmillion people and expands at about 2\\u202f% annually. Kinshasa, Democratic Republic of the Congo, has an estimated 19.8\\u202fmillion inhabitants and is growing fastest, at approximately 5.1\\u202f% per year. Across all sources, Kinshasa consistently ranks as the city with the highest population growth rate, followed by Lagos, with Cairo growing the slowest.\",\n      \"preserved_facts\": [\n        \"Lagos metro population \\u2248 16,536,000 (2024) with ~3.7\\u202f% annual growth\",\n        \"Cairo metro population \\u2248 22,624,000 (2024) with ~1.99\\u202f% annual growth\",\n        \"Kinshasa metro population \\u2248 19,770,000 (2024) with ~5.13\\u202f% annual growth\",\n        \"Kinshasa has the highest growth rate among the three cities\"\n      ]\n    }\n  }\n]",
+  "started_at": 1780257835.7880535,
+  "completed_at": 1780257842.1937203,
+  "retries": 0
+}

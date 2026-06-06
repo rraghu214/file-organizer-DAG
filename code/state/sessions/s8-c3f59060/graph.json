@@ -1,0 +1,399 @@
+{
+  "directed": true,
+  "multigraph": false,
+  "graph": {},
+  "nodes": [
+    {
+      "skill": "planner",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {},
+      "status": "complete",
+      "result": {
+        "success": true,
+        "agent_name": "planner",
+        "output": {
+          "rationale": "Diagnose overall layout, classify non-sensitive documents, photos, and receipts in parallel, flag private files via metadata, compute duplicate size reclaimable space, then assemble a phase\u20111 report with effort plans.",
+          "nodes": [
+            {
+              "skill": "pattern_analyzer",
+              "inputs": [
+                "USER_QUERY"
+              ],
+              "metadata": {
+                "label": "diag",
+                "question": "Diagnose current folder organisation"
+              }
+            },
+            {
+              "skill": "classifier",
+              "inputs": [
+                "USER_QUERY"
+              ],
+              "metadata": {
+                "label": "docs",
+                "question": "Classify non\u2011sensitive document batch (e.g., generic .txt files)"
+              }
+            },
+            {
+              "skill": "classifier",
+              "inputs": [
+                "USER_QUERY"
+              ],
+              "metadata": {
+                "label": "photos",
+                "question": "Classify photo batch (files under Pictures folder)"
+              }
+            },
+            {
+              "skill": "classifier",
+              "inputs": [
+                "USER_QUERY"
+              ],
+              "metadata": {
+                "label": "receipts",
+                "question": "Classify receipt batch (e.g., amazon, electricity, flipkart, swiggy invoices)"
+              }
+            },
+            {
+              "skill": "sensitive_detector",
+              "inputs": [
+                "USER_QUERY"
+              ],
+              "metadata": {
+                "label": "priv",
+                "question": "Flag private/financial files from metadata only"
+              }
+            },
+            {
+              "skill": "coder",
+              "inputs": [
+                "USER_QUERY"
+              ],
+              "metadata": {
+                "label": "dup",
+                "question": "Compute total duplicate files, reclaimable space, and summary statistics"
+              }
+            },
+            {
+              "skill": "formatter",
+              "inputs": [
+                "n:diag",
+                "n:docs",
+                "n:photos",
+                "n:receipts",
+                "n:priv",
+                "n:dup"
+              ],
+              "metadata": {
+                "label": "out"
+              }
+            }
+          ]
+        },
+        "artifacts": [],
+        "successors": [
+          {
+            "skill": "pattern_analyzer",
+            "inputs": [
+              "USER_QUERY"
+            ],
+            "metadata": {
+              "label": "diag",
+              "question": "Diagnose current folder organisation"
+            }
+          },
+          {
+            "skill": "classifier",
+            "inputs": [
+              "USER_QUERY"
+            ],
+            "metadata": {
+              "label": "docs",
+              "question": "Classify non\u2011sensitive document batch (e.g., generic .txt files)"
+            }
+          },
+          {
+            "skill": "classifier",
+            "inputs": [
+              "USER_QUERY"
+            ],
+            "metadata": {
+              "label": "photos",
+              "question": "Classify photo batch (files under Pictures folder)"
+            }
+          },
+          {
+            "skill": "classifier",
+            "inputs": [
+              "USER_QUERY"
+            ],
+            "metadata": {
+              "label": "receipts",
+              "question": "Classify receipt batch (e.g., amazon, electricity, flipkart, swiggy invoices)"
+            }
+          },
+          {
+            "skill": "sensitive_detector",
+            "inputs": [
+              "USER_QUERY"
+            ],
+            "metadata": {
+              "label": "priv",
+              "question": "Flag private/financial files from metadata only"
+            }
+          },
+          {
+            "skill": "coder",
+            "inputs": [
+              "USER_QUERY"
+            ],
+            "metadata": {
+              "label": "dup",
+              "question": "Compute total duplicate files, reclaimable space, and summary statistics"
+            }
+          },
+          {
+            "skill": "formatter",
+            "inputs": [
+              "n:diag",
+              "n:docs",
+              "n:photos",
+              "n:receipts",
+              "n:priv",
+              "n:dup"
+            ],
+            "metadata": {
+              "label": "out"
+            }
+          }
+        ],
+        "cost": 0.0,
+        "elapsed_s": 5.029349327087402,
+        "provider": "groq",
+        "error": null
+      },
+      "_result_typed": true,
+      "id": "n:1"
+    },
+    {
+      "skill": "pattern_analyzer",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "label": "diag",
+        "question": "Diagnose current folder organisation"
+      },
+      "status": "failed",
+      "result": {
+        "success": false,
+        "agent_name": "pattern_analyzer",
+        "output": {},
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 0.0,
+        "provider": "",
+        "error": "exception: HTTPStatusError: Server error '502 Bad Gateway' for url 'http://localhost:8108/v1/chat'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/502"
+      },
+      "_result_typed": true,
+      "id": "n:2"
+    },
+    {
+      "skill": "classifier",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "label": "docs",
+        "question": "Classify non\u2011sensitive document batch (e.g., generic .txt files)"
+      },
+      "status": "complete",
+      "result": {
+        "success": true,
+        "agent_name": "classifier",
+        "output": {},
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 4.699265241622925,
+        "provider": "cerebras",
+        "error": null
+      },
+      "_result_typed": true,
+      "id": "n:3"
+    },
+    {
+      "skill": "classifier",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "label": "photos",
+        "question": "Classify photo batch (files under Pictures folder)"
+      },
+      "status": "complete",
+      "result": {
+        "success": true,
+        "agent_name": "classifier",
+        "output": {},
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 10.628843784332275,
+        "provider": "cerebras",
+        "error": null
+      },
+      "_result_typed": true,
+      "id": "n:4"
+    },
+    {
+      "skill": "classifier",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "label": "receipts",
+        "question": "Classify receipt batch (e.g., amazon, electricity, flipkart, swiggy invoices)"
+      },
+      "status": "complete",
+      "result": {
+        "success": true,
+        "agent_name": "classifier",
+        "output": {},
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 6.314417839050293,
+        "provider": "cerebras",
+        "error": null
+      },
+      "_result_typed": true,
+      "id": "n:5"
+    },
+    {
+      "skill": "sensitive_detector",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "label": "priv",
+        "question": "Flag private/financial files from metadata only"
+      },
+      "status": "complete",
+      "result": {
+        "success": true,
+        "agent_name": "sensitive_detector",
+        "output": {
+          "flagged": [
+            {
+              "name": "Form16_FY2025.txt",
+              "confidence": 95,
+              "reason": "filename contains 'Form16' (tax document)",
+              "suggestion": "Private/Finance",
+              "content_read": false
+            },
+            {
+              "name": "HDFC_statement_Jan2026.txt",
+              "confidence": 95,
+              "reason": "filename contains bank name and 'statement'",
+              "suggestion": "Private/Finance",
+              "content_read": false
+            },
+            {
+              "name": "PAN_card.txt",
+              "confidence": 95,
+              "reason": "filename contains 'PAN' (personal ID)",
+              "suggestion": "Private/Finance",
+              "content_read": false
+            },
+            {
+              "name": "salary_slip_april2026.txt",
+              "confidence": 95,
+              "reason": "filename contains 'salary' and 'slip'",
+              "suggestion": "Private/Finance",
+              "content_read": false
+            }
+          ],
+          "rationale": "Flagged files based on strong financial/personal identifiers in filenames."
+        },
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 8.087525844573975,
+        "provider": "cerebras",
+        "error": null
+      },
+      "_result_typed": true,
+      "id": "n:6"
+    },
+    {
+      "skill": "coder",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "label": "dup",
+        "question": "Compute total duplicate files, reclaimable space, and summary statistics"
+      },
+      "status": "failed",
+      "result": {
+        "success": false,
+        "agent_name": "coder",
+        "output": {},
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 0.0,
+        "provider": "",
+        "error": "exception: HTTPStatusError: Server error '502 Bad Gateway' for url 'http://localhost:8108/v1/chat'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/502"
+      },
+      "_result_typed": true,
+      "id": "n:7"
+    },
+    {
+      "skill": "formatter",
+      "inputs": [
+        "n:2",
+        "n:3",
+        "n:4",
+        "n:5",
+        "n:6",
+        "n:7"
+      ],
+      "metadata": {
+        "label": "out"
+      },
+      "status": "pending",
+      "id": "n:8"
+    }
+  ],
+  "edges": [
+    {
+      "source": "n:2",
+      "target": "n:8"
+    },
+    {
+      "source": "n:3",
+      "target": "n:8"
+    },
+    {
+      "source": "n:4",
+      "target": "n:8"
+    },
+    {
+      "source": "n:5",
+      "target": "n:8"
+    },
+    {
+      "source": "n:6",
+      "target": "n:8"
+    },
+    {
+      "source": "n:7",
+      "target": "n:8"
+    }
+  ]
+}

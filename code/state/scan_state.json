@@ -1,0 +1,434 @@
+{
+  "C:\\Users\\rragh\\AppData\\Local\\Temp\\claude\\pytest-of-rragh\\pytest-16\\test_duplicates_detected_by_ha0\\Documents\\HDFC_statement.txt": {
+    "mtime": 1780683739.387962,
+    "size": 7,
+    "hash": "5751e048eb6fee3eb9bb4ea70f107f19c35863766bee5100044e52ab60d9edcf",
+    "sensitive": true
+  },
+  "C:\\Users\\rragh\\AppData\\Local\\Temp\\claude\\pytest-of-rragh\\pytest-16\\test_duplicates_detected_by_ha0\\Documents\\PAN_card.txt": {
+    "mtime": 1780683739.3885229,
+    "size": 3,
+    "hash": "00e37ffae0562ab6818d8f4f97457ac5f9679723c1b57f4b371b93f379f1c17a",
+    "sensitive": true
+  },
+  "C:\\Users\\rragh\\AppData\\Local\\Temp\\claude\\pytest-of-rragh\\pytest-16\\test_duplicates_detected_by_ha0\\Documents\\salary_slip_apr.txt": {
+    "mtime": 1780683739.387457,
+    "size": 7,
+    "hash": "0f55d864afa1ea87d450b661cb90bde532db97be0ebf46c0ee7f9f413257830f",
+    "sensitive": true
+  },
+  "C:\\Users\\rragh\\AppData\\Local\\Temp\\claude\\pytest-of-rragh\\pytest-16\\test_duplicates_detected_by_ha0\\Pictures\\a.txt": {
+    "mtime": 1780683739.3853269,
+    "size": 4,
+    "hash": "d1ed0d26ea9bd962c0f13e5ffe5bfea928bb8c9ca808dbcaa565e02a3ae1e1db",
+    "sensitive": false
+  },
+  "C:\\Users\\rragh\\AppData\\Local\\Temp\\claude\\pytest-of-rragh\\pytest-16\\test_duplicates_detected_by_ha0\\Pictures\\b.txt": {
+    "mtime": 1780683739.3863661,
+    "size": 6,
+    "hash": "64636a121324b3fdbc05711f24c60b15a2ee701171e2b8c47dee40387136539b",
+    "sensitive": false
+  },
+  "C:\\Users\\rragh\\AppData\\Local\\Temp\\claude\\pytest-of-rragh\\pytest-16\\test_duplicates_detected_by_ha0\\Pictures\\backup\\a_copy.txt": {
+    "mtime": 1780683739.3858457,
+    "size": 4,
+    "hash": "d1ed0d26ea9bd962c0f13e5ffe5bfea928bb8c9ca808dbcaa565e02a3ae1e1db",
+    "sensitive": false
+  },
+  "C:\\Users\\rragh\\AppData\\Local\\Temp\\claude\\pytest-of-rragh\\pytest-16\\test_installer_folder_short_ci0\\Documents\\HDFC_statement.txt": {
+    "mtime": 1780683739.4033897,
+    "size": 7,
+    "hash": "5751e048eb6fee3eb9bb4ea70f107f19c35863766bee5100044e52ab60d9edcf",
+    "sensitive": true
+  },
+  "C:\\Users\\rragh\\AppData\\Local\\Temp\\claude\\pytest-of-rragh\\pytest-16\\test_installer_folder_short_ci0\\Documents\\PAN_card.txt": {
+    "mtime": 1780683739.4033897,
+    "size": 3,
+    "hash": "00e37ffae0562ab6818d8f4f97457ac5f9679723c1b57f4b371b93f379f1c17a",
+    "sensitive": true
+  },
+  "C:\\Users\\rragh\\AppData\\Local\\Temp\\claude\\pytest-of-rragh\\pytest-16\\test_installer_folder_short_ci0\\Documents\\salary_slip_apr.txt": {
+    "mtime": 1780683739.4033897,
+    "size": 7,
+    "hash": "0f55d864afa1ea87d450b661cb90bde532db97be0ebf46c0ee7f9f413257830f",
+    "sensitive": true
+  },
+  "C:\\Users\\rragh\\AppData\\Local\\Temp\\claude\\pytest-of-rragh\\pytest-16\\test_installer_folder_short_ci0\\Pictures\\a.txt": {
+    "mtime": 1780683739.4033897,
+    "size": 4,
+    "hash": "d1ed0d26ea9bd962c0f13e5ffe5bfea928bb8c9ca808dbcaa565e02a3ae1e1db",
+    "sensitive": false
+  },
+  "C:\\Users\\rragh\\AppData\\Local\\Temp\\claude\\pytest-of-rragh\\pytest-16\\test_installer_folder_short_ci0\\Pictures\\b.txt": {
+    "mtime": 1780683739.4033897,
+    "size": 6,
+    "hash": "64636a121324b3fdbc05711f24c60b15a2ee701171e2b8c47dee40387136539b",
+    "sensitive": false
+  },
+  "C:\\Users\\rragh\\AppData\\Local\\Temp\\claude\\pytest-of-rragh\\pytest-16\\test_installer_folder_short_ci0\\Pictures\\backup\\a_copy.txt": {
+    "mtime": 1780683739.4033897,
+    "size": 4,
+    "hash": "d1ed0d26ea9bd962c0f13e5ffe5bfea928bb8c9ca808dbcaa565e02a3ae1e1db",
+    "sensitive": false
+  },
+  "C:\\Users\\rragh\\AppData\\Local\\Temp\\claude\\pytest-of-rragh\\pytest-16\\test_sensitive_prefilter_catch0\\Documents\\HDFC_statement.txt": {
+    "mtime": 1780683739.415787,
+    "size": 7,
+    "hash": "5751e048eb6fee3eb9bb4ea70f107f19c35863766bee5100044e52ab60d9edcf",
+    "sensitive": true
+  },
+  "C:\\Users\\rragh\\AppData\\Local\\Temp\\claude\\pytest-of-rragh\\pytest-16\\test_sensitive_prefilter_catch0\\Documents\\PAN_card.txt": {
+    "mtime": 1780683739.4314249,
+    "size": 3,
+    "hash": "00e37ffae0562ab6818d8f4f97457ac5f9679723c1b57f4b371b93f379f1c17a",
+    "sensitive": true
+  },
+  "C:\\Users\\rragh\\AppData\\Local\\Temp\\claude\\pytest-of-rragh\\pytest-16\\test_sensitive_prefilter_catch0\\Documents\\salary_slip_apr.txt": {
+    "mtime": 1780683739.415787,
+    "size": 7,
+    "hash": "0f55d864afa1ea87d450b661cb90bde532db97be0ebf46c0ee7f9f413257830f",
+    "sensitive": true
+  },
+  "C:\\Users\\rragh\\AppData\\Local\\Temp\\claude\\pytest-of-rragh\\pytest-16\\test_sensitive_prefilter_catch0\\Pictures\\a.txt": {
+    "mtime": 1780683739.415787,
+    "size": 4,
+    "hash": "d1ed0d26ea9bd962c0f13e5ffe5bfea928bb8c9ca808dbcaa565e02a3ae1e1db",
+    "sensitive": false
+  },
+  "C:\\Users\\rragh\\AppData\\Local\\Temp\\claude\\pytest-of-rragh\\pytest-16\\test_sensitive_prefilter_catch0\\Pictures\\b.txt": {
+    "mtime": 1780683739.415787,
+    "size": 6,
+    "hash": "64636a121324b3fdbc05711f24c60b15a2ee701171e2b8c47dee40387136539b",
+    "sensitive": false
+  },
+  "C:\\Users\\rragh\\AppData\\Local\\Temp\\claude\\pytest-of-rragh\\pytest-16\\test_sensitive_prefilter_catch0\\Pictures\\backup\\a_copy.txt": {
+    "mtime": 1780683739.415787,
+    "size": 4,
+    "hash": "d1ed0d26ea9bd962c0f13e5ffe5bfea928bb8c9ca808dbcaa565e02a3ae1e1db",
+    "sensitive": false
+  },
+  "C:\\Users\\rragh\\AppData\\Local\\Temp\\claude\\pytest-of-rragh\\pytest-16\\test_scan_is_cheap0\\Documents\\HDFC_statement.txt": {
+    "mtime": 1780683739.4529612,
+    "size": 7,
+    "hash": "5751e048eb6fee3eb9bb4ea70f107f19c35863766bee5100044e52ab60d9edcf",
+    "sensitive": true
+  },
+  "C:\\Users\\rragh\\AppData\\Local\\Temp\\claude\\pytest-of-rragh\\pytest-16\\test_scan_is_cheap0\\Documents\\PAN_card.txt": {
+    "mtime": 1780683739.4529612,
+    "size": 3,
+    "hash": "00e37ffae0562ab6818d8f4f97457ac5f9679723c1b57f4b371b93f379f1c17a",
+    "sensitive": true
+  },
+  "C:\\Users\\rragh\\AppData\\Local\\Temp\\claude\\pytest-of-rragh\\pytest-16\\test_scan_is_cheap0\\Documents\\salary_slip_apr.txt": {
+    "mtime": 1780683739.4529612,
+    "size": 7,
+    "hash": "0f55d864afa1ea87d450b661cb90bde532db97be0ebf46c0ee7f9f413257830f",
+    "sensitive": true
+  },
+  "C:\\Users\\rragh\\AppData\\Local\\Temp\\claude\\pytest-of-rragh\\pytest-16\\test_scan_is_cheap0\\Pictures\\a.txt": {
+    "mtime": 1780683739.4529612,
+    "size": 4,
+    "hash": "d1ed0d26ea9bd962c0f13e5ffe5bfea928bb8c9ca808dbcaa565e02a3ae1e1db",
+    "sensitive": false
+  },
+  "C:\\Users\\rragh\\AppData\\Local\\Temp\\claude\\pytest-of-rragh\\pytest-16\\test_scan_is_cheap0\\Pictures\\b.txt": {
+    "mtime": 1780683739.4529612,
+    "size": 6,
+    "hash": "64636a121324b3fdbc05711f24c60b15a2ee701171e2b8c47dee40387136539b",
+    "sensitive": false
+  },
+  "C:\\Users\\rragh\\AppData\\Local\\Temp\\claude\\pytest-of-rragh\\pytest-16\\test_scan_is_cheap0\\Pictures\\backup\\a_copy.txt": {
+    "mtime": 1780683739.4529612,
+    "size": 4,
+    "hash": "d1ed0d26ea9bd962c0f13e5ffe5bfea928bb8c9ca808dbcaa565e02a3ae1e1db",
+    "sensitive": false
+  },
+  "C:\\Users\\rragh\\AppData\\Local\\Temp\\claude\\pytest-of-rragh\\pytest-17\\test_duplicates_detected_by_ha0\\Documents\\HDFC_statement.txt": {
+    "mtime": 1780685354.069699,
+    "size": 7,
+    "hash": "5751e048eb6fee3eb9bb4ea70f107f19c35863766bee5100044e52ab60d9edcf",
+    "sensitive": true
+  },
+  "C:\\Users\\rragh\\AppData\\Local\\Temp\\claude\\pytest-of-rragh\\pytest-17\\test_duplicates_detected_by_ha0\\Documents\\PAN_card.txt": {
+    "mtime": 1780685354.069699,
+    "size": 3,
+    "hash": "00e37ffae0562ab6818d8f4f97457ac5f9679723c1b57f4b371b93f379f1c17a",
+    "sensitive": true
+  },
+  "C:\\Users\\rragh\\AppData\\Local\\Temp\\claude\\pytest-of-rragh\\pytest-17\\test_duplicates_detected_by_ha0\\Documents\\salary_slip_apr.txt": {
+    "mtime": 1780685354.069699,
+    "size": 7,
+    "hash": "0f55d864afa1ea87d450b661cb90bde532db97be0ebf46c0ee7f9f413257830f",
+    "sensitive": true
+  },
+  "C:\\Users\\rragh\\AppData\\Local\\Temp\\claude\\pytest-of-rragh\\pytest-17\\test_duplicates_detected_by_ha0\\Pictures\\a.txt": {
+    "mtime": 1780685354.069699,
+    "size": 4,
+    "hash": "d1ed0d26ea9bd962c0f13e5ffe5bfea928bb8c9ca808dbcaa565e02a3ae1e1db",
+    "sensitive": false
+  },
+  "C:\\Users\\rragh\\AppData\\Local\\Temp\\claude\\pytest-of-rragh\\pytest-17\\test_duplicates_detected_by_ha0\\Pictures\\b.txt": {
+    "mtime": 1780685354.069699,
+    "size": 6,
+    "hash": "64636a121324b3fdbc05711f24c60b15a2ee701171e2b8c47dee40387136539b",
+    "sensitive": false
+  },
+  "C:\\Users\\rragh\\AppData\\Local\\Temp\\claude\\pytest-of-rragh\\pytest-17\\test_duplicates_detected_by_ha0\\Pictures\\backup\\a_copy.txt": {
+    "mtime": 1780685354.069699,
+    "size": 4,
+    "hash": "d1ed0d26ea9bd962c0f13e5ffe5bfea928bb8c9ca808dbcaa565e02a3ae1e1db",
+    "sensitive": false
+  },
+  "C:\\Users\\rragh\\AppData\\Local\\Temp\\claude\\pytest-of-rragh\\pytest-17\\test_installer_folder_short_ci0\\Documents\\HDFC_statement.txt": {
+    "mtime": 1780685354.1032135,
+    "size": 7,
+    "hash": "5751e048eb6fee3eb9bb4ea70f107f19c35863766bee5100044e52ab60d9edcf",
+    "sensitive": true
+  },
+  "C:\\Users\\rragh\\AppData\\Local\\Temp\\claude\\pytest-of-rragh\\pytest-17\\test_installer_folder_short_ci0\\Documents\\PAN_card.txt": {
+    "mtime": 1780685354.1032135,
+    "size": 3,
+    "hash": "00e37ffae0562ab6818d8f4f97457ac5f9679723c1b57f4b371b93f379f1c17a",
+    "sensitive": true
+  },
+  "C:\\Users\\rragh\\AppData\\Local\\Temp\\claude\\pytest-of-rragh\\pytest-17\\test_installer_folder_short_ci0\\Documents\\salary_slip_apr.txt": {
+    "mtime": 1780685354.1032135,
+    "size": 7,
+    "hash": "0f55d864afa1ea87d450b661cb90bde532db97be0ebf46c0ee7f9f413257830f",
+    "sensitive": true
+  },
+  "C:\\Users\\rragh\\AppData\\Local\\Temp\\claude\\pytest-of-rragh\\pytest-17\\test_installer_folder_short_ci0\\Pictures\\a.txt": {
+    "mtime": 1780685354.1032135,
+    "size": 4,
+    "hash": "d1ed0d26ea9bd962c0f13e5ffe5bfea928bb8c9ca808dbcaa565e02a3ae1e1db",
+    "sensitive": false
+  },
+  "C:\\Users\\rragh\\AppData\\Local\\Temp\\claude\\pytest-of-rragh\\pytest-17\\test_installer_folder_short_ci0\\Pictures\\b.txt": {
+    "mtime": 1780685354.1032135,
+    "size": 6,
+    "hash": "64636a121324b3fdbc05711f24c60b15a2ee701171e2b8c47dee40387136539b",
+    "sensitive": false
+  },
+  "C:\\Users\\rragh\\AppData\\Local\\Temp\\claude\\pytest-of-rragh\\pytest-17\\test_installer_folder_short_ci0\\Pictures\\backup\\a_copy.txt": {
+    "mtime": 1780685354.1032135,
+    "size": 4,
+    "hash": "d1ed0d26ea9bd962c0f13e5ffe5bfea928bb8c9ca808dbcaa565e02a3ae1e1db",
+    "sensitive": false
+  },
+  "C:\\Users\\rragh\\AppData\\Local\\Temp\\claude\\pytest-of-rragh\\pytest-17\\test_sensitive_prefilter_catch0\\Documents\\HDFC_statement.txt": {
+    "mtime": 1780685354.137258,
+    "size": 7,
+    "hash": "5751e048eb6fee3eb9bb4ea70f107f19c35863766bee5100044e52ab60d9edcf",
+    "sensitive": true
+  },
+  "C:\\Users\\rragh\\AppData\\Local\\Temp\\claude\\pytest-of-rragh\\pytest-17\\test_sensitive_prefilter_catch0\\Documents\\PAN_card.txt": {
+    "mtime": 1780685354.1384914,
+    "size": 3,
+    "hash": "00e37ffae0562ab6818d8f4f97457ac5f9679723c1b57f4b371b93f379f1c17a",
+    "sensitive": true
+  },
+  "C:\\Users\\rragh\\AppData\\Local\\Temp\\claude\\pytest-of-rragh\\pytest-17\\test_sensitive_prefilter_catch0\\Documents\\salary_slip_apr.txt": {
+    "mtime": 1780685354.135271,
+    "size": 7,
+    "hash": "0f55d864afa1ea87d450b661cb90bde532db97be0ebf46c0ee7f9f413257830f",
+    "sensitive": true
+  },
+  "C:\\Users\\rragh\\AppData\\Local\\Temp\\claude\\pytest-of-rragh\\pytest-17\\test_sensitive_prefilter_catch0\\Pictures\\a.txt": {
+    "mtime": 1780685354.135271,
+    "size": 4,
+    "hash": "d1ed0d26ea9bd962c0f13e5ffe5bfea928bb8c9ca808dbcaa565e02a3ae1e1db",
+    "sensitive": false
+  },
+  "C:\\Users\\rragh\\AppData\\Local\\Temp\\claude\\pytest-of-rragh\\pytest-17\\test_sensitive_prefilter_catch0\\Pictures\\b.txt": {
+    "mtime": 1780685354.135271,
+    "size": 6,
+    "hash": "64636a121324b3fdbc05711f24c60b15a2ee701171e2b8c47dee40387136539b",
+    "sensitive": false
+  },
+  "C:\\Users\\rragh\\AppData\\Local\\Temp\\claude\\pytest-of-rragh\\pytest-17\\test_sensitive_prefilter_catch0\\Pictures\\backup\\a_copy.txt": {
+    "mtime": 1780685354.135271,
+    "size": 4,
+    "hash": "d1ed0d26ea9bd962c0f13e5ffe5bfea928bb8c9ca808dbcaa565e02a3ae1e1db",
+    "sensitive": false
+  },
+  "C:\\Users\\rragh\\AppData\\Local\\Temp\\claude\\pytest-of-rragh\\pytest-17\\test_scan_is_cheap0\\Documents\\HDFC_statement.txt": {
+    "mtime": 1780685354.1598501,
+    "size": 7,
+    "hash": "5751e048eb6fee3eb9bb4ea70f107f19c35863766bee5100044e52ab60d9edcf",
+    "sensitive": true
+  },
+  "C:\\Users\\rragh\\AppData\\Local\\Temp\\claude\\pytest-of-rragh\\pytest-17\\test_scan_is_cheap0\\Documents\\PAN_card.txt": {
+    "mtime": 1780685354.168184,
+    "size": 3,
+    "hash": "00e37ffae0562ab6818d8f4f97457ac5f9679723c1b57f4b371b93f379f1c17a",
+    "sensitive": true
+  },
+  "C:\\Users\\rragh\\AppData\\Local\\Temp\\claude\\pytest-of-rragh\\pytest-17\\test_scan_is_cheap0\\Documents\\salary_slip_apr.txt": {
+    "mtime": 1780685354.1598501,
+    "size": 7,
+    "hash": "0f55d864afa1ea87d450b661cb90bde532db97be0ebf46c0ee7f9f413257830f",
+    "sensitive": true
+  },
+  "C:\\Users\\rragh\\AppData\\Local\\Temp\\claude\\pytest-of-rragh\\pytest-17\\test_scan_is_cheap0\\Pictures\\a.txt": {
+    "mtime": 1780685354.1598501,
+    "size": 4,
+    "hash": "d1ed0d26ea9bd962c0f13e5ffe5bfea928bb8c9ca808dbcaa565e02a3ae1e1db",
+    "sensitive": false
+  },
+  "C:\\Users\\rragh\\AppData\\Local\\Temp\\claude\\pytest-of-rragh\\pytest-17\\test_scan_is_cheap0\\Pictures\\b.txt": {
+    "mtime": 1780685354.1598501,
+    "size": 6,
+    "hash": "64636a121324b3fdbc05711f24c60b15a2ee701171e2b8c47dee40387136539b",
+    "sensitive": false
+  },
+  "C:\\Users\\rragh\\AppData\\Local\\Temp\\claude\\pytest-of-rragh\\pytest-17\\test_scan_is_cheap0\\Pictures\\backup\\a_copy.txt": {
+    "mtime": 1780685354.1598501,
+    "size": 4,
+    "hash": "d1ed0d26ea9bd962c0f13e5ffe5bfea928bb8c9ca808dbcaa565e02a3ae1e1db",
+    "sensitive": false
+  },
+  "C:\\Users\\rragh\\AppData\\Local\\Temp\\claude\\pytest-of-rragh\\pytest-18\\test_duplicates_detected_by_ha0\\Documents\\HDFC_statement.txt": {
+    "mtime": 1780752240.534855,
+    "size": 7,
+    "hash": "5751e048eb6fee3eb9bb4ea70f107f19c35863766bee5100044e52ab60d9edcf",
+    "sensitive": true
+  },
+  "C:\\Users\\rragh\\AppData\\Local\\Temp\\claude\\pytest-of-rragh\\pytest-18\\test_duplicates_detected_by_ha0\\Documents\\PAN_card.txt": {
+    "mtime": 1780752240.534855,
+    "size": 3,
+    "hash": "00e37ffae0562ab6818d8f4f97457ac5f9679723c1b57f4b371b93f379f1c17a",
+    "sensitive": true
+  },
+  "C:\\Users\\rragh\\AppData\\Local\\Temp\\claude\\pytest-of-rragh\\pytest-18\\test_duplicates_detected_by_ha0\\Documents\\salary_slip_apr.txt": {
+    "mtime": 1780752240.531196,
+    "size": 7,
+    "hash": "0f55d864afa1ea87d450b661cb90bde532db97be0ebf46c0ee7f9f413257830f",
+    "sensitive": true
+  },
+  "C:\\Users\\rragh\\AppData\\Local\\Temp\\claude\\pytest-of-rragh\\pytest-18\\test_duplicates_detected_by_ha0\\Pictures\\a.txt": {
+    "mtime": 1780752240.531196,
+    "size": 4,
+    "hash": "d1ed0d26ea9bd962c0f13e5ffe5bfea928bb8c9ca808dbcaa565e02a3ae1e1db",
+    "sensitive": false
+  },
+  "C:\\Users\\rragh\\AppData\\Local\\Temp\\claude\\pytest-of-rragh\\pytest-18\\test_duplicates_detected_by_ha0\\Pictures\\b.txt": {
+    "mtime": 1780752240.531196,
+    "size": 6,
+    "hash": "64636a121324b3fdbc05711f24c60b15a2ee701171e2b8c47dee40387136539b",
+    "sensitive": false
+  },
+  "C:\\Users\\rragh\\AppData\\Local\\Temp\\claude\\pytest-of-rragh\\pytest-18\\test_duplicates_detected_by_ha0\\Pictures\\backup\\a_copy.txt": {
+    "mtime": 1780752240.531196,
+    "size": 4,
+    "hash": "d1ed0d26ea9bd962c0f13e5ffe5bfea928bb8c9ca808dbcaa565e02a3ae1e1db",
+    "sensitive": false
+  },
+  "C:\\Users\\rragh\\AppData\\Local\\Temp\\claude\\pytest-of-rragh\\pytest-18\\test_installer_folder_short_ci0\\Documents\\HDFC_statement.txt": {
+    "mtime": 1780752240.5859375,
+    "size": 7,
+    "hash": "5751e048eb6fee3eb9bb4ea70f107f19c35863766bee5100044e52ab60d9edcf",
+    "sensitive": true
+  },
+  "C:\\Users\\rragh\\AppData\\Local\\Temp\\claude\\pytest-of-rragh\\pytest-18\\test_installer_folder_short_ci0\\Documents\\PAN_card.txt": {
+    "mtime": 1780752240.5859375,
+    "size": 3,
+    "hash": "00e37ffae0562ab6818d8f4f97457ac5f9679723c1b57f4b371b93f379f1c17a",
+    "sensitive": true
+  },
+  "C:\\Users\\rragh\\AppData\\Local\\Temp\\claude\\pytest-of-rragh\\pytest-18\\test_installer_folder_short_ci0\\Documents\\salary_slip_apr.txt": {
+    "mtime": 1780752240.5817418,
+    "size": 7,
+    "hash": "0f55d864afa1ea87d450b661cb90bde532db97be0ebf46c0ee7f9f413257830f",
+    "sensitive": true
+  },
+  "C:\\Users\\rragh\\AppData\\Local\\Temp\\claude\\pytest-of-rragh\\pytest-18\\test_installer_folder_short_ci0\\Pictures\\a.txt": {
+    "mtime": 1780752240.5817418,
+    "size": 4,
+    "hash": "d1ed0d26ea9bd962c0f13e5ffe5bfea928bb8c9ca808dbcaa565e02a3ae1e1db",
+    "sensitive": false
+  },
+  "C:\\Users\\rragh\\AppData\\Local\\Temp\\claude\\pytest-of-rragh\\pytest-18\\test_installer_folder_short_ci0\\Pictures\\b.txt": {
+    "mtime": 1780752240.5817418,
+    "size": 6,
+    "hash": "64636a121324b3fdbc05711f24c60b15a2ee701171e2b8c47dee40387136539b",
+    "sensitive": false
+  },
+  "C:\\Users\\rragh\\AppData\\Local\\Temp\\claude\\pytest-of-rragh\\pytest-18\\test_installer_folder_short_ci0\\Pictures\\backup\\a_copy.txt": {
+    "mtime": 1780752240.5817418,
+    "size": 4,
+    "hash": "d1ed0d26ea9bd962c0f13e5ffe5bfea928bb8c9ca808dbcaa565e02a3ae1e1db",
+    "sensitive": false
+  },
+  "C:\\Users\\rragh\\AppData\\Local\\Temp\\claude\\pytest-of-rragh\\pytest-18\\test_sensitive_prefilter_catch0\\Documents\\HDFC_statement.txt": {
+    "mtime": 1780752240.6244626,
+    "size": 7,
+    "hash": "5751e048eb6fee3eb9bb4ea70f107f19c35863766bee5100044e52ab60d9edcf",
+    "sensitive": true
+  },
+  "C:\\Users\\rragh\\AppData\\Local\\Temp\\claude\\pytest-of-rragh\\pytest-18\\test_sensitive_prefilter_catch0\\Documents\\PAN_card.txt": {
+    "mtime": 1780752240.6254606,
+    "size": 3,
+    "hash": "00e37ffae0562ab6818d8f4f97457ac5f9679723c1b57f4b371b93f379f1c17a",
+    "sensitive": true
+  },
+  "C:\\Users\\rragh\\AppData\\Local\\Temp\\claude\\pytest-of-rragh\\pytest-18\\test_sensitive_prefilter_catch0\\Documents\\salary_slip_apr.txt": {
+    "mtime": 1780752240.62346,
+    "size": 7,
+    "hash": "0f55d864afa1ea87d450b661cb90bde532db97be0ebf46c0ee7f9f413257830f",
+    "sensitive": true
+  },
+  "C:\\Users\\rragh\\AppData\\Local\\Temp\\claude\\pytest-of-rragh\\pytest-18\\test_sensitive_prefilter_catch0\\Pictures\\a.txt": {
+    "mtime": 1780752240.621251,
+    "size": 4,
+    "hash": "d1ed0d26ea9bd962c0f13e5ffe5bfea928bb8c9ca808dbcaa565e02a3ae1e1db",
+    "sensitive": false
+  },
+  "C:\\Users\\rragh\\AppData\\Local\\Temp\\claude\\pytest-of-rragh\\pytest-18\\test_sensitive_prefilter_catch0\\Pictures\\b.txt": {
+    "mtime": 1780752240.6222503,
+    "size": 6,
+    "hash": "64636a121324b3fdbc05711f24c60b15a2ee701171e2b8c47dee40387136539b",
+    "sensitive": false
+  },
+  "C:\\Users\\rragh\\AppData\\Local\\Temp\\claude\\pytest-of-rragh\\pytest-18\\test_sensitive_prefilter_catch0\\Pictures\\backup\\a_copy.txt": {
+    "mtime": 1780752240.6222503,
+    "size": 4,
+    "hash": "d1ed0d26ea9bd962c0f13e5ffe5bfea928bb8c9ca808dbcaa565e02a3ae1e1db",
+    "sensitive": false
+  },
+  "C:\\Users\\rragh\\AppData\\Local\\Temp\\claude\\pytest-of-rragh\\pytest-18\\test_scan_is_cheap0\\Documents\\HDFC_statement.txt": {
+    "mtime": 1780752240.6627982,
+    "size": 7,
+    "hash": "5751e048eb6fee3eb9bb4ea70f107f19c35863766bee5100044e52ab60d9edcf",
+    "sensitive": true
+  },
+  "C:\\Users\\rragh\\AppData\\Local\\Temp\\claude\\pytest-of-rragh\\pytest-18\\test_scan_is_cheap0\\Documents\\PAN_card.txt": {
+    "mtime": 1780752240.6627982,
+    "size": 3,
+    "hash": "00e37ffae0562ab6818d8f4f97457ac5f9679723c1b57f4b371b93f379f1c17a",
+    "sensitive": true
+  },
+  "C:\\Users\\rragh\\AppData\\Local\\Temp\\claude\\pytest-of-rragh\\pytest-18\\test_scan_is_cheap0\\Documents\\salary_slip_apr.txt": {
+    "mtime": 1780752240.6617882,
+    "size": 7,
+    "hash": "0f55d864afa1ea87d450b661cb90bde532db97be0ebf46c0ee7f9f413257830f",
+    "sensitive": true
+  },
+  "C:\\Users\\rragh\\AppData\\Local\\Temp\\claude\\pytest-of-rragh\\pytest-18\\test_scan_is_cheap0\\Pictures\\a.txt": {
+    "mtime": 1780752240.6602614,
+    "size": 4,
+    "hash": "d1ed0d26ea9bd962c0f13e5ffe5bfea928bb8c9ca808dbcaa565e02a3ae1e1db",
+    "sensitive": false
+  },
+  "C:\\Users\\rragh\\AppData\\Local\\Temp\\claude\\pytest-of-rragh\\pytest-18\\test_scan_is_cheap0\\Pictures\\b.txt": {
+    "mtime": 1780752240.6617882,
+    "size": 6,
+    "hash": "64636a121324b3fdbc05711f24c60b15a2ee701171e2b8c47dee40387136539b",
+    "sensitive": false
+  },
+  "C:\\Users\\rragh\\AppData\\Local\\Temp\\claude\\pytest-of-rragh\\pytest-18\\test_scan_is_cheap0\\Pictures\\backup\\a_copy.txt": {
+    "mtime": 1780752240.6609998,
+    "size": 4,
+    "hash": "d1ed0d26ea9bd962c0f13e5ffe5bfea928bb8c9ca808dbcaa565e02a3ae1e1db",
+    "sensitive": false
+  }
+}

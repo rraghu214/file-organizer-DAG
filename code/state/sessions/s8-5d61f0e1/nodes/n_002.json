@@ -1,0 +1,26 @@
+{
+  "node_id": "n:2",
+  "skill": "coder",
+  "status": "complete",
+  "inputs": [
+    "USER_QUERY"
+  ],
+  "result": {
+    "success": true,
+    "agent_name": "coder",
+    "output": {
+      "code": "path = \"/nonexistent/path.txt\"\ntry:\n    with open(path, \"r\") as f:\n        content = f.read()\n    print(f\"Content of {path}:\\n{content}\")\nexcept FileNotFoundError:\n    print(f\"File not found: {path}\")\nexcept Exception as e:\n    print(f\"Error reading {path}: {e}\")",
+      "rationale": "Try to read the specified file and print its contents, or report that the file does not exist."
+    },
+    "artifacts": [],
+    "successors": [],
+    "cost": 0.0,
+    "elapsed_s": 3.7599899768829346,
+    "provider": "groq",
+    "error": null
+  },
+  "prompt_sent": "You are the Coder skill. You receive structured data from upstream nodes\n(Researcher findings, Distiller fields, or a file manifest) and write a\nshort Python program that COMPUTES or VERIFIES the answer. Your code is\nhanded to the SandboxExecutor, which runs it in a subprocess and captures\nits stdout. You never run code yourself; you only emit it.\n\nYou exist for the cases the Formatter cannot do reliably from text alone:\nexact arithmetic, sorting by a numeric key, set differences, hashing,\ncounting, percentage comparisons. If the answer needs a number computed\nfrom other numbers, it is your job.\n\nRead everything you need from INPUTS. Do not invent values that are not\npresent there â€” if a population, price, or size is missing, your code\nshould say so on stdout, not guess.\n\nOutput schema (JSON, no prose, no markdown fences):\n\n  {\n    \"code\": \"<python source>\",\n    \"rationale\": \"<one short line on what the code computes>\"\n  }\n\nRules for the code you emit:\n  - Pure Python standard library only. No pip installs, no third-party\n    imports. `hashlib`, `json`, `math`, `statistics`, `collections` are\n    all available and encouraged.\n  - The code MUST print its final answer to stdout. The SandboxExecutor\n    captures stdout; anything not printed is invisible downstream.\n  - Print a clear, labelled result â€” e.g.\n    `print(f\"closest pair: {a} and {b}, difference {d:,}\")` â€” because a\n    downstream Formatter reads your stdout to write the user-facing answer.\n  - Keep it under ~30 lines. One focused computation, not a framework.\n  - No network access, no reading files outside any paths explicitly given\n    in INPUTS, no infinite loops. The sandbox kills anything over 30s.\n  - Hard-code the input values you pulled from INPUTS directly into the\n    code as literals (a small list/dict at the top). The sandbox does not\n    receive INPUTS â€” only your code string â€” so the data must be embedded.\n\nWorked example. INPUTS carry three populations from upstream Researchers:\nLondon 8,866,000 Â· Paris 2,103,000 Â· Berlin 3,677,000, and the user asked\nwhich two are closest in size.\n\n  {\n    \"code\": \"vals = {'London': 8866000, 'Paris': 2103000, 'Berlin': 3677000}\\nitems = sorted(vals.items(), key=lambda kv: kv[1])\\nbest = min(\\n    ((items[i][0], items[i+1][0], items[i+1][1]-items[i][1])\\n     for i in range(len(items)-1)),\\n    key=lambda t: t[2])\\nprint(f\\\"closest pair: {best[0]} and {best[1]}, difference {best[2]:,}\\\")\",\n    \"rationale\": \"Sort the three populations and report the adjacent pair with the smallest gap.\"\n  }\n\nThe SandboxExecutor will run this and the Formatter will quote the exact\ncomputed integer rather than the model's approximation. That grounding â€”\na precise claim verified by real execution â€” is the entire reason you\nexist in the graph.\n\nUSER_QUERY: Read /nonexistent/path.txt and tell me what's in it.\n\nINPUTS:\n[\n  {\n    \"id\": \"USER_QUERY\",\n    \"kind\": \"query\",\n    \"value\": \"Read /nonexistent/path.txt and tell me what's in it.\"\n  }\n]",
+  "started_at": 1780257508.206751,
+  "completed_at": 1780257511.9667432,
+  "retries": 0
+}

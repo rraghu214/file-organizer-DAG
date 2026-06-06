@@ -1,0 +1,23 @@
+{
+  "node_id": "n:52",
+  "skill": "coder",
+  "status": "failed",
+  "inputs": [
+    "USER_QUERY"
+  ],
+  "result": {
+    "success": false,
+    "agent_name": "coder",
+    "output": {},
+    "artifacts": [],
+    "successors": [],
+    "cost": 0.0,
+    "elapsed_s": 0.0,
+    "provider": "",
+    "error": "exception: ReadTimeout: timed out"
+  },
+  "prompt_sent": "(exception before prompt-render)",
+  "started_at": 1780548048.7294261,
+  "completed_at": 1780548048.7294283,
+  "retries": 0
+}

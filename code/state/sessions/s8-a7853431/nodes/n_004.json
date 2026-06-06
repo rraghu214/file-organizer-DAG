@@ -1,0 +1,44 @@
+{
+  "node_id": "n:4",
+  "skill": "researcher",
+  "status": "complete",
+  "inputs": [
+    "USER_QUERY"
+  ],
+  "result": {
+    "success": true,
+    "agent_name": "researcher",
+    "output": {
+      "question": "find the populations of London, Paris, and Berlin and tell me which two are closest in size",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Paris",
+          "title": "Paris - Wikipedia"
+        },
+        {
+          "url": "https://www.citypopulation.de/en/france/paris",
+          "title": "Paris (France): City in Department - Population Statistics, Charts and Map"
+        },
+        {
+          "url": "https://worldpopulationreview.com/cities/germany/berlin",
+          "title": "Berlin Population 2026"
+        },
+        {
+          "url": "https://en.wikipedia.org/wiki/Berlin",
+          "title": "Berlin - Wikipedia"
+        }
+      ],
+      "findings": "London's population is estimated at around 8.8 million according to mid-2021 estimates, with projections that it could reach 10 million by 2040. Paris's population was about 2,103,778 in January 2023 according to INSEE, France's statistical agency, showing a slight decline from previous years. Berlin's population was approximately 3,597,000 in 2022 with a small increase expected by 2024 to around 3,685,000. Comparing these, Paris and Berlin have populations closer in size to each other than either does to London, with London being significantly larger."
+    },
+    "artifacts": [],
+    "successors": [],
+    "cost": 0.0,
+    "elapsed_s": 39.73843574523926,
+    "provider": "github",
+    "error": null
+  },
+  "prompt_sent": "You are the Researcher skill. You go to the web for a specific question\nand bring back normalised text the rest of the DAG can work from.\n\nYour tool surface is two MCP tools: `web_search(query, max_results)` and\n`fetch_url(url)`. Use them. Do not narrate; do not invent other tools.\n\nProcedure:\n  1. Read the QUESTION in the prompt.\n  2. Issue ONE `web_search` to get candidate URLs.\n  3. Pick the 1â€“3 most authoritative-looking URLs and fetch them with\n     `fetch_url` in sequence. Avoid clearly low-signal results (aggregator\n     spam, ad redirects).\n  4. Synthesise the relevant content from the fetched pages.\n\nTime budget: keep tool calls to 4 max per invocation. If a `fetch_url`\nreturns very little usable text, do not retry; move on.\n\nOutput schema (JSON, no prose, no markdown fences):\n\n  {\n    \"question\": \"<the question this run answered>\",\n    \"sources\": [{\"url\": \"<url>\", \"title\": \"<title>\"}, ...],\n    \"findings\": \"<2â€“6 short paragraphs of normalised text>\"\n  }\n\nYou do NOT produce the final user-facing answer. The downstream\ndistiller or formatter does that. If the question cannot be answered\nfrom the web within your budget, return `\"findings\": \"(not found)\"`\nand let the next node decide.\n\nUSER_QUERY: find the populations of London, Paris, and Berlin and tell me which two are closest in size\n\nINPUTS:\n[\n  {\n    \"id\": \"USER_QUERY\",\n    \"kind\": \"query\",\n    \"value\": \"find the populations of London, Paris, and Berlin and tell me which two are closest in size\"\n  }\n]",
+  "started_at": 1780253618.64789,
+  "completed_at": 1780253658.386326,
+  "retries": 0
+}

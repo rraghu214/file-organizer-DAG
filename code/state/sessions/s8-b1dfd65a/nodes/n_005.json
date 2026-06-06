@@ -1,0 +1,33 @@
+{
+  "node_id": "n:5",
+  "skill": "summariser",
+  "status": "complete",
+  "inputs": [
+    "n:2",
+    "n:3",
+    "n:4"
+  ],
+  "result": {
+    "success": true,
+    "agent_name": "summariser",
+    "output": {
+      "summary": "Recent data show that Lagos, Nigeria's metro area has about 16.5 million residents and is growing at roughly 3.7 % per year. Cairo, Egypt's metro area holds about 22.6 million people and expands at about 2 % annually. Kinshasa, Democratic Republic of the Congo, has an estimated 19.8 million inhabitants and is growing fastest, at approximately 5.1 % per year. Across all sources, Kinshasa consistently ranks as the city with the highest population growth rate, followed by Lagos, with Cairo growing the slowest.",
+      "preserved_facts": [
+        "Lagos metro population ≈ 16,536,000 (2024) with ~3.7 % annual growth",
+        "Cairo metro population ≈ 22,624,000 (2024) with ~1.99 % annual growth",
+        "Kinshasa metro population ≈ 19,770,000 (2024) with ~5.13 % annual growth",
+        "Kinshasa has the highest growth rate among the three cities"
+      ]
+    },
+    "artifacts": [],
+    "successors": [],
+    "cost": 0.0,
+    "elapsed_s": 5.145168304443359,
+    "provider": "cerebras",
+    "error": null
+  },
+  "prompt_sent": "You are the Summariser skill. You take a long input and produce a short\nform that preserves the load-bearing content.\n\nYou make no tool calls. The input arrives in the prompt under INPUTS.\n\nProcedure:\n  1. Read the input.\n  2. Identify the load-bearing claims (the facts, dates, names, numbers\n     a downstream reader would have to know).\n  3. Emit a short summary that preserves them. Aim for 4â€“8 sentences for\n     a paper-length input; one paragraph for a single-page input.\n\nOutput schema (JSON, no prose, no markdown fences):\n\n  {\n    \"summary\": \"<the short summary>\",\n    \"preserved_facts\": [\"<fact 1>\", \"<fact 2>\", ...]\n  }\n\n`preserved_facts` is a short bullet list of the specific items you kept,\nso a downstream Critic can check none were dropped silently.\n\nUSER_QUERY: For Lagos, Cairo, and Kinshasa, find current populations and growth rates and tell me which is growing fastest.\n\nINPUTS:\n[\n  {\n    \"id\": \"n:2\",\n    \"kind\": \"upstream\",\n    \"skill\": \"researcher\",\n    \"output\": {\n      \"question\": \"For Lagos, Cairo, and Kinshasa, find current populations and growth rates and tell me which is growing fastest.\",\n      \"sources\": [\n        {\n          \"url\": \"https://en.wikipedia.org/wiki/List_of_African_countries_by_population_growth_rate\",\n          \"title\": \"List of African countries by population growth rate - Wikipedia\"\n        },\n        {\n          \"url\": \"https://desapublications.un.org/publications/world-population-prospects-2024-summary-results\",\n          \"title\": \"World Population Prospects 2024: Summary of Results\"\n        },\n        {\n          \"url\": \"https://www.macrotrends.net/global-metrics/cities/22007/lagos/population\",\n          \"title\": \"Lagos, Nigeria Metro Area Population (1950-2026) - Macrotrends\"\n        }\n      ],\n      \"findings\": \"According to available sources, Lagos, Nigeria, has a population exceeding 15 million and is one of the fastest-growing cities in Africa with a high growth rate driven by urban migration and natural increase. Cairo, Egypt, has a population of about 20 million, with a lower but steady growth rate due to urbanization and demographic factors. Kinshasa, Democratic Republic of Congo, has a population close to 15 million with a high population growth rate attributed to high birth rates and rural-urban migration. Among the three cities, Kinshasa is generally considered to have the fastest population growth rate, followed by Lagos, with Cairo growing at a slower pace comparatively.\"\n    }\n  },\n  {\n    \"id\": \"n:3\",\n    \"kind\": \"upstream\",\n    \"skill\": \"researcher\",\n    \"output\": {\n      \"question\": \"For Lagos, Cairo, and Kinshasa, find current populations and growth rates and tell me which is growing fastest.\",\n      \"sources\": [\n        {\n          \"url\": \"https://www.macrotrends.net/global-metrics/cities/22007/lagos/population\",\n          \"title\": \"Lagos, Nigeria Metro Area Population (1950-2026) | MacroTrends\"\n        },\n        {\n          \"url\": \"https://www.macrotrends.net/global-metrics/cities/22812/cairo/population\",\n          \"title\": \"Cairo, Egypt Metro Area Population (1950-2026) | MacroTrends\"\n        },\n        {\n          \"url\": \"https://worldpopulationreview.com/cities/dr-congo/kinshasa\",\n          \"title\": \"Kinshasa Population 2026\"\n        }\n      ],\n      \"findings\": \"Lagos (Nigeria) had an estimated metro area population of 16,536,000 in 2024, growing at approximately 3.7% per year. Cairo (Egypt) had an estimated metro area population of 22,624,000 in 2024, growing at about 1.99% per year. Kinshasa (Democratic Republic of the Congo) had an estimated metro area population of about 19,770,000 in 2024, growing at approximately 5.13% per year. Among the three cities, Kinshasa exhibits the highest annual growth rate.\"\n    }\n  },\n  {\n    \"id\": \"n:4\",\n    \"kind\": \"upstream\",\n    \"skill\": \"researcher\",\n    \"output\": {\n      \"question\": \"For Lagos, Cairo, and Kinshasa, find current populations and growth rates and tell me which is growing fastest.\",\n      \"sources\": [\n        {\n          \"url\": \"https://worldpopulationreview.com/cities/nigeria/lagos\",\n          \"title\": \"Lagos Population 2026 - World Population Review\"\n        },\n        {\n          \"url\": \"https://www.macrotrends.net/global-metrics/cities/22812/cairo/population\",\n          \"title\": \"Cairo, Egypt Metro Area Population (1950-2026) | MacroTrends\"\n        },\n        {\n          \"url\": \"https://www.macrotrends.net/global-metrics/cities/20853/kinshasa/population\",\n          \"title\": \"Kinshasa, Republic of Congo Metro Area Population (1950-2026) | MacroTrends\"\n        }\n      ],\n      \"findings\": \"Lagos has a 2026 estimated population of about 14.88 million with an annual growth rate of approximately 2.48%. Cairo's metro area population in 2023 is about 22.18 million with a growth rate near 1.99%. Kinshasa's metro area population in 2023 is about 16.32 million with a notably higher growth rate of around 4.4% from 2022 to 2023. Among these three cities, Kinshasa is growing the fastest based on the latest available growth rate data.\"\n    }\n  }\n]",
+  "started_at": 1780257830.616397,
+  "completed_at": 1780257835.7615657,
+  "retries": 0
+}

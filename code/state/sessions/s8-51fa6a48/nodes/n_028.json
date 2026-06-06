@@ -1,0 +1,23 @@
+{
+  "node_id": "n:28",
+  "skill": "planner",
+  "status": "failed",
+  "inputs": [
+    "USER_QUERY"
+  ],
+  "result": {
+    "success": false,
+    "agent_name": "planner",
+    "output": {},
+    "artifacts": [],
+    "successors": [],
+    "cost": 0.0,
+    "elapsed_s": 0.0,
+    "provider": "",
+    "error": "exception: ConnectError: [WinError 10061] No connection could be made because the target machine actively refused it"
+  },
+  "prompt_sent": "(exception before prompt-render)",
+  "started_at": 1780240732.6063497,
+  "completed_at": 1780240732.606351,
+  "retries": 0
+}

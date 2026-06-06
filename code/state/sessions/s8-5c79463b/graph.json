@@ -1,0 +1,367 @@
+{
+  "directed": true,
+  "multigraph": false,
+  "graph": {},
+  "nodes": [
+    {
+      "skill": "planner",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {},
+      "status": "complete",
+      "result": {
+        "success": true,
+        "agent_name": "planner",
+        "output": {
+          "rationale": "Diagnose folder layout, flag private files, classify non\u2011sensitive documents, photos, and receipts in parallel, compute duplicate files and reclaimable space, then assemble a phase\u20111 report with effort plans.",
+          "nodes": [
+            {
+              "skill": "pattern_analyzer",
+              "inputs": [
+                "USER_QUERY"
+              ],
+              "metadata": {
+                "label": "diag",
+                "question": "Diagnose how well the folder is currently organised"
+              }
+            },
+            {
+              "skill": "sensitive_detector",
+              "inputs": [
+                "USER_QUERY"
+              ],
+              "metadata": {
+                "label": "priv",
+                "question": "Flag any private/financial files from metadata only"
+              }
+            },
+            {
+              "skill": "classifier",
+              "inputs": [
+                "USER_QUERY"
+              ],
+              "metadata": {
+                "label": "docs",
+                "question": "Classify non\u2011sensitive document files batch"
+              }
+            },
+            {
+              "skill": "classifier",
+              "inputs": [
+                "USER_QUERY"
+              ],
+              "metadata": {
+                "label": "photos",
+                "question": "Classify non\u2011sensitive photo files batch"
+              }
+            },
+            {
+              "skill": "classifier",
+              "inputs": [
+                "USER_QUERY"
+              ],
+              "metadata": {
+                "label": "receipts",
+                "question": "Classify non\u2011sensitive receipt files batch"
+              }
+            },
+            {
+              "skill": "coder",
+              "inputs": [
+                "USER_QUERY"
+              ],
+              "metadata": {
+                "label": "dup",
+                "question": "Compute duplicate groups and total reclaimable space"
+              }
+            },
+            {
+              "skill": "formatter",
+              "inputs": [
+                "n:diag",
+                "n:priv",
+                "n:docs",
+                "n:photos",
+                "n:receipts",
+                "n:dup"
+              ],
+              "metadata": {
+                "label": "out"
+              }
+            }
+          ]
+        },
+        "artifacts": [],
+        "successors": [
+          {
+            "skill": "pattern_analyzer",
+            "inputs": [
+              "USER_QUERY"
+            ],
+            "metadata": {
+              "label": "diag",
+              "question": "Diagnose how well the folder is currently organised"
+            }
+          },
+          {
+            "skill": "sensitive_detector",
+            "inputs": [
+              "USER_QUERY"
+            ],
+            "metadata": {
+              "label": "priv",
+              "question": "Flag any private/financial files from metadata only"
+            }
+          },
+          {
+            "skill": "classifier",
+            "inputs": [
+              "USER_QUERY"
+            ],
+            "metadata": {
+              "label": "docs",
+              "question": "Classify non\u2011sensitive document files batch"
+            }
+          },
+          {
+            "skill": "classifier",
+            "inputs": [
+              "USER_QUERY"
+            ],
+            "metadata": {
+              "label": "photos",
+              "question": "Classify non\u2011sensitive photo files batch"
+            }
+          },
+          {
+            "skill": "classifier",
+            "inputs": [
+              "USER_QUERY"
+            ],
+            "metadata": {
+              "label": "receipts",
+              "question": "Classify non\u2011sensitive receipt files batch"
+            }
+          },
+          {
+            "skill": "coder",
+            "inputs": [
+              "USER_QUERY"
+            ],
+            "metadata": {
+              "label": "dup",
+              "question": "Compute duplicate groups and total reclaimable space"
+            }
+          },
+          {
+            "skill": "formatter",
+            "inputs": [
+              "n:diag",
+              "n:priv",
+              "n:docs",
+              "n:photos",
+              "n:receipts",
+              "n:dup"
+            ],
+            "metadata": {
+              "label": "out"
+            }
+          }
+        ],
+        "cost": 0.0,
+        "elapsed_s": 5.762699127197266,
+        "provider": "groq",
+        "error": null
+      },
+      "_result_typed": true,
+      "id": "n:1"
+    },
+    {
+      "skill": "pattern_analyzer",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "label": "diag",
+        "question": "Diagnose how well the folder is currently organised"
+      },
+      "status": "failed",
+      "result": {
+        "success": false,
+        "agent_name": "pattern_analyzer",
+        "output": {},
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 0.0,
+        "provider": "",
+        "error": "exception: HTTPStatusError: Server error '502 Bad Gateway' for url 'http://localhost:8108/v1/chat'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/502"
+      },
+      "_result_typed": true,
+      "id": "n:2"
+    },
+    {
+      "skill": "sensitive_detector",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "label": "priv",
+        "question": "Flag any private/financial files from metadata only"
+      },
+      "status": "failed",
+      "result": {
+        "success": false,
+        "agent_name": "sensitive_detector",
+        "output": {},
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 0.0,
+        "provider": "",
+        "error": "exception: HTTPStatusError: Server error '503 Service Unavailable' for url 'http://localhost:8108/v1/chat'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/503"
+      },
+      "_result_typed": true,
+      "id": "n:3"
+    },
+    {
+      "skill": "classifier",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "label": "docs",
+        "question": "Classify non\u2011sensitive document files batch"
+      },
+      "status": "failed",
+      "result": {
+        "success": false,
+        "agent_name": "classifier",
+        "output": {},
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 0.0,
+        "provider": "",
+        "error": "exception: HTTPStatusError: Server error '503 Service Unavailable' for url 'http://localhost:8108/v1/chat'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/503"
+      },
+      "_result_typed": true,
+      "id": "n:4"
+    },
+    {
+      "skill": "classifier",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "label": "photos",
+        "question": "Classify non\u2011sensitive photo files batch"
+      },
+      "status": "failed",
+      "result": {
+        "success": false,
+        "agent_name": "classifier",
+        "output": {},
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 0.0,
+        "provider": "",
+        "error": "exception: HTTPStatusError: Server error '503 Service Unavailable' for url 'http://localhost:8108/v1/chat'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/503"
+      },
+      "_result_typed": true,
+      "id": "n:5"
+    },
+    {
+      "skill": "classifier",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "label": "receipts",
+        "question": "Classify non\u2011sensitive receipt files batch"
+      },
+      "status": "failed",
+      "result": {
+        "success": false,
+        "agent_name": "classifier",
+        "output": {},
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 0.0,
+        "provider": "",
+        "error": "exception: HTTPStatusError: Server error '503 Service Unavailable' for url 'http://localhost:8108/v1/chat'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/503"
+      },
+      "_result_typed": true,
+      "id": "n:6"
+    },
+    {
+      "skill": "coder",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "label": "dup",
+        "question": "Compute duplicate groups and total reclaimable space"
+      },
+      "status": "failed",
+      "result": {
+        "success": false,
+        "agent_name": "coder",
+        "output": {},
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 0.0,
+        "provider": "",
+        "error": "exception: HTTPStatusError: Server error '503 Service Unavailable' for url 'http://localhost:8108/v1/chat'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/503"
+      },
+      "_result_typed": true,
+      "id": "n:7"
+    },
+    {
+      "skill": "formatter",
+      "inputs": [
+        "n:2",
+        "n:3",
+        "n:4",
+        "n:5",
+        "n:6",
+        "n:7"
+      ],
+      "metadata": {
+        "label": "out"
+      },
+      "status": "pending",
+      "id": "n:8"
+    }
+  ],
+  "edges": [
+    {
+      "source": "n:2",
+      "target": "n:8"
+    },
+    {
+      "source": "n:3",
+      "target": "n:8"
+    },
+    {
+      "source": "n:4",
+      "target": "n:8"
+    },
+    {
+      "source": "n:5",
+      "target": "n:8"
+    },
+    {
+      "source": "n:6",
+      "target": "n:8"
+    },
+    {
+      "source": "n:7",
+      "target": "n:8"
+    }
+  ]
+}

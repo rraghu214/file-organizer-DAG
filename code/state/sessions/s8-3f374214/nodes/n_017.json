@@ -1,0 +1,18 @@
+{
+  "node_id": "n:17",
+  "skill": "formatter",
+  "status": "running",
+  "inputs": [
+    "n:11",
+    "n:12",
+    "n:13",
+    "n:14",
+    "n:15",
+    "n:16"
+  ],
+  "result": null,
+  "prompt_sent": null,
+  "started_at": 1780244564.3380702,
+  "completed_at": null,
+  "retries": 0
+}

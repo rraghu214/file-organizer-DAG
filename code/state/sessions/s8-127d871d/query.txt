@@ -1,0 +1,249 @@
+Analyse and organise this folder. Diagnose how well it is currently organised, classify each non-sensitive file batch (documents, photos, receipts) in parallel, flag any private/financial files from metadata only (never read their content), compute duplicate files and reclaimable space, and produce a phase-1 report with minimal/medium/best effort plans.
+
+SCAN_RESULT:
+{
+  "root": "C:\\Raghu\\MyLearnings\\EAG_V3\\S8-30052026\\assignment\\FileOrganiser_DAG\\demo_messy_drive",
+  "scanned_at": "2026-06-04 06:24:41",
+  "scan_seconds": 0.022,
+  "tier0_file_count": 18,
+  "files": [
+    {
+      "name": "Form16_FY2025.txt",
+      "ext": ".txt",
+      "size_bytes": 19,
+      "path": "Documents\\Form16_FY2025.txt",
+      "modified": "2026-05-31",
+      "sensitive_candidate": true
+    },
+    {
+      "name": "HDFC_statement_Jan2026.txt",
+      "ext": ".txt",
+      "size_bytes": 49,
+      "path": "Documents\\HDFC_statement_Jan2026.txt",
+      "modified": "2026-05-31",
+      "sensitive_candidate": true
+    },
+    {
+      "name": "PAN_card.txt",
+      "ext": ".txt",
+      "size_bytes": 14,
+      "path": "Documents\\PAN_card.txt",
+      "modified": "2026-05-31",
+      "sensitive_candidate": true
+    },
+    {
+      "name": "salary_slip_april2026.txt",
+      "ext": ".txt",
+      "size_bytes": 33,
+      "path": "Documents\\salary_slip_april2026.txt",
+      "modified": "2026-05-31",
+      "sensitive_candidate": true
+    },
+    {
+      "name": "amazon_order_4471.txt",
+      "ext": ".txt",
+      "size_bytes": 61,
+      "path": "Downloads\\amazon_order_4471.txt",
+      "modified": "2026-05-31",
+      "preview": "AMAZON TAX INVOICE Order 4471 USB cable GST 18% Total Rs 499"
+    },
+    {
+      "name": "electricity_bill_jan.txt",
+      "ext": ".txt",
+      "size_bytes": 52,
+      "path": "Downloads\\electricity_bill_jan.txt",
+      "modified": "2026-05-31",
+      "preview": "BESCOM electricity bill Jan 2026 amount due Rs 1840"
+    },
+    {
+      "name": "flipkart_2025_tv.txt",
+      "ext": ".txt",
+      "size_bytes": 51,
+      "path": "Downloads\\flipkart_2025_tv.txt",
+      "modified": "2026-05-31",
+      "preview": "FLIPKART TAX INVOICE GSTIN 29ABC TV Total Rs 31999"
+    },
+    {
+      "name": "old_notes_2023.txt",
+      "ext": ".txt",
+      "size_bytes": 4,
+      "path": "Downloads\\old_notes_2023.txt",
+      "modified": "2026-05-31",
+      "preview": "old"
+    },
+    {
+      "name": "untitled.txt",
+      "ext": ".txt",
+      "size_bytes": 2,
+      "path": "Downloads\\untitled.txt",
+      "modified": "2026-05-31",
+      "preview": "x"
+    },
+    {
+      "name": "swiggy_invoice_mar.txt",
+      "ext": ".txt",
+      "size_bytes": 44,
+      "path": "Downloads\\bills\\swiggy_invoice_mar.txt",
+      "modified": "2026-05-31",
+      "preview": "SWIGGY Restaurant Truffles GST Total Rs 642"
+    },
+    {
+      "name": "IMG_2098.txt",
+      "ext": ".txt",
+      "size_bytes": 10,
+      "path": "Pictures\\IMG_2098.txt",
+      "modified": "2026-05-31",
+      "preview": "PHOTO-AAA"
+    },
+    {
+      "name": "sunset.txt",
+      "ext": ".txt",
+      "size_bytes": 10,
+      "path": "Pictures\\sunset.txt",
+      "modified": "2026-05-31",
+      "preview": "PHOTO-BBB"
+    },
+    {
+      "name": "IMG_2098_copy.txt",
+      "ext": ".txt",
+      "size_bytes": 10,
+      "path": "Pictures\\backup\\IMG_2098_copy.txt",
+      "modified": "2026-05-31",
+      "preview": "PHOTO-AAA"
+    },
+    {
+      "name": "sunset_dup.txt",
+      "ext": ".txt",
+      "size_bytes": 10,
+      "path": "Pictures\\backup\\sunset_dup.txt",
+      "modified": "2026-05-31",
+      "preview": "PHOTO-BBB"
+    },
+    {
+      "name": "README.md",
+      "ext": ".md",
+      "size_bytes": 5,
+      "path": "Projects\\EAGv3\\Session7\\README.md",
+      "modified": "2026-05-31",
+      "preview": "# s7"
+    },
+    {
+      "name": "flow.py",
+      "ext": ".py",
+      "size_bytes": 12,
+      "path": "Projects\\EAGv3\\Session7\\code\\flow.py",
+      "modified": "2026-05-31",
+      "preview": "print('s7')"
+    },
+    {
+      "name": "README.md",
+      "ext": ".md",
+      "size_bytes": 5,
+      "path": "Projects\\EAGv3\\Session8\\README.md",
+      "modified": "2026-05-31",
+      "preview": "# s8"
+    },
+    {
+      "name": "flow.py",
+      "ext": ".py",
+      "size_bytes": 12,
+      "path": "Projects\\EAGv3\\Session8\\code\\flow.py",
+      "modified": "2026-05-31",
+      "preview": "print('s8')"
+    }
+  ],
+  "sensitive_candidates": [
+    {
+      "name": "Form16_FY2025.txt",
+      "ext": ".txt",
+      "size_bytes": 19,
+      "path": "Documents\\Form16_FY2025.txt",
+      "modified": "2026-05-31",
+      "sensitive_candidate": true
+    },
+    {
+      "name": "HDFC_statement_Jan2026.txt",
+      "ext": ".txt",
+      "size_bytes": 49,
+      "path": "Documents\\HDFC_statement_Jan2026.txt",
+      "modified": "2026-05-31",
+      "sensitive_candidate": true
+    },
+    {
+      "name": "PAN_card.txt",
+      "ext": ".txt",
+      "size_bytes": 14,
+      "path": "Documents\\PAN_card.txt",
+      "modified": "2026-05-31",
+      "sensitive_candidate": true
+    },
+    {
+      "name": "salary_slip_april2026.txt",
+      "ext": ".txt",
+      "size_bytes": 33,
+      "path": "Documents\\salary_slip_april2026.txt",
+      "modified": "2026-05-31",
+      "sensitive_candidate": true
+    }
+  ],
+  "duplicate_groups": [
+    {
+      "hash": "dc60fc3044c8",
+      "paths": [
+        "Pictures\\IMG_2098.txt",
+        "Pictures\\backup\\IMG_2098_copy.txt"
+      ],
+      "count": 2
+    },
+    {
+      "hash": "334953bab38c",
+      "paths": [
+        "Pictures\\sunset.txt",
+        "Pictures\\backup\\sunset_dup.txt"
+      ],
+      "count": 2
+    }
+  ],
+  "skipped_folders": [
+    {
+      "path": "Downloads\\SetupTool_v3_extracted",
+      "reason": "installer-extract / build dir \u2014 recognised at folder level, not descended",
+      "file_count": 4
+    }
+  ],
+  "folder_summary": [
+    {
+      "path": "Documents",
+      "file_count": 4,
+      "exts": [
+        ".txt"
+      ],
+      "distinct_ext_count": 1
+    },
+    {
+      "path": "Downloads",
+      "file_count": 6,
+      "exts": [
+        ".txt"
+      ],
+      "distinct_ext_count": 1
+    },
+    {
+      "path": "Pictures",
+      "file_count": 4,
+      "exts": [
+        ".txt"
+      ],
+      "distinct_ext_count": 1
+    },
+    {
+      "path": "Projects",
+      "file_count": 4,
+      "exts": [
+        ".md",
+        ".py"
+      ],
+      "distinct_ext_count": 2
+    }
+  ]
+}

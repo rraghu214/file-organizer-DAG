@@ -1,0 +1,3299 @@
+{
+  "directed": true,
+  "multigraph": false,
+  "graph": {},
+  "nodes": [
+    {
+      "skill": "planner",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {},
+      "status": "complete",
+      "result": {
+        "success": true,
+        "agent_name": "planner",
+        "output": {
+          "rationale": "Diagnose folder organisation, flag private files, classify non\u2011sensitive documents, photos and receipts in parallel with critic verification, then assemble a phase\u20111 report with effort plans.",
+          "nodes": [
+            {
+              "skill": "pattern_analyzer",
+              "inputs": [
+                "USER_QUERY"
+              ],
+              "metadata": {
+                "label": "diag",
+                "question": "Assess current folder organisation and suggest minimal/medium/best effort plans"
+              }
+            },
+            {
+              "skill": "sensitive_detector",
+              "inputs": [
+                "USER_QUERY"
+              ],
+              "metadata": {
+                "label": "priv",
+                "question": "Flag private/financial files from metadata only"
+              }
+            },
+            {
+              "skill": "classifier",
+              "inputs": [
+                "USER_QUERY"
+              ],
+              "metadata": {
+                "label": "docs",
+                "question": "Classify non\u2011sensitive document batch (excluding flagged sensitive candidates)"
+              }
+            },
+            {
+              "skill": "critic",
+              "inputs": [
+                "n:docs"
+              ],
+              "metadata": {
+                "label": "crit_docs",
+                "question": "verify destination matches content type and extension for each classified file"
+              }
+            },
+            {
+              "skill": "classifier",
+              "inputs": [
+                "USER_QUERY"
+              ],
+              "metadata": {
+                "label": "photos",
+                "question": "Classify photo batch (txt files under Pictures and its subfolders)"
+              }
+            },
+            {
+              "skill": "critic",
+              "inputs": [
+                "n:photos"
+              ],
+              "metadata": {
+                "label": "crit_photos",
+                "question": "verify destination matches content type and extension for each classified file"
+              }
+            },
+            {
+              "skill": "classifier",
+              "inputs": [
+                "USER_QUERY"
+              ],
+              "metadata": {
+                "label": "receipts",
+                "question": "Classify receipt batch (txt files in Downloads, e.g., amazon, electricity, flipkart, swiggy invoices)"
+              }
+            },
+            {
+              "skill": "critic",
+              "inputs": [
+                "n:receipts"
+              ],
+              "metadata": {
+                "label": "crit_receipts",
+                "question": "verify destination matches content type and extension for each classified file"
+              }
+            },
+            {
+              "skill": "formatter",
+              "inputs": [
+                "n:diag",
+                "n:docs",
+                "n:crit_docs",
+                "n:photos",
+                "n:crit_photos",
+                "n:receipts",
+                "n:crit_receipts",
+                "n:priv"
+              ],
+              "metadata": {
+                "label": "out"
+              }
+            }
+          ]
+        },
+        "artifacts": [],
+        "successors": [
+          {
+            "skill": "pattern_analyzer",
+            "inputs": [
+              "USER_QUERY"
+            ],
+            "metadata": {
+              "label": "diag",
+              "question": "Assess current folder organisation and suggest minimal/medium/best effort plans"
+            }
+          },
+          {
+            "skill": "sensitive_detector",
+            "inputs": [
+              "USER_QUERY"
+            ],
+            "metadata": {
+              "label": "priv",
+              "question": "Flag private/financial files from metadata only"
+            }
+          },
+          {
+            "skill": "classifier",
+            "inputs": [
+              "USER_QUERY"
+            ],
+            "metadata": {
+              "label": "docs",
+              "question": "Classify non\u2011sensitive document batch (excluding flagged sensitive candidates)"
+            }
+          },
+          {
+            "skill": "critic",
+            "inputs": [
+              "n:docs"
+            ],
+            "metadata": {
+              "label": "crit_docs",
+              "question": "verify destination matches content type and extension for each classified file"
+            }
+          },
+          {
+            "skill": "classifier",
+            "inputs": [
+              "USER_QUERY"
+            ],
+            "metadata": {
+              "label": "photos",
+              "question": "Classify photo batch (txt files under Pictures and its subfolders)"
+            }
+          },
+          {
+            "skill": "critic",
+            "inputs": [
+              "n:photos"
+            ],
+            "metadata": {
+              "label": "crit_photos",
+              "question": "verify destination matches content type and extension for each classified file"
+            }
+          },
+          {
+            "skill": "classifier",
+            "inputs": [
+              "USER_QUERY"
+            ],
+            "metadata": {
+              "label": "receipts",
+              "question": "Classify receipt batch (txt files in Downloads, e.g., amazon, electricity, flipkart, swiggy invoices)"
+            }
+          },
+          {
+            "skill": "critic",
+            "inputs": [
+              "n:receipts"
+            ],
+            "metadata": {
+              "label": "crit_receipts",
+              "question": "verify destination matches content type and extension for each classified file"
+            }
+          },
+          {
+            "skill": "formatter",
+            "inputs": [
+              "n:diag",
+              "n:docs",
+              "n:crit_docs",
+              "n:photos",
+              "n:crit_photos",
+              "n:receipts",
+              "n:crit_receipts",
+              "n:priv"
+            ],
+            "metadata": {
+              "label": "out"
+            }
+          }
+        ],
+        "cost": 0.0,
+        "elapsed_s": 5.397949695587158,
+        "provider": "groq",
+        "error": null
+      },
+      "_result_typed": true,
+      "id": "n:1"
+    },
+    {
+      "skill": "pattern_analyzer",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "label": "diag",
+        "question": "Assess current folder organisation and suggest minimal/medium/best effort plans"
+      },
+      "status": "complete",
+      "result": {
+        "success": true,
+        "agent_name": "pattern_analyzer",
+        "output": {},
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 167.11808490753174,
+        "provider": "ollama",
+        "error": null
+      },
+      "_result_typed": true,
+      "id": "n:2"
+    },
+    {
+      "skill": "sensitive_detector",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "label": "priv",
+        "question": "Flag private/financial files from metadata only"
+      },
+      "status": "complete",
+      "result": {
+        "success": true,
+        "agent_name": "sensitive_detector",
+        "output": {
+          "flagged": [
+            {
+              "name": "Form16_FY2025.txt",
+              "confidence": 96,
+              "reason": "filename contains 'Form16' (tax document)",
+              "suggestion": "Private/Finance",
+              "content_read": false
+            },
+            {
+              "name": "HDFC_statement_Jan2026.txt",
+              "confidence": 94,
+              "reason": "filename contains 'statement' and bank name 'HDFC'",
+              "suggestion": "Private/Finance",
+              "content_read": false
+            },
+            {
+              "name": "PAN_card.txt",
+              "confidence": 95,
+              "reason": "filename contains 'PAN' (government ID)",
+              "suggestion": "Private/Personal",
+              "content_read": false
+            },
+            {
+              "name": "salary_slip_april2026.txt",
+              "confidence": 93,
+              "reason": "filename contains 'salary_slip'",
+              "suggestion": "Private/Finance",
+              "content_read": false
+            }
+          ],
+          "rationale": "Flagged files based solely on filename and path cues indicating financial or personal identifiers."
+        },
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 185.61343121528625,
+        "provider": "cerebras",
+        "error": null
+      },
+      "_result_typed": true,
+      "id": "n:3"
+    },
+    {
+      "skill": "classifier",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "label": "docs",
+        "question": "Classify non\u2011sensitive document batch (excluding flagged sensitive candidates)"
+      },
+      "status": "complete",
+      "result": {
+        "success": true,
+        "agent_name": "classifier",
+        "output": {},
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 5.608088254928589,
+        "provider": "cerebras",
+        "error": null
+      },
+      "_result_typed": true,
+      "id": "n:4"
+    },
+    {
+      "skill": "critic",
+      "inputs": [
+        "n:4"
+      ],
+      "metadata": {
+        "label": "crit_docs",
+        "question": "verify destination matches content type and extension for each classified file"
+      },
+      "status": "complete",
+      "result": {
+        "success": true,
+        "agent_name": "critic",
+        "output": {
+          "verdict": "fail",
+          "rationale": "Classifier returned empty output; expected a classified list of files."
+        },
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 7.072987079620361,
+        "provider": "github",
+        "error": null
+      },
+      "_result_typed": true,
+      "id": "n:5"
+    },
+    {
+      "skill": "classifier",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "label": "photos",
+        "question": "Classify photo batch (txt files under Pictures and its subfolders)"
+      },
+      "status": "complete",
+      "result": {
+        "success": true,
+        "agent_name": "classifier",
+        "output": {
+          "classified": [
+            {
+              "name": "Form16_FY2025.txt",
+              "category": "document",
+              "destination": "Finance/TaxDocuments/2025",
+              "confidence": 95,
+              "reason": "Filename indicates tax form and flagged sensitive",
+              "needs_review": false
+            },
+            {
+              "name": "HDFC_statement_Jan2026.txt",
+              "category": "document",
+              "destination": "Finance/BankStatements/2026",
+              "confidence": 95,
+              "reason": "Filename indicates bank statement and flagged sensitive",
+              "needs_review": false
+            },
+            {
+              "name": "PAN_card.txt",
+              "category": "document",
+              "destination": "Finance/IDDocuments",
+              "confidence": 95,
+              "reason": "Filename indicates personal ID and flagged sensitive",
+              "needs_review": false
+            },
+            {
+              "name": "salary_slip_april2026.txt",
+              "category": "document",
+              "destination": "Finance/SalarySlips/2026",
+              "confidence": 95,
+              "reason": "Filename indicates salary slip and flagged sensitive",
+              "needs_review": false
+            },
+            {
+              "name": "amazon_order_4471.txt",
+              "category": "receipt",
+              "destination": "Finance/Receipts/2026",
+              "confidence": 98,
+              "reason": "Preview contains AMAZON TAX INVOICE with order details",
+              "needs_review": false
+            },
+            {
+              "name": "electricity_bill_jan.txt",
+              "category": "receipt",
+              "destination": "Finance/UtilityBills/2026",
+              "confidence": 98,
+              "reason": "Preview contains electricity bill with amount and date",
+              "needs_review": false
+            },
+            {
+              "name": "flipkart_2025_tv.txt",
+              "category": "receipt",
+              "destination": "Finance/Receipts/2025",
+              "confidence": 98,
+              "reason": "Preview contains FLIPKART TAX INVOICE with GST and total",
+              "needs_review": false
+            },
+            {
+              "name": "IMG_20260601_165420.txt",
+              "category": "document",
+              "destination": "Documents/Notes",
+              "confidence": 90,
+              "reason": "Preview shows team standup notes and sprint review",
+              "needs_review": false
+            },
+            {
+              "name": "old_notes_2023.txt",
+              "category": "document",
+              "destination": "Documents/Notes",
+              "confidence": 70,
+              "reason": "Filename suggests notes but preview is minimal",
+              "needs_review": true
+            },
+            {
+              "name": "untitled.txt",
+              "category": "other",
+              "destination": "Misc",
+              "confidence": 30,
+              "reason": "Generic filename and minimal preview",
+              "needs_review": true
+            },
+            {
+              "name": "swiggy_invoice_mar.txt",
+              "category": "receipt",
+              "destination": "Finance/Receipts/2026",
+              "confidence": 98,
+              "reason": "Preview contains SWIGGY invoice with GST and total",
+              "needs_review": false
+            },
+            {
+              "name": "IMG_2098.txt",
+              "category": "photo",
+              "destination": "Pictures/2026",
+              "confidence": 90,
+              "reason": "Preview indicates photo content, filename IMG pattern",
+              "needs_review": false
+            },
+            {
+              "name": "sunset.txt",
+              "category": "photo",
+              "destination": "Pictures/2026",
+              "confidence": 85,
+              "reason": "Preview indicates photo content, filename suggests image",
+              "needs_review": true
+            },
+            {
+              "name": "IMG_2098_copy.txt",
+              "category": "photo",
+              "destination": "Pictures/2026",
+              "confidence": 90,
+              "reason": "Duplicate of IMG_2098.txt with photo preview",
+              "needs_review": false
+            },
+            {
+              "name": "sunset_dup.txt",
+              "category": "photo",
+              "destination": "Pictures/2026",
+              "confidence": 85,
+              "reason": "Duplicate of sunset.txt with photo preview",
+              "needs_review": true
+            },
+            {
+              "name": "README.md",
+              "category": "code",
+              "destination": "Projects/EAGv3/Session7",
+              "confidence": 95,
+              "reason": "Filename and extension typical for project documentation",
+              "needs_review": false
+            },
+            {
+              "name": "flow.py",
+              "category": "code",
+              "destination": "Projects/EAGv3/Session7/code",
+              "confidence": 95,
+              "reason": "Python code file with preview showing code",
+              "needs_review": false
+            },
+            {
+              "name": "README.md",
+              "category": "code",
+              "destination": "Projects/EAGv3/Session8",
+              "confidence": 95,
+              "reason": "Filename and extension typical for project documentation",
+              "needs_review": false
+            },
+            {
+              "name": "flow.py",
+              "category": "code",
+              "destination": "Projects/EAGv3/Session8/code",
+              "confidence": 95,
+              "reason": "Python code file with preview showing code",
+              "needs_review": false
+            }
+          ],
+          "rationale": "Files mostly grouped by type but some mixing in Downloads and Pictures; sensitive financial docs flagged; duplicates found in Pictures; overall moderate organization with room for improvement.",
+          "diagnosis": {
+            "organization_quality": "moderate",
+            "issues": [
+              "Sensitive financial documents mixed with general documents in Documents folder",
+              "Downloads folder contains mixed receipts and notes without subfolders",
+              "Pictures folder contains .txt files representing photos, which is unusual",
+              "Duplicate photo text files in Pictures and backup subfolder",
+              "Some generic or unclear filenames needing review"
+            ],
+            "sensitive_files_flagged": [
+              "Documents\\Form16_FY2025.txt",
+              "Documents\\HDFC_statement_Jan2026.txt",
+              "Documents\\PAN_card.txt",
+              "Documents\\salary_slip_april2026.txt"
+            ],
+            "duplicates": {
+              "count": 2,
+              "files": [
+                [
+                  "Pictures\\IMG_2098.txt",
+                  "Pictures\\backup\\IMG_2098_copy.txt"
+                ],
+                [
+                  "Pictures\\sunset.txt",
+                  "Pictures\\backup\\sunset_dup.txt"
+                ]
+              ],
+              "reclaimable_space_bytes": 20
+            }
+          },
+          "phase_1_plans": {
+            "minimal_effort": [
+              "Move sensitive financial documents into dedicated Finance folders",
+              "Remove duplicate photo text files from backup folder",
+              "Flag low-confidence files for human review"
+            ],
+            "medium_effort": [
+              "Create subfolders in Downloads for receipts, notes, and bills",
+              "Rename generic files with clearer names after review",
+              "Convert photo text files to proper image formats if possible or relocate appropriately"
+            ],
+            "best_effort": [
+              "Implement automated tagging and classification for incoming files",
+              "Standardize folder hierarchy by year and document type for Finance and Documents",
+              "Clean up Pictures folder to contain only actual image files",
+              "Set up duplicate detection and cleanup as routine maintenance"
+            ]
+          }
+        },
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 25.512720823287964,
+        "provider": "github",
+        "error": null
+      },
+      "_result_typed": true,
+      "id": "n:6"
+    },
+    {
+      "skill": "critic",
+      "inputs": [
+        "n:6"
+      ],
+      "metadata": {
+        "label": "crit_photos",
+        "question": "verify destination matches content type and extension for each classified file"
+      },
+      "status": "complete",
+      "result": {
+        "success": true,
+        "agent_name": "critic",
+        "output": {
+          "verdict": "pass",
+          "rationale": "All destinations are consistent with file extensions and previews."
+        },
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 5.038944244384766,
+        "provider": "cerebras",
+        "error": null
+      },
+      "_result_typed": true,
+      "id": "n:7"
+    },
+    {
+      "skill": "classifier",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "label": "receipts",
+        "question": "Classify receipt batch (txt files in Downloads, e.g., amazon, electricity, flipkart, swiggy invoices)"
+      },
+      "status": "complete",
+      "result": {
+        "success": true,
+        "agent_name": "classifier",
+        "output": {},
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 81.15580630302429,
+        "provider": "openrouter",
+        "error": null
+      },
+      "_result_typed": true,
+      "id": "n:8"
+    },
+    {
+      "skill": "critic",
+      "inputs": [
+        "n:8"
+      ],
+      "metadata": {
+        "label": "crit_receipts",
+        "question": "verify destination matches content type and extension for each classified file"
+      },
+      "status": "complete",
+      "result": {
+        "success": true,
+        "agent_name": "critic",
+        "output": {
+          "verdict": "fail",
+          "rationale": "Classifier returned empty output; expected a classified list of files."
+        },
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 4.768658876419067,
+        "provider": "groq",
+        "error": null
+      },
+      "_result_typed": true,
+      "id": "n:9"
+    },
+    {
+      "skill": "formatter",
+      "inputs": [
+        "n:2",
+        "n:4",
+        "n:5",
+        "n:6",
+        "n:7",
+        "n:8",
+        "n:9",
+        "n:3"
+      ],
+      "metadata": {
+        "label": "out"
+      },
+      "status": "skipped",
+      "id": "n:10"
+    },
+    {
+      "skill": "planner",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "failure_report": "critic failed target=n:4 child=n:10 rationale=Classifier returned empty output; expected a classified list of files.",
+        "recovers": "n:4",
+        "recovery_reason": "critic_fail"
+      },
+      "status": "complete",
+      "result": {
+        "success": true,
+        "agent_name": "planner",
+        "output": {
+          "rationale": "Sensitive files are flagged by metadata only; classify remaining files into documents, photos, receipts, and projects; verify classifier outputs with critics; use coder to compute duplicate file reclaimable space; analyze folder organization; finally produce a comprehensive report.",
+          "nodes": [
+            {
+              "skill": "sensitive_detector",
+              "inputs": [
+                "USER_QUERY"
+              ],
+              "metadata": {
+                "label": "priv"
+              }
+            },
+            {
+              "skill": "classifier",
+              "inputs": [
+                "USER_QUERY"
+              ],
+              "metadata": {
+                "label": "docs",
+                "question": "classify ordinary document and receipt files excluding sensitive candidates"
+              }
+            },
+            {
+              "skill": "critic",
+              "inputs": [
+                "n:docs"
+              ],
+              "metadata": {
+                "label": "crit_docs",
+                "question": "verify destination matches content type and extension for each classified document file"
+              }
+            },
+            {
+              "skill": "classifier",
+              "inputs": [
+                "USER_QUERY"
+              ],
+              "metadata": {
+                "label": "imgs",
+                "question": "classify photo and image files"
+              }
+            },
+            {
+              "skill": "critic",
+              "inputs": [
+                "n:imgs"
+              ],
+              "metadata": {
+                "label": "crit_imgs",
+                "question": "verify destination matches content type and extension for each classified image file"
+              }
+            },
+            {
+              "skill": "classifier",
+              "inputs": [
+                "USER_QUERY"
+              ],
+              "metadata": {
+                "label": "projects",
+                "question": "classify project source and markdown files"
+              }
+            },
+            {
+              "skill": "critic",
+              "inputs": [
+                "n:projects"
+              ],
+              "metadata": {
+                "label": "crit_projects",
+                "question": "verify destination matches content type and extension for each classified project file"
+              }
+            },
+            {
+              "skill": "coder",
+              "inputs": [
+                "USER_QUERY"
+              ],
+              "metadata": {
+                "label": "dup_calc",
+                "question": "compute total reclaimable space from duplicate groups"
+              }
+            },
+            {
+              "skill": "pattern_analyzer",
+              "inputs": [
+                "USER_QUERY"
+              ],
+              "metadata": {
+                "label": "diag",
+                "question": "diagnose current folder organization and emit minimal/medium/best effort plans"
+              }
+            },
+            {
+              "skill": "formatter",
+              "inputs": [
+                "n:priv",
+                "n:docs",
+                "n:crit_docs",
+                "n:imgs",
+                "n:crit_imgs",
+                "n:projects",
+                "n:crit_projects",
+                "n:dup_calc",
+                "n:diag"
+              ],
+              "metadata": {
+                "label": "out"
+              }
+            }
+          ]
+        },
+        "artifacts": [],
+        "successors": [
+          {
+            "skill": "sensitive_detector",
+            "inputs": [
+              "USER_QUERY"
+            ],
+            "metadata": {
+              "label": "priv"
+            }
+          },
+          {
+            "skill": "classifier",
+            "inputs": [
+              "USER_QUERY"
+            ],
+            "metadata": {
+              "label": "docs",
+              "question": "classify ordinary document and receipt files excluding sensitive candidates"
+            }
+          },
+          {
+            "skill": "critic",
+            "inputs": [
+              "n:docs"
+            ],
+            "metadata": {
+              "label": "crit_docs",
+              "question": "verify destination matches content type and extension for each classified document file"
+            }
+          },
+          {
+            "skill": "classifier",
+            "inputs": [
+              "USER_QUERY"
+            ],
+            "metadata": {
+              "label": "imgs",
+              "question": "classify photo and image files"
+            }
+          },
+          {
+            "skill": "critic",
+            "inputs": [
+              "n:imgs"
+            ],
+            "metadata": {
+              "label": "crit_imgs",
+              "question": "verify destination matches content type and extension for each classified image file"
+            }
+          },
+          {
+            "skill": "classifier",
+            "inputs": [
+              "USER_QUERY"
+            ],
+            "metadata": {
+              "label": "projects",
+              "question": "classify project source and markdown files"
+            }
+          },
+          {
+            "skill": "critic",
+            "inputs": [
+              "n:projects"
+            ],
+            "metadata": {
+              "label": "crit_projects",
+              "question": "verify destination matches content type and extension for each classified project file"
+            }
+          },
+          {
+            "skill": "coder",
+            "inputs": [
+              "USER_QUERY"
+            ],
+            "metadata": {
+              "label": "dup_calc",
+              "question": "compute total reclaimable space from duplicate groups"
+            }
+          },
+          {
+            "skill": "pattern_analyzer",
+            "inputs": [
+              "USER_QUERY"
+            ],
+            "metadata": {
+              "label": "diag",
+              "question": "diagnose current folder organization and emit minimal/medium/best effort plans"
+            }
+          },
+          {
+            "skill": "formatter",
+            "inputs": [
+              "n:priv",
+              "n:docs",
+              "n:crit_docs",
+              "n:imgs",
+              "n:crit_imgs",
+              "n:projects",
+              "n:crit_projects",
+              "n:dup_calc",
+              "n:diag"
+            ],
+            "metadata": {
+              "label": "out"
+            }
+          }
+        ],
+        "cost": 0.0,
+        "elapsed_s": 14.815388679504395,
+        "provider": "github",
+        "error": null
+      },
+      "_result_typed": true,
+      "id": "n:11"
+    },
+    {
+      "skill": "planner",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "failure_report": "critic failed target=n:8 child=n:10 rationale=Classifier returned empty output; expected a classified list of files.",
+        "recovers": "n:8",
+        "recovery_reason": "critic_fail"
+      },
+      "status": "complete",
+      "result": {
+        "success": true,
+        "agent_name": "planner",
+        "output": {},
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 48.00950527191162,
+        "provider": "openrouter",
+        "error": null
+      },
+      "_result_typed": true,
+      "id": "n:12"
+    },
+    {
+      "skill": "sensitive_detector",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "label": "priv"
+      },
+      "status": "complete",
+      "result": {
+        "success": true,
+        "agent_name": "sensitive_detector",
+        "output": {
+          "flagged": [
+            {
+              "name": "Form16_FY2025.txt",
+              "confidence": 95,
+              "reason": "filename contains 'Form16' which is an Indian tax form",
+              "suggestion": "Private/Finance/Tax",
+              "content_read": false
+            },
+            {
+              "name": "HDFC_statement_Jan2026.txt",
+              "confidence": 95,
+              "reason": "filename contains bank name 'HDFC' and 'statement'",
+              "suggestion": "Private/Finance/BankStatements",
+              "content_read": false
+            },
+            {
+              "name": "PAN_card.txt",
+              "confidence": 95,
+              "reason": "filename contains 'PAN_card' which is a government ID document",
+              "suggestion": "Private/Identity",
+              "content_read": false
+            },
+            {
+              "name": "salary_slip_april2026.txt",
+              "confidence": 95,
+              "reason": "filename contains 'salary_slip' which is payroll information",
+              "suggestion": "Private/Finance/Payroll",
+              "content_read": false
+            }
+          ],
+          "rationale": "Four files in Documents/ have names clearly indicating tax forms, bank statements, identity documents, or salary slips \u2014 all highly sensitive financial/personal data."
+        },
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 29.53419041633606,
+        "provider": "nvidia",
+        "error": null
+      },
+      "_result_typed": true,
+      "id": "n:13"
+    },
+    {
+      "skill": "classifier",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "label": "docs",
+        "question": "classify ordinary document and receipt files excluding sensitive candidates"
+      },
+      "status": "complete",
+      "result": {
+        "success": true,
+        "agent_name": "classifier",
+        "output": {},
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 88.62850570678711,
+        "provider": "openrouter",
+        "error": null
+      },
+      "_result_typed": true,
+      "id": "n:14"
+    },
+    {
+      "skill": "critic",
+      "inputs": [
+        "n:14"
+      ],
+      "metadata": {
+        "label": "crit_docs",
+        "question": "verify destination matches content type and extension for each classified document file"
+      },
+      "status": "complete",
+      "result": {
+        "success": true,
+        "agent_name": "critic",
+        "output": {
+          "verdict": "fail",
+          "rationale": "Classifier returned empty output; expected a classified list of files."
+        },
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 8.532592058181763,
+        "provider": "groq",
+        "error": null
+      },
+      "_result_typed": true,
+      "id": "n:15"
+    },
+    {
+      "skill": "classifier",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "label": "imgs",
+        "question": "classify photo and image files"
+      },
+      "status": "complete",
+      "result": {
+        "success": true,
+        "agent_name": "classifier",
+        "output": {
+          "classified": [
+            {
+              "name": "Form16_FY2025.txt",
+              "category": "document",
+              "destination": "Finance/TaxDocuments/2025",
+              "confidence": 95,
+              "reason": "Filename indicates tax form, marked sensitive candidate",
+              "needs_review": false
+            },
+            {
+              "name": "HDFC_statement_Jan2026.txt",
+              "category": "document",
+              "destination": "Finance/BankStatements/2026",
+              "confidence": 95,
+              "reason": "Filename indicates bank statement, marked sensitive candidate",
+              "needs_review": false
+            },
+            {
+              "name": "PAN_card.txt",
+              "category": "document",
+              "destination": "Finance/IDDocuments",
+              "confidence": 95,
+              "reason": "Filename indicates personal ID document, marked sensitive candidate",
+              "needs_review": false
+            },
+            {
+              "name": "salary_slip_april2026.txt",
+              "category": "document",
+              "destination": "Finance/SalarySlips/2026",
+              "confidence": 95,
+              "reason": "Filename indicates salary slip, marked sensitive candidate",
+              "needs_review": false
+            },
+            {
+              "name": "amazon_order_4471.txt",
+              "category": "receipt",
+              "destination": "Finance/Receipts/2026",
+              "confidence": 98,
+              "reason": "Preview shows Amazon tax invoice with GST and total",
+              "needs_review": false
+            },
+            {
+              "name": "electricity_bill_jan.txt",
+              "category": "receipt",
+              "destination": "Finance/UtilityBills/2026",
+              "confidence": 98,
+              "reason": "Preview shows electricity bill with amount due",
+              "needs_review": false
+            },
+            {
+              "name": "flipkart_2025_tv.txt",
+              "category": "receipt",
+              "destination": "Finance/Receipts/2025",
+              "confidence": 98,
+              "reason": "Preview shows Flipkart tax invoice with GST and total",
+              "needs_review": false
+            },
+            {
+              "name": "IMG_20260601_165420.txt",
+              "category": "document",
+              "destination": "Documents/WorkNotes/2026",
+              "confidence": 90,
+              "reason": "Preview shows team standup notes and sprint review",
+              "needs_review": false
+            },
+            {
+              "name": "old_notes_2023.txt",
+              "category": "document",
+              "destination": "Documents/Notes/2023",
+              "confidence": 70,
+              "reason": "Filename suggests old notes but preview is minimal",
+              "needs_review": true
+            },
+            {
+              "name": "untitled.txt",
+              "category": "other",
+              "destination": "Misc",
+              "confidence": 30,
+              "reason": "Generic filename and minimal preview",
+              "needs_review": true
+            },
+            {
+              "name": "swiggy_invoice_mar.txt",
+              "category": "receipt",
+              "destination": "Finance/Receipts/2026",
+              "confidence": 98,
+              "reason": "Preview shows Swiggy invoice with GST and total",
+              "needs_review": false
+            },
+            {
+              "name": "IMG_2098.txt",
+              "category": "photo",
+              "destination": "Pictures/2026",
+              "confidence": 85,
+              "reason": "Preview labeled PHOTO-AAA, filename IMG pattern",
+              "needs_review": true
+            },
+            {
+              "name": "sunset.txt",
+              "category": "photo",
+              "destination": "Pictures/2026",
+              "confidence": 85,
+              "reason": "Preview labeled PHOTO-BBB, filename suggests photo",
+              "needs_review": true
+            },
+            {
+              "name": "IMG_2098_copy.txt",
+              "category": "photo",
+              "destination": "Pictures/2026",
+              "confidence": 85,
+              "reason": "Duplicate content to IMG_2098.txt, photo preview",
+              "needs_review": true
+            },
+            {
+              "name": "sunset_dup.txt",
+              "category": "photo",
+              "destination": "Pictures/2026",
+              "confidence": 85,
+              "reason": "Duplicate content to sunset.txt, photo preview",
+              "needs_review": true
+            },
+            {
+              "name": "README.md",
+              "category": "code",
+              "destination": "Projects/EAGv3/Session7",
+              "confidence": 90,
+              "reason": "Filename and extension typical for project documentation",
+              "needs_review": false
+            },
+            {
+              "name": "flow.py",
+              "category": "code",
+              "destination": "Projects/EAGv3/Session7/code",
+              "confidence": 95,
+              "reason": "Python code file with relevant preview",
+              "needs_review": false
+            },
+            {
+              "name": "README.md",
+              "category": "code",
+              "destination": "Projects/EAGv3/Session8",
+              "confidence": 90,
+              "reason": "Filename and extension typical for project documentation",
+              "needs_review": false
+            },
+            {
+              "name": "flow.py",
+              "category": "code",
+              "destination": "Projects/EAGv3/Session8/code",
+              "confidence": 95,
+              "reason": "Python code file with relevant preview",
+              "needs_review": false
+            }
+          ],
+          "rationale": "Files mostly grouped by type but some mixing in Downloads and Pictures; sensitive financial docs flagged; duplicates identified in Pictures; minimal folder depth mostly appropriate.",
+          "diagnosis": {
+            "organization_quality": "medium",
+            "issues": [
+              "Sensitive financial documents mixed with general documents in Documents folder",
+              "Downloads folder contains receipts and notes mixed without subfolders",
+              "Pictures folder contains .txt files representing photos, which is unusual",
+              "Duplicate photo text files in Pictures and backup subfolder",
+              "Some generic or unclear files (untitled.txt) need review"
+            ],
+            "sensitive_files_flagged": [
+              "Form16_FY2025.txt",
+              "HDFC_statement_Jan2026.txt",
+              "PAN_card.txt",
+              "salary_slip_april2026.txt"
+            ],
+            "duplicate_files": {
+              "count": 4,
+              "groups": 2,
+              "reclaimable_space_bytes": 20
+            }
+          },
+          "phase_1_plan": {
+            "minimal_effort": [
+              "Move sensitive financial documents to Finance folder with subfolders by type and year",
+              "Flag low-confidence files for human review",
+              "Remove one copy of duplicates in Pictures/backup to reclaim space"
+            ],
+            "medium_effort": [
+              "Create subfolders in Downloads for Receipts, Notes, and Misc",
+              "Convert photo text files to actual photo files if possible or rename appropriately",
+              "Organize Pictures folder by year",
+              "Review and clean generic or unclear files"
+            ],
+            "best_effort": [
+              "Implement automated tagging and classification for incoming files",
+              "Migrate all financial docs to encrypted secure storage",
+              "Replace text-based photo placeholders with actual images or archive separately",
+              "Deduplicate entire drive with hash-based tool and reclaim maximum space",
+              "Establish naming conventions and folder hierarchy standards for all categories"
+            ]
+          }
+        },
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 29.83388662338257,
+        "provider": "github",
+        "error": null
+      },
+      "_result_typed": true,
+      "id": "n:16"
+    },
+    {
+      "skill": "critic",
+      "inputs": [
+        "n:16"
+      ],
+      "metadata": {
+        "label": "crit_imgs",
+        "question": "verify destination matches content type and extension for each classified image file"
+      },
+      "status": "complete",
+      "result": {
+        "success": true,
+        "agent_name": "critic",
+        "output": {
+          "verdict": "pass",
+          "rationale": "All destinations are consistent with file extensions and previews."
+        },
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 8.778098821640015,
+        "provider": "cerebras",
+        "error": null
+      },
+      "_result_typed": true,
+      "id": "n:17"
+    },
+    {
+      "skill": "classifier",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "label": "projects",
+        "question": "classify project source and markdown files"
+      },
+      "status": "complete",
+      "result": {
+        "success": true,
+        "agent_name": "classifier",
+        "output": {},
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 418.1097855567932,
+        "provider": "ollama",
+        "error": null
+      },
+      "_result_typed": true,
+      "id": "n:18"
+    },
+    {
+      "skill": "critic",
+      "inputs": [
+        "n:18"
+      ],
+      "metadata": {
+        "label": "crit_projects",
+        "question": "verify destination matches content type and extension for each classified project file"
+      },
+      "status": "complete",
+      "result": {
+        "success": true,
+        "agent_name": "critic",
+        "output": {
+          "verdict": "fail",
+          "rationale": "Classifier returned empty output; expected a classified list of files."
+        },
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 9.762139081954956,
+        "provider": "github",
+        "error": null
+      },
+      "_result_typed": true,
+      "id": "n:19"
+    },
+    {
+      "skill": "coder",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "label": "dup_calc",
+        "question": "compute total reclaimable space from duplicate groups"
+      },
+      "status": "complete",
+      "result": {
+        "success": true,
+        "agent_name": "coder",
+        "output": {},
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 5.858892202377319,
+        "provider": "cerebras",
+        "error": null
+      },
+      "_result_typed": true,
+      "id": "n:20"
+    },
+    {
+      "skill": "pattern_analyzer",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "label": "diag",
+        "question": "diagnose current folder organization and emit minimal/medium/best effort plans"
+      },
+      "status": "failed",
+      "result": {
+        "success": false,
+        "agent_name": "pattern_analyzer",
+        "output": {},
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 0.0,
+        "provider": "",
+        "error": "exception: ReadTimeout: timed out"
+      },
+      "_result_typed": true,
+      "id": "n:21"
+    },
+    {
+      "skill": "formatter",
+      "inputs": [
+        "n:13",
+        "n:14",
+        "n:15",
+        "n:16",
+        "n:17",
+        "n:18",
+        "n:19",
+        "n:20",
+        "n:21"
+      ],
+      "metadata": {
+        "label": "out"
+      },
+      "status": "skipped",
+      "id": "n:22"
+    },
+    {
+      "skill": "sandbox_executor",
+      "inputs": [
+        "n:20"
+      ],
+      "metadata": {},
+      "status": "failed",
+      "result": {
+        "success": false,
+        "agent_name": "sandbox_executor",
+        "output": {},
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 1.5735626220703125e-05,
+        "provider": "",
+        "error": "no code in upstream coder output"
+      },
+      "_result_typed": true,
+      "id": "n:23"
+    },
+    {
+      "skill": "planner",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "failure_report": "critic failed target=n:14 child=n:22 rationale=Classifier returned empty output; expected a classified list of files.",
+        "recovers": "n:14",
+        "recovery_reason": "critic_fail"
+      },
+      "status": "complete",
+      "result": {
+        "success": true,
+        "agent_name": "planner",
+        "output": {
+          "rationale": "Sensitive files are flagged by metadata only; classify remaining files into documents, photos, receipts, and code batches with critic verification; then analyze folder organisation and produce a final report including duplicate files and effort plans.",
+          "nodes": [
+            {
+              "skill": "sensitive_detector",
+              "inputs": [
+                "USER_QUERY"
+              ],
+              "metadata": {
+                "label": "priv",
+                "question": "flag private/financial files from metadata only"
+              }
+            },
+            {
+              "skill": "classifier",
+              "inputs": [
+                "USER_QUERY"
+              ],
+              "metadata": {
+                "label": "docs",
+                "question": "classify document and receipt files excluding sensitive candidates"
+              }
+            },
+            {
+              "skill": "critic",
+              "inputs": [
+                "n:docs"
+              ],
+              "metadata": {
+                "label": "crit_docs",
+                "question": "verify destination matches content type and extension for each classified file"
+              }
+            },
+            {
+              "skill": "classifier",
+              "inputs": [
+                "USER_QUERY"
+              ],
+              "metadata": {
+                "label": "code",
+                "question": "classify code and markdown files"
+              }
+            },
+            {
+              "skill": "critic",
+              "inputs": [
+                "n:code"
+              ],
+              "metadata": {
+                "label": "crit_code",
+                "question": "verify destination matches content type and extension for each classified file"
+              }
+            },
+            {
+              "skill": "classifier",
+              "inputs": [
+                "USER_QUERY"
+              ],
+              "metadata": {
+                "label": "photos",
+                "question": "classify photo and image files"
+              }
+            },
+            {
+              "skill": "critic",
+              "inputs": [
+                "n:photos"
+              ],
+              "metadata": {
+                "label": "crit_photos",
+                "question": "verify destination matches content type and extension for each classified file"
+              }
+            },
+            {
+              "skill": "pattern_analyzer",
+              "inputs": [
+                "USER_QUERY"
+              ],
+              "metadata": {
+                "label": "diag",
+                "question": "diagnose current folder organisation and emit minimal/medium/best plans"
+              }
+            },
+            {
+              "skill": "formatter",
+              "inputs": [
+                "n:priv",
+                "n:docs",
+                "n:crit_docs",
+                "n:code",
+                "n:crit_code",
+                "n:photos",
+                "n:crit_photos",
+                "n:diag"
+              ],
+              "metadata": {
+                "label": "out"
+              }
+            }
+          ]
+        },
+        "artifacts": [],
+        "successors": [
+          {
+            "skill": "sensitive_detector",
+            "inputs": [
+              "USER_QUERY"
+            ],
+            "metadata": {
+              "label": "priv",
+              "question": "flag private/financial files from metadata only"
+            }
+          },
+          {
+            "skill": "classifier",
+            "inputs": [
+              "USER_QUERY"
+            ],
+            "metadata": {
+              "label": "docs",
+              "question": "classify document and receipt files excluding sensitive candidates"
+            }
+          },
+          {
+            "skill": "critic",
+            "inputs": [
+              "n:docs"
+            ],
+            "metadata": {
+              "label": "crit_docs",
+              "question": "verify destination matches content type and extension for each classified file"
+            }
+          },
+          {
+            "skill": "classifier",
+            "inputs": [
+              "USER_QUERY"
+            ],
+            "metadata": {
+              "label": "code",
+              "question": "classify code and markdown files"
+            }
+          },
+          {
+            "skill": "critic",
+            "inputs": [
+              "n:code"
+            ],
+            "metadata": {
+              "label": "crit_code",
+              "question": "verify destination matches content type and extension for each classified file"
+            }
+          },
+          {
+            "skill": "classifier",
+            "inputs": [
+              "USER_QUERY"
+            ],
+            "metadata": {
+              "label": "photos",
+              "question": "classify photo and image files"
+            }
+          },
+          {
+            "skill": "critic",
+            "inputs": [
+              "n:photos"
+            ],
+            "metadata": {
+              "label": "crit_photos",
+              "question": "verify destination matches content type and extension for each classified file"
+            }
+          },
+          {
+            "skill": "pattern_analyzer",
+            "inputs": [
+              "USER_QUERY"
+            ],
+            "metadata": {
+              "label": "diag",
+              "question": "diagnose current folder organisation and emit minimal/medium/best plans"
+            }
+          },
+          {
+            "skill": "formatter",
+            "inputs": [
+              "n:priv",
+              "n:docs",
+              "n:crit_docs",
+              "n:code",
+              "n:crit_code",
+              "n:photos",
+              "n:crit_photos",
+              "n:diag"
+            ],
+            "metadata": {
+              "label": "out"
+            }
+          }
+        ],
+        "cost": 0.0,
+        "elapsed_s": 16.75202465057373,
+        "provider": "github",
+        "error": null
+      },
+      "_result_typed": true,
+      "id": "n:24"
+    },
+    {
+      "skill": "planner",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "failure_report": "critic failed target=n:18 child=n:22 rationale=Classifier returned empty output; expected a classified list of files.",
+        "recovers": "n:18",
+        "recovery_reason": "critic_fail"
+      },
+      "status": "complete",
+      "result": {
+        "success": true,
+        "agent_name": "planner",
+        "output": {},
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 54.38975548744202,
+        "provider": "openrouter",
+        "error": null
+      },
+      "_result_typed": true,
+      "id": "n:25"
+    },
+    {
+      "skill": "planner",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "failure_report": "node=n:23 skill=sandbox_executor reason=upstream_failure error=no code in upstream coder output",
+        "recovers": "n:23",
+        "recovery_reason": "upstream_failure"
+      },
+      "status": "complete",
+      "result": {
+        "success": true,
+        "agent_name": "planner",
+        "output": {
+          "rationale": "Diagnose folder, flag private files, classify non\u2011sensitive batches in parallel with critic checks, then assemble a phase\u20111 report.",
+          "nodes": [
+            {
+              "skill": "pattern_analyzer",
+              "inputs": [
+                "USER_QUERY"
+              ],
+              "metadata": {
+                "label": "diag",
+                "question": "Assess current organisation and suggest minimal/medium/best effort plans"
+              }
+            },
+            {
+              "skill": "sensitive_detector",
+              "inputs": [
+                "USER_QUERY"
+              ],
+              "metadata": {
+                "label": "priv",
+                "question": "Flag any private/financial files from metadata only"
+              }
+            },
+            {
+              "skill": "classifier",
+              "inputs": [
+                "USER_QUERY"
+              ],
+              "metadata": {
+                "label": "dl",
+                "question": "Classify non\u2011sensitive files in Downloads (receipts, orders, notes, etc.)"
+              }
+            },
+            {
+              "skill": "critic",
+              "inputs": [
+                "n:dl"
+              ],
+              "metadata": {
+                "label": "crit_dl",
+                "question": "verify destination matches content type and extension for each classified file in Downloads"
+              }
+            },
+            {
+              "skill": "classifier",
+              "inputs": [
+                "USER_QUERY"
+              ],
+              "metadata": {
+                "label": "pics",
+                "question": "Classify non\u2011sensitive image files in Pictures (including backup copies)"
+              }
+            },
+            {
+              "skill": "critic",
+              "inputs": [
+                "n:pics"
+              ],
+              "metadata": {
+                "label": "crit_pics",
+                "question": "verify destination matches content type and extension for each classified file in Pictures"
+              }
+            },
+            {
+              "skill": "classifier",
+              "inputs": [
+                "USER_QUERY"
+              ],
+              "metadata": {
+                "label": "proj",
+                "question": "Classify non\u2011sensitive project files (md, py) in Projects"
+              }
+            },
+            {
+              "skill": "critic",
+              "inputs": [
+                "n:proj"
+              ],
+              "metadata": {
+                "label": "crit_proj",
+                "question": "verify destination matches content type and extension for each classified file in Projects"
+              }
+            },
+            {
+              "skill": "formatter",
+              "inputs": [
+                "n:diag",
+                "n:priv",
+                "n:dl",
+                "n:crit_dl",
+                "n:pics",
+                "n:crit_pics",
+                "n:proj",
+                "n:crit_proj"
+              ],
+              "metadata": {
+                "label": "out",
+                "question": "Produce phase\u20111 report with diagnosis, classification results, duplicate groups, reclaimable space, and minimal/medium/best effort re\u2011organisation plans"
+              }
+            }
+          ]
+        },
+        "artifacts": [],
+        "successors": [
+          {
+            "skill": "pattern_analyzer",
+            "inputs": [
+              "USER_QUERY"
+            ],
+            "metadata": {
+              "label": "diag",
+              "question": "Assess current organisation and suggest minimal/medium/best effort plans"
+            }
+          },
+          {
+            "skill": "sensitive_detector",
+            "inputs": [
+              "USER_QUERY"
+            ],
+            "metadata": {
+              "label": "priv",
+              "question": "Flag any private/financial files from metadata only"
+            }
+          },
+          {
+            "skill": "classifier",
+            "inputs": [
+              "USER_QUERY"
+            ],
+            "metadata": {
+              "label": "dl",
+              "question": "Classify non\u2011sensitive files in Downloads (receipts, orders, notes, etc.)"
+            }
+          },
+          {
+            "skill": "critic",
+            "inputs": [
+              "n:dl"
+            ],
+            "metadata": {
+              "label": "crit_dl",
+              "question": "verify destination matches content type and extension for each classified file in Downloads"
+            }
+          },
+          {
+            "skill": "classifier",
+            "inputs": [
+              "USER_QUERY"
+            ],
+            "metadata": {
+              "label": "pics",
+              "question": "Classify non\u2011sensitive image files in Pictures (including backup copies)"
+            }
+          },
+          {
+            "skill": "critic",
+            "inputs": [
+              "n:pics"
+            ],
+            "metadata": {
+              "label": "crit_pics",
+              "question": "verify destination matches content type and extension for each classified file in Pictures"
+            }
+          },
+          {
+            "skill": "classifier",
+            "inputs": [
+              "USER_QUERY"
+            ],
+            "metadata": {
+              "label": "proj",
+              "question": "Classify non\u2011sensitive project files (md, py) in Projects"
+            }
+          },
+          {
+            "skill": "critic",
+            "inputs": [
+              "n:proj"
+            ],
+            "metadata": {
+              "label": "crit_proj",
+              "question": "verify destination matches content type and extension for each classified file in Projects"
+            }
+          },
+          {
+            "skill": "formatter",
+            "inputs": [
+              "n:diag",
+              "n:priv",
+              "n:dl",
+              "n:crit_dl",
+              "n:pics",
+              "n:crit_pics",
+              "n:proj",
+              "n:crit_proj"
+            ],
+            "metadata": {
+              "label": "out",
+              "question": "Produce phase\u20111 report with diagnosis, classification results, duplicate groups, reclaimable space, and minimal/medium/best effort re\u2011organisation plans"
+            }
+          }
+        ],
+        "cost": 0.0,
+        "elapsed_s": 6.6912925243377686,
+        "provider": "cerebras",
+        "error": null
+      },
+      "_result_typed": true,
+      "id": "n:26"
+    },
+    {
+      "skill": "sensitive_detector",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "label": "priv",
+        "question": "flag private/financial files from metadata only"
+      },
+      "status": "complete",
+      "result": {
+        "success": true,
+        "agent_name": "sensitive_detector",
+        "output": {
+          "flagged": [
+            {
+              "name": "Form16_FY2025.txt",
+              "confidence": 95,
+              "reason": "filename contains 'Form16' (tax/financial document)",
+              "suggestion": "Private/Finance",
+              "content_read": false
+            },
+            {
+              "name": "HDFC_statement_Jan2026.txt",
+              "confidence": 98,
+              "reason": "filename contains 'statement' and bank name 'HDFC'",
+              "suggestion": "Private/Finance",
+              "content_read": false
+            },
+            {
+              "name": "PAN_card.txt",
+              "confidence": 97,
+              "reason": "filename contains 'PAN' (government ID)",
+              "suggestion": "Private/Personal",
+              "content_read": false
+            },
+            {
+              "name": "salary_slip_april2026.txt",
+              "confidence": 96,
+              "reason": "filename contains 'salary_slip' (pay information)",
+              "suggestion": "Private/Finance",
+              "content_read": false
+            }
+          ],
+          "rationale": "Flagged files based on strong financial/personal identifiers in filenames."
+        },
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 7.502272605895996,
+        "provider": "cerebras",
+        "error": null
+      },
+      "_result_typed": true,
+      "id": "n:27"
+    },
+    {
+      "skill": "classifier",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "label": "docs",
+        "question": "classify document and receipt files excluding sensitive candidates"
+      },
+      "status": "failed",
+      "result": {
+        "success": false,
+        "agent_name": "classifier",
+        "output": {},
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 0.0,
+        "provider": "",
+        "error": "exception: ReadTimeout: timed out"
+      },
+      "_result_typed": true,
+      "id": "n:28"
+    },
+    {
+      "skill": "critic",
+      "inputs": [
+        "n:28"
+      ],
+      "metadata": {
+        "label": "crit_docs",
+        "question": "verify destination matches content type and extension for each classified file"
+      },
+      "status": "pending",
+      "id": "n:29"
+    },
+    {
+      "skill": "classifier",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "label": "code",
+        "question": "classify code and markdown files"
+      },
+      "status": "complete",
+      "result": {
+        "success": true,
+        "agent_name": "classifier",
+        "output": {},
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 101.37559723854065,
+        "provider": "openrouter",
+        "error": null
+      },
+      "_result_typed": true,
+      "id": "n:30"
+    },
+    {
+      "skill": "critic",
+      "inputs": [
+        "n:30"
+      ],
+      "metadata": {
+        "label": "crit_code",
+        "question": "verify destination matches content type and extension for each classified file"
+      },
+      "status": "complete",
+      "result": {
+        "success": true,
+        "agent_name": "critic",
+        "output": {
+          "verdict": "fail",
+          "rationale": "Classifier returned empty output; expected a classified list of files."
+        },
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 16.819676399230957,
+        "provider": "groq",
+        "error": null
+      },
+      "_result_typed": true,
+      "id": "n:31"
+    },
+    {
+      "skill": "classifier",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "label": "photos",
+        "question": "classify photo and image files"
+      },
+      "status": "complete",
+      "result": {
+        "success": true,
+        "agent_name": "classifier",
+        "output": {
+          "classified": [
+            {
+              "name": "Form16_FY2025.txt",
+              "category": "document",
+              "destination": "Finance/Documents/2025",
+              "confidence": 90,
+              "reason": "filename indicates tax form",
+              "needs_review": false
+            },
+            {
+              "name": "HDFC_statement_Jan2026.txt",
+              "category": "document",
+              "destination": "Finance/Statements/2026",
+              "confidence": 92,
+              "reason": "filename and candidate flag show bank statement",
+              "needs_review": false
+            },
+            {
+              "name": "PAN_card.txt",
+              "category": "document",
+              "destination": "Finance/IDs/PAN",
+              "confidence": 90,
+              "reason": "filename matches PAN card",
+              "needs_review": false
+            },
+            {
+              "name": "salary_slip_april2026.txt",
+              "category": "document",
+              "destination": "Finance/Salary/2026",
+              "confidence": 90,
+              "reason": "filename indicates salary slip",
+              "needs_review": false
+            },
+            {
+              "name": "amazon_order_4471.txt",
+              "category": "receipt",
+              "destination": "Finance/Receipts/2026/Amazon",
+              "confidence": 95,
+              "reason": "preview contains 'AMAZON TAX INVOICE'",
+              "needs_review": false
+            },
+            {
+              "name": "electricity_bill_jan.txt",
+              "category": "receipt",
+              "destination": "Finance/Receipts/2026/Electricity",
+              "confidence": 95,
+              "reason": "preview contains 'BESCOM electricity bill'",
+              "needs_review": false
+            },
+            {
+              "name": "flipkart_2025_tv.txt",
+              "category": "receipt",
+              "destination": "Finance/Receipts/2025/Flipkart",
+              "confidence": 95,
+              "reason": "preview contains 'FLIPKART TAX INVOICE'",
+              "needs_review": false
+            },
+            {
+              "name": "IMG_20260601_165420.txt",
+              "category": "document",
+              "destination": "Documents/Notes/2026-06-01",
+              "confidence": 80,
+              "reason": "preview shows meeting notes despite image\u2011style name",
+              "needs_review": true
+            },
+            {
+              "name": "old_notes_2023.txt",
+              "category": "document",
+              "destination": "Documents/Notes/2023",
+              "confidence": 70,
+              "reason": "generic name with minimal preview",
+              "needs_review": true
+            },
+            {
+              "name": "untitled.txt",
+              "category": "other",
+              "destination": "Misc",
+              "confidence": 50,
+              "reason": "no meaningful name or preview",
+              "needs_review": true
+            },
+            {
+              "name": "swiggy_invoice_mar.txt",
+              "category": "receipt",
+              "destination": "Finance/Receipts/2026/Swiggy",
+              "confidence": 93,
+              "reason": "preview contains 'SWIGGY' and invoice details",
+              "needs_review": false
+            },
+            {
+              "name": "IMG_2098.txt",
+              "category": "photo",
+              "destination": "Pictures/2026",
+              "confidence": 90,
+              "reason": "preview labelled 'PHOTO-AAA'",
+              "needs_review": false
+            },
+            {
+              "name": "sunset.txt",
+              "category": "photo",
+              "destination": "Pictures/2026",
+              "confidence": 90,
+              "reason": "preview labelled 'PHOTO-BBB'",
+              "needs_review": false
+            },
+            {
+              "name": "IMG_2098_copy.txt",
+              "category": "photo",
+              "destination": "Pictures/2026",
+              "confidence": 90,
+              "reason": "duplicate of IMG_2098 (same preview)",
+              "needs_review": false
+            },
+            {
+              "name": "sunset_dup.txt",
+              "category": "photo",
+              "destination": "Pictures/2026",
+              "confidence": 90,
+              "reason": "duplicate of sunset (same preview)",
+              "needs_review": false
+            },
+            {
+              "name": "README.md",
+              "category": "document",
+              "destination": "Projects/EAGv3/Session7",
+              "confidence": 85,
+              "reason": "markdown readme in project folder",
+              "needs_review": false
+            },
+            {
+              "name": "flow.py",
+              "category": "code",
+              "destination": "Projects/EAGv3/Session7/code",
+              "confidence": 95,
+              "reason": "Python source file in code subfolder",
+              "needs_review": false
+            },
+            {
+              "name": "README.md",
+              "category": "document",
+              "destination": "Projects/EAGv3/Session8",
+              "confidence": 85,
+              "reason": "markdown readme in project folder",
+              "needs_review": false
+            },
+            {
+              "name": "flow.py",
+              "category": "code",
+              "destination": "Projects/EAGv3/Session8/code",
+              "confidence": 95,
+              "reason": "Python source file in code subfolder",
+              "needs_review": false
+            }
+          ],
+          "rationale": "Classified based on filenames, extensions, and available previews; low\u2011confidence items flagged for review."
+        },
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 13.373799085617065,
+        "provider": "groq",
+        "error": null
+      },
+      "_result_typed": true,
+      "id": "n:32"
+    },
+    {
+      "skill": "critic",
+      "inputs": [
+        "n:32"
+      ],
+      "metadata": {
+        "label": "crit_photos",
+        "question": "verify destination matches content type and extension for each classified file"
+      },
+      "status": "complete",
+      "result": {
+        "success": true,
+        "agent_name": "critic",
+        "output": {
+          "verdict": "pass",
+          "rationale": "All destinations are consistent with file extensions and previews."
+        },
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 26.71066164970398,
+        "provider": "openrouter",
+        "error": null
+      },
+      "_result_typed": true,
+      "id": "n:33"
+    },
+    {
+      "skill": "pattern_analyzer",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "label": "diag",
+        "question": "diagnose current folder organisation and emit minimal/medium/best plans"
+      },
+      "status": "failed",
+      "result": {
+        "success": false,
+        "agent_name": "pattern_analyzer",
+        "output": {},
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 0.0,
+        "provider": "",
+        "error": "exception: ReadTimeout: timed out"
+      },
+      "_result_typed": true,
+      "id": "n:34"
+    },
+    {
+      "skill": "formatter",
+      "inputs": [
+        "n:27",
+        "n:28",
+        "n:29",
+        "n:30",
+        "n:31",
+        "n:32",
+        "n:33",
+        "n:34"
+      ],
+      "metadata": {
+        "label": "out"
+      },
+      "status": "skipped",
+      "id": "n:35"
+    },
+    {
+      "skill": "pattern_analyzer",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "label": "diag",
+        "question": "Assess current organisation and suggest minimal/medium/best effort plans"
+      },
+      "status": "complete",
+      "result": {
+        "success": true,
+        "agent_name": "pattern_analyzer",
+        "output": {
+          "highlights": [
+            {
+              "path": "Projects",
+              "score": 92,
+              "label": "excellent",
+              "note": "Clear session\u2011based hierarchy, consistent naming, no duplicates."
+            },
+            {
+              "path": "Documents",
+              "score": 85,
+              "label": "good",
+              "note": "All files are financial documents, uniformly named and kept in a single purpose folder."
+            }
+          ],
+          "plans": {
+            "minimal": {
+              "actions": [
+                "Delete the two exact duplicate files (keep one copy each).",
+                "Delete the installer\u2011extract folder \"Downloads\\SetupTool_v3_extracted\"."
+              ],
+              "effort": "~5 min",
+              "reclaimable": "\u2248 20\u202fbytes",
+              "risk": "very_low"
+            },
+            "medium": {
+              "actions": [
+                "Perform the minimal actions above.",
+                "Create a subfolder \"Downloads\\Bills\\2026\" and move all invoice\u2011type txt files (amazon_order_4471.txt, electricity_bill_jan.txt, flipkart_2025_tv.txt, bills\\swiggy_invoice_mar.txt) there.",
+                "Create a subfolder \"Downloads\\Archive\\2023\" and move old_notes_2023.txt and untitled.txt there.",
+                "Move the duplicate picture copies from \"Pictures\\backup\" into a dedicated backup folder (e.g., \"Pictures\\Backup\") and delete the originals that are now duplicated."
+              ],
+              "effort": "~15\u201120 min",
+              "reclaimable": "\u2248 20\u202fbytes (duplicates) + any space freed by removing the installer folder",
+              "risk": "low",
+              "recommended": true
+            },
+            "best": {
+              "actions": [
+                "Perform all medium\u2011plan actions.",
+                "In Documents, create a subfolder \"Financial\" and move all four txt files there; rename them to a uniform snake_case pattern (e.g., \"form16_fy2025.txt\", \"hdfc_statement_jan_2026.txt\", \"pan_card.txt\", \"salary_slip_april_2026.txt\").",
+                "In Pictures, create \"Originals\" for the primary images and keep only one copy there; move the backup copies to \"Pictures\\Backup\" and rename them with a \"_backup\" suffix.",
+                "In Downloads, further organise by type: create \"Downloads\\Invoices\\2026\", \"Downloads\\Notes\\2023\", and \"Downloads\\Archive\" for any stale files.",
+                "Rename all files to follow the chosen naming convention (lowercase, underscores, year at end)."
+              ],
+              "effort": "~45\u201160 min",
+              "reclaimable": "\u2248 20\u202fbytes (duplicates) + any space saved by removing the installer folder; primary benefit is a clean, searchable hierarchy.",
+              "risk": "medium"
+            }
+          },
+          "rationale": "The drive is small but mixes unrelated files; Projects and Documents already follow good patterns, while Downloads and Pictures need grouping and duplicate cleanup."
+        },
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 199.24803757667542,
+        "provider": "cerebras",
+        "error": null
+      },
+      "_result_typed": true,
+      "id": "n:36"
+    },
+    {
+      "skill": "sensitive_detector",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "label": "priv",
+        "question": "Flag any private/financial files from metadata only"
+      },
+      "status": "complete",
+      "result": {
+        "success": true,
+        "agent_name": "sensitive_detector",
+        "output": {
+          "flagged": [
+            {
+              "name": "Form16_FY2025.txt",
+              "confidence": 95,
+              "reason": "filename contains 'Form16' (tax/financial document)",
+              "suggestion": "Private/Finance",
+              "content_read": false
+            },
+            {
+              "name": "HDFC_statement_Jan2026.txt",
+              "confidence": 98,
+              "reason": "filename contains 'statement' and bank name 'HDFC'",
+              "suggestion": "Private/Finance",
+              "content_read": false
+            },
+            {
+              "name": "PAN_card.txt",
+              "confidence": 97,
+              "reason": "filename contains 'PAN' (personal ID/financial)",
+              "suggestion": "Private/Personal",
+              "content_read": false
+            },
+            {
+              "name": "salary_slip_april2026.txt",
+              "confidence": 96,
+              "reason": "filename contains 'salary_slip' (pay information)",
+              "suggestion": "Private/Finance",
+              "content_read": false
+            }
+          ],
+          "rationale": "Four files have strong financial/personal identifiers in their names, flagged as sensitive."
+        },
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 193.9781038761139,
+        "provider": "cerebras",
+        "error": null
+      },
+      "_result_typed": true,
+      "id": "n:37"
+    },
+    {
+      "skill": "classifier",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "label": "dl",
+        "question": "Classify non\u2011sensitive files in Downloads (receipts, orders, notes, etc.)"
+      },
+      "status": "complete",
+      "result": {
+        "success": true,
+        "agent_name": "classifier",
+        "output": {
+          "classified": [
+            {
+              "name": "Form16_FY2025.txt",
+              "category": "document",
+              "destination": "Finance/2025",
+              "confidence": 90,
+              "reason": "filename indicates tax form and marked sensitive_candidate",
+              "needs_review": true
+            },
+            {
+              "name": "HDFC_statement_Jan2026.txt",
+              "category": "document",
+              "destination": "Finance/Statements/2026",
+              "confidence": 90,
+              "reason": "filename indicates bank statement and marked sensitive_candidate",
+              "needs_review": true
+            },
+            {
+              "name": "PAN_card.txt",
+              "category": "document",
+              "destination": "Finance/IDs",
+              "confidence": 85,
+              "reason": "filename indicates PAN card and marked sensitive_candidate",
+              "needs_review": true
+            },
+            {
+              "name": "salary_slip_april2026.txt",
+              "category": "document",
+              "destination": "Finance/Salary/2026",
+              "confidence": 90,
+              "reason": "filename indicates salary slip and marked sensitive_candidate",
+              "needs_review": true
+            },
+            {
+              "name": "amazon_order_4471.txt",
+              "category": "receipt",
+              "destination": "Finance/Receipts/2026",
+              "confidence": 95,
+              "reason": "preview contains 'AMAZON TAX INVOICE'",
+              "needs_review": false
+            },
+            {
+              "name": "electricity_bill_jan.txt",
+              "category": "receipt",
+              "destination": "Finance/Utilities/2026",
+              "confidence": 95,
+              "reason": "preview contains 'electricity bill Jan 2026'",
+              "needs_review": false
+            },
+            {
+              "name": "flipkart_2025_tv.txt",
+              "category": "receipt",
+              "destination": "Finance/Receipts/2025",
+              "confidence": 95,
+              "reason": "preview contains 'FLIPKART TAX INVOICE'",
+              "needs_review": false
+            },
+            {
+              "name": "IMG_20260601_165420.txt",
+              "category": "document",
+              "destination": "Documents/Notes/2026",
+              "confidence": 80,
+              "reason": "preview contains meeting notes despite image\u2011like filename",
+              "needs_review": false
+            },
+            {
+              "name": "old_notes_2023.txt",
+              "category": "document",
+              "destination": "Documents/Notes/2023",
+              "confidence": 70,
+              "reason": "preview only 'old', generic name",
+              "needs_review": true
+            },
+            {
+              "name": "untitled.txt",
+              "category": "other",
+              "destination": "Misc",
+              "confidence": 40,
+              "reason": "no preview, generic name",
+              "needs_review": true
+            },
+            {
+              "name": "swiggy_invoice_mar.txt",
+              "category": "receipt",
+              "destination": "Finance/Receipts/2026",
+              "confidence": 95,
+              "reason": "preview contains 'SWIGGY' and GST details",
+              "needs_review": false
+            },
+            {
+              "name": "IMG_2098.txt",
+              "category": "photo",
+              "destination": "Pictures/2026",
+              "confidence": 90,
+              "reason": "preview indicates PHOTO-AAA",
+              "needs_review": false
+            },
+            {
+              "name": "sunset.txt",
+              "category": "photo",
+              "destination": "Pictures/2026",
+              "confidence": 90,
+              "reason": "preview indicates PHOTO-BBB",
+              "needs_review": false
+            },
+            {
+              "name": "IMG_2098_copy.txt",
+              "category": "photo",
+              "destination": "Pictures/2026",
+              "confidence": 90,
+              "reason": "duplicate of IMG_2098 (hash match)",
+              "needs_review": false
+            },
+            {
+              "name": "sunset_dup.txt",
+              "category": "photo",
+              "destination": "Pictures/2026",
+              "confidence": 90,
+              "reason": "duplicate of sunset (hash match)",
+              "needs_review": false
+            },
+            {
+              "name": "README.md",
+              "category": "document",
+              "destination": "Projects/EAGv3/Session7",
+              "confidence": 95,
+              "reason": "extension .md in project folder",
+              "needs_review": false
+            },
+            {
+              "name": "flow.py",
+              "category": "code",
+              "destination": "Projects/EAGv3/Session7/code",
+              "confidence": 95,
+              "reason": "extension .py in code subfolder",
+              "needs_review": false
+            },
+            {
+              "name": "README.md",
+              "category": "document",
+              "destination": "Projects/EAGv3/Session8",
+              "confidence": 95,
+              "reason": "extension .md in project folder",
+              "needs_review": false
+            },
+            {
+              "name": "flow.py",
+              "category": "code",
+              "destination": "Projects/EAGv3/Session8/code",
+              "confidence": 95,
+              "reason": "extension .py in code subfolder",
+              "needs_review": false
+            }
+          ],
+          "rationale": "Folder mixes finance docs, receipts, notes, and project files; duplicates in Pictures (2 groups, 20\u202fbytes reclaimable); sensitive financial files flagged for review; classification ready for re\u2011organisation."
+        },
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 12.811995029449463,
+        "provider": "groq",
+        "error": null
+      },
+      "_result_typed": true,
+      "id": "n:38"
+    },
+    {
+      "skill": "critic",
+      "inputs": [
+        "n:38"
+      ],
+      "metadata": {
+        "label": "crit_dl",
+        "question": "verify destination matches content type and extension for each classified file in Downloads"
+      },
+      "status": "complete",
+      "result": {
+        "success": true,
+        "agent_name": "critic",
+        "output": {
+          "verdict": "pass",
+          "rationale": "All destinations are consistent with file extensions and previews."
+        },
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 16.80727481842041,
+        "provider": "cerebras",
+        "error": null
+      },
+      "_result_typed": true,
+      "id": "n:39"
+    },
+    {
+      "skill": "classifier",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "label": "pics",
+        "question": "Classify non\u2011sensitive image files in Pictures (including backup copies)"
+      },
+      "status": "complete",
+      "result": {
+        "success": true,
+        "agent_name": "classifier",
+        "output": {
+          "classified": [
+            {
+              "name": "Form16_FY2025.txt",
+              "category": "document",
+              "destination": "Finance/TaxDocuments/2025",
+              "confidence": 95,
+              "reason": "Filename indicates tax form and marked sensitive",
+              "needs_review": false
+            },
+            {
+              "name": "HDFC_statement_Jan2026.txt",
+              "category": "document",
+              "destination": "Finance/BankStatements/2026",
+              "confidence": 95,
+              "reason": "Filename indicates bank statement and marked sensitive",
+              "needs_review": false
+            },
+            {
+              "name": "PAN_card.txt",
+              "category": "document",
+              "destination": "Finance/IDDocuments",
+              "confidence": 95,
+              "reason": "Filename indicates personal ID and marked sensitive",
+              "needs_review": false
+            },
+            {
+              "name": "salary_slip_april2026.txt",
+              "category": "document",
+              "destination": "Finance/SalarySlips/2026",
+              "confidence": 95,
+              "reason": "Filename indicates salary slip and marked sensitive",
+              "needs_review": false
+            },
+            {
+              "name": "amazon_order_4471.txt",
+              "category": "receipt",
+              "destination": "Finance/Receipts/2026",
+              "confidence": 98,
+              "reason": "Preview shows Amazon tax invoice with GST and total",
+              "needs_review": false
+            },
+            {
+              "name": "electricity_bill_jan.txt",
+              "category": "receipt",
+              "destination": "Finance/UtilityBills/2026",
+              "confidence": 98,
+              "reason": "Preview shows electricity bill with amount due",
+              "needs_review": false
+            },
+            {
+              "name": "flipkart_2025_tv.txt",
+              "category": "receipt",
+              "destination": "Finance/Receipts/2025",
+              "confidence": 98,
+              "reason": "Preview shows Flipkart tax invoice with GST and total",
+              "needs_review": false
+            },
+            {
+              "name": "IMG_20260601_165420.txt",
+              "category": "document",
+              "destination": "Documents/WorkNotes/2026",
+              "confidence": 90,
+              "reason": "Preview shows team standup notes and sprint review",
+              "needs_review": false
+            },
+            {
+              "name": "old_notes_2023.txt",
+              "category": "document",
+              "destination": "Documents/Notes/2023",
+              "confidence": 70,
+              "reason": "Filename and preview indicate old notes but content unclear",
+              "needs_review": true
+            },
+            {
+              "name": "untitled.txt",
+              "category": "other",
+              "destination": "Misc",
+              "confidence": 30,
+              "reason": "Generic filename and minimal preview content",
+              "needs_review": true
+            },
+            {
+              "name": "swiggy_invoice_mar.txt",
+              "category": "receipt",
+              "destination": "Finance/Receipts/2026",
+              "confidence": 98,
+              "reason": "Preview shows Swiggy invoice with GST and total",
+              "needs_review": false
+            },
+            {
+              "name": "IMG_2098.txt",
+              "category": "photo",
+              "destination": "Pictures/2026",
+              "confidence": 90,
+              "reason": "Preview indicates photo content, filename typical for images",
+              "needs_review": false
+            },
+            {
+              "name": "sunset.txt",
+              "category": "photo",
+              "destination": "Pictures/2026",
+              "confidence": 90,
+              "reason": "Preview indicates photo content, filename suggests photo",
+              "needs_review": false
+            },
+            {
+              "name": "IMG_2098_copy.txt",
+              "category": "photo",
+              "destination": "Pictures/backup/2026",
+              "confidence": 90,
+              "reason": "Duplicate content of IMG_2098.txt, photo preview",
+              "needs_review": false
+            },
+            {
+              "name": "sunset_dup.txt",
+              "category": "photo",
+              "destination": "Pictures/backup/2026",
+              "confidence": 90,
+              "reason": "Duplicate content of sunset.txt, photo preview",
+              "needs_review": false
+            },
+            {
+              "name": "README.md",
+              "category": "code",
+              "destination": "Projects/EAGv3/Session7",
+              "confidence": 95,
+              "reason": "Filename and extension typical for project documentation",
+              "needs_review": false
+            },
+            {
+              "name": "flow.py",
+              "category": "code",
+              "destination": "Projects/EAGv3/Session7/code",
+              "confidence": 95,
+              "reason": "Python code file with typical project path",
+              "needs_review": false
+            },
+            {
+              "name": "README.md",
+              "category": "code",
+              "destination": "Projects/EAGv3/Session8",
+              "confidence": 95,
+              "reason": "Filename and extension typical for project documentation",
+              "needs_review": false
+            },
+            {
+              "name": "flow.py",
+              "category": "code",
+              "destination": "Projects/EAGv3/Session8/code",
+              "confidence": 95,
+              "reason": "Python code file with typical project path",
+              "needs_review": false
+            }
+          ],
+          "rationale": "Files mostly grouped by type but some mixing in Downloads and Pictures; sensitive financial docs flagged; duplicates found in Pictures backup; overall moderate organization with room for improvement."
+        },
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 23.495659828186035,
+        "provider": "github",
+        "error": null
+      },
+      "_result_typed": true,
+      "id": "n:40"
+    },
+    {
+      "skill": "critic",
+      "inputs": [
+        "n:40"
+      ],
+      "metadata": {
+        "label": "crit_pics",
+        "question": "verify destination matches content type and extension for each classified file in Pictures"
+      },
+      "status": "complete",
+      "result": {
+        "success": true,
+        "agent_name": "critic",
+        "output": {
+          "verdict": "pass",
+          "rationale": "All destinations are consistent with file extensions and previews."
+        },
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 157.6590600013733,
+        "provider": "nvidia",
+        "error": null
+      },
+      "_result_typed": true,
+      "id": "n:41"
+    },
+    {
+      "skill": "classifier",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "label": "proj",
+        "question": "Classify non\u2011sensitive project files (md, py) in Projects"
+      },
+      "status": "complete",
+      "result": {
+        "success": true,
+        "agent_name": "classifier",
+        "output": {
+          "classified": [
+            {
+              "name": "Form16_FY2025.txt",
+              "category": "document",
+              "destination": "Finance/Tax/2025",
+              "confidence": 90,
+              "reason": "filename indicates tax form",
+              "needs_review": true
+            },
+            {
+              "name": "HDFC_statement_Jan2026.txt",
+              "category": "document",
+              "destination": "Finance/BankStatements/2026",
+              "confidence": 92,
+              "reason": "filename contains bank statement",
+              "needs_review": true
+            },
+            {
+              "name": "PAN_card.txt",
+              "category": "document",
+              "destination": "Personal/IDs",
+              "confidence": 90,
+              "reason": "filename mentions PAN card",
+              "needs_review": true
+            },
+            {
+              "name": "salary_slip_april2026.txt",
+              "category": "receipt",
+              "destination": "Finance/Salary/2026",
+              "confidence": 90,
+              "reason": "filename indicates salary slip",
+              "needs_review": true
+            },
+            {
+              "name": "amazon_order_4471.txt",
+              "category": "receipt",
+              "destination": "Finance/Receipts/2026",
+              "confidence": 95,
+              "reason": "preview contains Amazon tax invoice",
+              "needs_review": false
+            },
+            {
+              "name": "electricity_bill_jan.txt",
+              "category": "receipt",
+              "destination": "Finance/Utilities/2026",
+              "confidence": 95,
+              "reason": "preview mentions electricity bill",
+              "needs_review": false
+            },
+            {
+              "name": "flipkart_2025_tv.txt",
+              "category": "receipt",
+              "destination": "Finance/Receipts/2025",
+              "confidence": 95,
+              "reason": "preview contains Flipkart tax invoice",
+              "needs_review": false
+            },
+            {
+              "name": "IMG_20260601_165420.txt",
+              "category": "document",
+              "destination": "Documents/Notes/2026",
+              "confidence": 85,
+              "reason": "preview shows meeting notes despite image\u2011like name",
+              "needs_review": false
+            },
+            {
+              "name": "old_notes_2023.txt",
+              "category": "document",
+              "destination": "Documents/Notes/2023",
+              "confidence": 80,
+              "reason": "generic name with minimal preview",
+              "needs_review": true
+            },
+            {
+              "name": "untitled.txt",
+              "category": "other",
+              "destination": "Misc",
+              "confidence": 60,
+              "reason": "no meaningful name or preview",
+              "needs_review": true
+            },
+            {
+              "name": "swiggy_invoice_mar.txt",
+              "category": "receipt",
+              "destination": "Finance/Receipts/2026",
+              "confidence": 95,
+              "reason": "preview contains Swiggy invoice",
+              "needs_review": false
+            },
+            {
+              "name": "IMG_2098.txt",
+              "category": "photo",
+              "destination": "Pictures/2026",
+              "confidence": 90,
+              "reason": "preview labelled PHOTO\u2011AAA",
+              "needs_review": false
+            },
+            {
+              "name": "sunset.txt",
+              "category": "photo",
+              "destination": "Pictures/2026",
+              "confidence": 90,
+              "reason": "preview labelled PHOTO\u2011BBB",
+              "needs_review": false
+            },
+            {
+              "name": "IMG_2098_copy.txt",
+              "category": "photo",
+              "destination": "Pictures/2026",
+              "confidence": 90,
+              "reason": "duplicate of IMG_2098.txt",
+              "needs_review": false
+            },
+            {
+              "name": "sunset_dup.txt",
+              "category": "photo",
+              "destination": "Pictures/2026",
+              "confidence": 90,
+              "reason": "duplicate of sunset.txt",
+              "needs_review": false
+            },
+            {
+              "name": "README.md",
+              "category": "document",
+              "destination": "Projects/EAGv3/Session7",
+              "confidence": 95,
+              "reason": "markdown readme in project folder",
+              "needs_review": false
+            },
+            {
+              "name": "flow.py",
+              "category": "code",
+              "destination": "Projects/EAGv3/Session7/code",
+              "confidence": 95,
+              "reason": "Python source file in code subfolder",
+              "needs_review": false
+            },
+            {
+              "name": "README.md",
+              "category": "document",
+              "destination": "Projects/EAGv3/Session8",
+              "confidence": 95,
+              "reason": "markdown readme in project folder",
+              "needs_review": false
+            },
+            {
+              "name": "flow.py",
+              "category": "code",
+              "destination": "Projects/EAGv3/Session8/code",
+              "confidence": 95,
+              "reason": "Python source file in code subfolder",
+              "needs_review": false
+            }
+          ],
+          "rationale": "Folder is poorly organized with mixed receipts, documents and duplicate photos; 2 duplicate groups (20\u202fbytes reclaimable); 4 financial files flagged for review; propose consolidating receipts under Finance, photos under Pictures, and code under Projects."
+        },
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 9.31260347366333,
+        "provider": "cerebras",
+        "error": null
+      },
+      "_result_typed": true,
+      "id": "n:42"
+    },
+    {
+      "skill": "critic",
+      "inputs": [
+        "n:42"
+      ],
+      "metadata": {
+        "label": "crit_proj",
+        "question": "verify destination matches content type and extension for each classified file in Projects"
+      },
+      "status": "complete",
+      "result": {
+        "success": true,
+        "agent_name": "critic",
+        "output": {
+          "verdict": "pass",
+          "rationale": "All destinations are consistent with file extensions and previews."
+        },
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 16.892740488052368,
+        "provider": "cerebras",
+        "error": null
+      },
+      "_result_typed": true,
+      "id": "n:43"
+    },
+    {
+      "skill": "formatter",
+      "inputs": [
+        "n:36",
+        "n:37",
+        "n:38",
+        "n:39",
+        "n:40",
+        "n:41",
+        "n:42",
+        "n:43"
+      ],
+      "metadata": {
+        "label": "out",
+        "question": "Produce phase\u20111 report with diagnosis, classification results, duplicate groups, reclaimable space, and minimal/medium/best effort re\u2011organisation plans"
+      },
+      "status": "complete",
+      "result": {
+        "success": true,
+        "agent_name": "formatter",
+        "output": {
+          "final_answer": "### Drive Organisation Diagnosis\n- **Projects** \u2013 excellent hierarchy (session\u2011based folders, consistent naming, no duplicates).\u202fScore 92.\n- **Documents** \u2013 good (all files are financial, uniformly placed).\u202fScore 85, but they are all sensitive and should be isolated.\n- **Downloads** \u2013 mixed bag: invoices, notes, and a stray installer\u2011extract folder are all together; no sub\u2011folders by type or year.\n- **Pictures** \u2013 contains only placeholder text files; two exact duplicates exist in a \u201cbackup\u201d sub\u2011folder.\nOverall the drive is small (19 files) but lacks a clear, consistent structure outside of Projects.\n\n### Sensitive / Private Files (identified from metadata only)\n| File | Confidence | Suggested label |\n|------|------------|-----------------|\n| Form16_FY2025.txt | 95\u202f% | Private/Finance |\n| HDFC_statement_Jan2026.txt | 98\u202f% | Private/Finance |\n| PAN_card.txt | 97\u202f% | Private/Personal |\n| salary_slip_april2026.txt | 96\u202f% | Private/Finance |\n*These files are flagged without reading their contents.*\n\n### Classification of Non\u2011Sensitive Files (parallel batches)\n| File | Category | Suggested Destination |\n|------|----------|------------------------|\n| amazon_order_4471.txt | receipt | Finance/Receipts/2026 |\n| electricity_bill_jan.txt | receipt | Finance/Utilities/2026 |\n| flipkart_2025_tv.txt | receipt | Finance/Receipts/2025 |\n| swiggy_invoice_mar.txt | receipt | Finance/Receipts/2026 |\n| IMG_20260601_165420.txt | document (meeting notes) | Documents/Notes/2026 |\n| old_notes_2023.txt | document (needs review) | Documents/Notes/2023 |\n| untitled.txt | other (needs review) | Misc |\n| IMG_2098.txt | photo | Pictures/2026 |\n| sunset.txt | photo | Pictures/2026 |\n| IMG_2098_copy.txt | photo (duplicate) | Pictures/2026 |\n| sunset_dup.txt | photo (duplicate) | Pictures/2026 |\n| README.md (EAGv3 Session7) | other | Projects/EAGv3/Session7 |\n| flow.py (Session7) | other | Projects/EAGv3/Session7/code |\n| README.md (Session8) | other | Projects/EAGv3/Session8 |\n| flow.py (Session8) | other | Projects/EAGv3/Session8/code |\n\n### Duplicate Files & Reclaimable Space\n- **Group 1 (hash dc60fc3044c8)**: `Pictures\\IMG_2098.txt` & `Pictures\\backup\\IMG_2098_copy.txt` \u2013 10\u202fbytes each. One duplicate \u2192 **10\u202fbytes reclaimable**.\n- **Group 2 (hash 334953bab38c)**: `Pictures\\sunset.txt` & `Pictures\\backup\\sunset_dup.txt` \u2013 10\u202fbytes each. One duplicate \u2192 **10\u202fbytes reclaimable**.\n- **Total reclaimable from duplicates:** **\u2248\u202f20\u202fbytes**.\n- The skipped installer\u2011extract folder (`Downloads\\SetupTool_v3_extracted`) is recommended for deletion; its size isn\u2019t listed, so reclaimable space cannot be quantified.\n\n### Phase\u20111 Report \u2013 Organisation Plans\n#### Minimal Effort (\u2248\u202f5\u202fmin, very low risk)\n1. Delete the two exact duplicate picture files (keep one copy each).\n2. Delete the installer\u2011extract folder `Downloads\\SetupTool_v3_extracted`.\n*Reclaimable space \u2248\u202f20\u202fbytes + whatever the installer folder occupies.*\n\n#### Medium Effort (\u2248\u202f15\u201120\u202fmin, low risk) \u2013 **Recommended**\n1. Perform the minimal actions above.\n2. Create `Downloads\\Bills\\2026` and move all invoice\u2011type txt files there:\n   - `amazon_order_4471.txt`\n   - `electricity_bill_jan.txt`\n   - `flipkart_2025_tv.txt`\n   - `bills\\swiggy_invoice_mar.txt`\n3. Create `Downloads\\Archive\\2023` and move `old_notes_2023.txt` and `untitled.txt` there.\n4. Consolidate picture duplicates: move the copies from `Pictures\\backup` into a dedicated `Pictures\\Backup` folder and delete the originals that are now duplicated.\n*Reclaimable space \u2248\u202f20\u202fbytes + space freed by the installer folder.*\n\n#### Best Effort (\u2248\u202f45\u201160\u202fmin, medium risk)\n1. Execute all medium\u2011plan actions.\n2. In **Documents**, create a sub\u2011folder `Financial` and move the four sensitive txt files there; rename them to a uniform snake_case pattern (e.g., `form16_fy2025.txt`, `hdfc_statement_jan_2026.txt`, `pan_card.txt`, `salary_slip_april_2026.txt`).\n3. In **Pictures**, create an `Originals` folder for the primary images, keep only one copy there, and move backup copies to `Pictures\\Backup` with a `_backup` suffix.\n4. In **Downloads**, further organise by type:\n   - `Downloads\\Invoices\\2026`\n   - `Downloads\\Notes\\2023`\n   - `Downloads\\Archive` for any stale files.\n5. Rename all files to follow a consistent convention: lowercase, underscores, year at the end.\n*Reclaimable space remains \u2248\u202f20\u202fbytes + installer folder; primary benefit is a clean, searchable hierarchy.*\n\n**Summary:** The drive is already tidy in Projects, decent in Documents, but Downloads and Pictures need grouping, duplicate cleanup, and consistent naming. Following the medium\u2011effort plan will give a well\u2011structured layout with minimal time investment, while the best\u2011effort plan adds comprehensive naming standards and deeper segregation of sensitive material."
+        },
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 185.1750419139862,
+        "provider": "cerebras",
+        "error": null
+      },
+      "_result_typed": true,
+      "id": "n:44"
+    },
+    {
+      "skill": "planner",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "failure_report": "critic failed target=n:30 child=n:35 rationale=Classifier returned empty output; expected a classified list of files.",
+        "recovers": "n:30",
+        "recovery_reason": "critic_fail"
+      },
+      "status": "complete",
+      "result": {
+        "success": true,
+        "agent_name": "planner",
+        "output": {},
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 6.79900050163269,
+        "provider": "groq",
+        "error": null
+      },
+      "_result_typed": true,
+      "id": "n:45"
+    }
+  ],
+  "edges": [
+    {
+      "source": "n:2",
+      "target": "n:10"
+    },
+    {
+      "source": "n:3",
+      "target": "n:10"
+    },
+    {
+      "source": "n:4",
+      "target": "n:5"
+    },
+    {
+      "source": "n:4",
+      "target": "n:10"
+    },
+    {
+      "source": "n:5",
+      "target": "n:10"
+    },
+    {
+      "source": "n:6",
+      "target": "n:7"
+    },
+    {
+      "source": "n:6",
+      "target": "n:10"
+    },
+    {
+      "source": "n:7",
+      "target": "n:10"
+    },
+    {
+      "source": "n:8",
+      "target": "n:9"
+    },
+    {
+      "source": "n:8",
+      "target": "n:10"
+    },
+    {
+      "source": "n:9",
+      "target": "n:10"
+    },
+    {
+      "source": "n:13",
+      "target": "n:22"
+    },
+    {
+      "source": "n:14",
+      "target": "n:15"
+    },
+    {
+      "source": "n:14",
+      "target": "n:22"
+    },
+    {
+      "source": "n:15",
+      "target": "n:22"
+    },
+    {
+      "source": "n:16",
+      "target": "n:17"
+    },
+    {
+      "source": "n:16",
+      "target": "n:22"
+    },
+    {
+      "source": "n:17",
+      "target": "n:22"
+    },
+    {
+      "source": "n:18",
+      "target": "n:19"
+    },
+    {
+      "source": "n:18",
+      "target": "n:22"
+    },
+    {
+      "source": "n:19",
+      "target": "n:22"
+    },
+    {
+      "source": "n:20",
+      "target": "n:22"
+    },
+    {
+      "source": "n:20",
+      "target": "n:23"
+    },
+    {
+      "source": "n:21",
+      "target": "n:22"
+    },
+    {
+      "source": "n:27",
+      "target": "n:35"
+    },
+    {
+      "source": "n:28",
+      "target": "n:29"
+    },
+    {
+      "source": "n:28",
+      "target": "n:35"
+    },
+    {
+      "source": "n:29",
+      "target": "n:35"
+    },
+    {
+      "source": "n:30",
+      "target": "n:31"
+    },
+    {
+      "source": "n:30",
+      "target": "n:35"
+    },
+    {
+      "source": "n:31",
+      "target": "n:35"
+    },
+    {
+      "source": "n:32",
+      "target": "n:33"
+    },
+    {
+      "source": "n:32",
+      "target": "n:35"
+    },
+    {
+      "source": "n:33",
+      "target": "n:35"
+    },
+    {
+      "source": "n:34",
+      "target": "n:35"
+    },
+    {
+      "source": "n:36",
+      "target": "n:44"
+    },
+    {
+      "source": "n:37",
+      "target": "n:44"
+    },
+    {
+      "source": "n:38",
+      "target": "n:39"
+    },
+    {
+      "source": "n:38",
+      "target": "n:44"
+    },
+    {
+      "source": "n:39",
+      "target": "n:44"
+    },
+    {
+      "source": "n:40",
+      "target": "n:41"
+    },
+    {
+      "source": "n:40",
+      "target": "n:44"
+    },
+    {
+      "source": "n:41",
+      "target": "n:44"
+    },
+    {
+      "source": "n:42",
+      "target": "n:43"
+    },
+    {
+      "source": "n:42",
+      "target": "n:44"
+    },
+    {
+      "source": "n:43",
+      "target": "n:44"
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "node_id": "n:18",
+  "skill": "sandbox_executor",
+  "status": "running",
+  "inputs": [
+    "n:16"
+  ],
+  "result": null,
+  "prompt_sent": null,
+  "started_at": 1780244564.3566563,
+  "completed_at": null,
+  "retries": 0
+}

@@ -1,0 +1,169 @@
+{
+  "directed": true,
+  "multigraph": false,
+  "graph": {},
+  "nodes": [
+    {
+      "skill": "planner",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {},
+      "status": "complete",
+      "result": {
+        "success": true,
+        "agent_name": "planner",
+        "output": {
+          "rationale": "Fetch the Wikipedia page, extract the requested facts, then format the answer.",
+          "nodes": [
+            {
+              "skill": "researcher",
+              "inputs": [
+                "USER_QUERY"
+              ],
+              "metadata": {
+                "label": "r1",
+                "question": "Retrieve Claude Shannon Wikipedia page"
+              }
+            },
+            {
+              "skill": "distiller",
+              "inputs": [
+                "n:r1"
+              ],
+              "metadata": {
+                "label": "d1",
+                "question": "Extract birth date, death date, and three key contributions to information theory"
+              }
+            },
+            {
+              "skill": "formatter",
+              "inputs": [
+                "n:d1"
+              ],
+              "metadata": {
+                "label": "out"
+              }
+            }
+          ]
+        },
+        "artifacts": [],
+        "successors": [
+          {
+            "skill": "researcher",
+            "inputs": [
+              "USER_QUERY"
+            ],
+            "metadata": {
+              "label": "r1",
+              "question": "Retrieve Claude Shannon Wikipedia page"
+            }
+          },
+          {
+            "skill": "distiller",
+            "inputs": [
+              "n:r1"
+            ],
+            "metadata": {
+              "label": "d1",
+              "question": "Extract birth date, death date, and three key contributions to information theory"
+            }
+          },
+          {
+            "skill": "formatter",
+            "inputs": [
+              "n:d1"
+            ],
+            "metadata": {
+              "label": "out"
+            }
+          }
+        ],
+        "cost": 0.0,
+        "elapsed_s": 3.570793390274048,
+        "provider": "groq",
+        "error": null
+      },
+      "_result_typed": true,
+      "id": "n:1"
+    },
+    {
+      "skill": "researcher",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "label": "r1",
+        "question": "Retrieve Claude Shannon Wikipedia page"
+      },
+      "status": "complete",
+      "result": {
+        "success": true,
+        "agent_name": "researcher",
+        "output": {
+          "question": "Fetch https://en.wikipedia.org/wiki/Claude_Shannon and tell me his birth date, death date, and three key contributions to information theory.",
+          "sources": [
+            {
+              "url": "https://en.m.wikipedia.org/wiki/Claude_Shannon",
+              "title": "Claude Shannon - Wikipedia"
+            }
+          ],
+          "findings": "Claude Elwood Shannon was born on April 30, 1916, and died on February 24, 2001. He was an American polymath known as the father of information theory. Three key contributions to information theory by Claude Shannon include: 1) Founding information theory with his landmark 1948 paper \"A Mathematical Theory of Communication,\" which established fundamental concepts in the field. 2) Developing the mathematical theory of digital circuits and digital circuit design theory. 3) Laying the theoretical foundations for digital communication and data compression, which are central to modern telecommunications and computer science."
+        },
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 34.36455035209656,
+        "provider": "github",
+        "error": null
+      },
+      "_result_typed": true,
+      "id": "n:2"
+    },
+    {
+      "skill": "distiller",
+      "inputs": [
+        "n:2"
+      ],
+      "metadata": {
+        "label": "d1",
+        "question": "Extract birth date, death date, and three key contributions to information theory"
+      },
+      "status": "failed",
+      "result": {
+        "success": false,
+        "agent_name": "distiller",
+        "output": {},
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 0.0,
+        "provider": "",
+        "error": "exception: HTTPStatusError: Server error '502 Bad Gateway' for url 'http://localhost:8108/v1/chat'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/502"
+      },
+      "_result_typed": true,
+      "id": "n:3"
+    },
+    {
+      "skill": "formatter",
+      "inputs": [
+        "n:3"
+      ],
+      "metadata": {
+        "label": "out"
+      },
+      "status": "pending",
+      "id": "n:4"
+    }
+  ],
+  "edges": [
+    {
+      "source": "n:2",
+      "target": "n:3"
+    },
+    {
+      "source": "n:3",
+      "target": "n:4"
+    }
+  ]
+}

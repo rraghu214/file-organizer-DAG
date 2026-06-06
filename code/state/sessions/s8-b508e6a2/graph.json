@@ -1,0 +1,476 @@
+{
+  "directed": true,
+  "multigraph": false,
+  "graph": {},
+  "nodes": [
+    {
+      "skill": "planner",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {},
+      "status": "complete",
+      "result": {
+        "success": true,
+        "agent_name": "planner",
+        "output": {
+          "rationale": "Diagnose overall layout, classify non-sensitive document, photo, and receipt batches in parallel, flag private files via metadata, compute duplicates and reclaimable space, then assemble a phase\u20111 report with effort plans.",
+          "nodes": [
+            {
+              "skill": "pattern_analyzer",
+              "inputs": [
+                "USER_QUERY"
+              ],
+              "metadata": {
+                "label": "diag",
+                "question": "Diagnose the current folder organisation"
+              }
+            },
+            {
+              "skill": "classifier",
+              "inputs": [
+                "USER_QUERY"
+              ],
+              "metadata": {
+                "label": "docs",
+                "question": "Classify non\u2011sensitive document files (e.g., .txt in Documents)"
+              }
+            },
+            {
+              "skill": "classifier",
+              "inputs": [
+                "USER_QUERY"
+              ],
+              "metadata": {
+                "label": "photos",
+                "question": "Classify photo files (e.g., files in Pictures folder)"
+              }
+            },
+            {
+              "skill": "classifier",
+              "inputs": [
+                "USER_QUERY"
+              ],
+              "metadata": {
+                "label": "receipts",
+                "question": "Classify receipt files (e.g., bills in Downloads)"
+              }
+            },
+            {
+              "skill": "sensitive_detector",
+              "inputs": [
+                "USER_QUERY"
+              ],
+              "metadata": {
+                "label": "priv",
+                "question": "Flag private/financial files from metadata only"
+              }
+            },
+            {
+              "skill": "coder",
+              "inputs": [
+                "USER_QUERY"
+              ],
+              "metadata": {
+                "label": "dup",
+                "question": "Compute duplicate groups, total duplicate size and reclaimable space"
+              }
+            },
+            {
+              "skill": "formatter",
+              "inputs": [
+                "n:diag",
+                "n:docs",
+                "n:photos",
+                "n:receipts",
+                "n:priv",
+                "n:dup"
+              ],
+              "metadata": {
+                "label": "out"
+              }
+            }
+          ]
+        },
+        "artifacts": [],
+        "successors": [
+          {
+            "skill": "pattern_analyzer",
+            "inputs": [
+              "USER_QUERY"
+            ],
+            "metadata": {
+              "label": "diag",
+              "question": "Diagnose the current folder organisation"
+            }
+          },
+          {
+            "skill": "classifier",
+            "inputs": [
+              "USER_QUERY"
+            ],
+            "metadata": {
+              "label": "docs",
+              "question": "Classify non\u2011sensitive document files (e.g., .txt in Documents)"
+            }
+          },
+          {
+            "skill": "classifier",
+            "inputs": [
+              "USER_QUERY"
+            ],
+            "metadata": {
+              "label": "photos",
+              "question": "Classify photo files (e.g., files in Pictures folder)"
+            }
+          },
+          {
+            "skill": "classifier",
+            "inputs": [
+              "USER_QUERY"
+            ],
+            "metadata": {
+              "label": "receipts",
+              "question": "Classify receipt files (e.g., bills in Downloads)"
+            }
+          },
+          {
+            "skill": "sensitive_detector",
+            "inputs": [
+              "USER_QUERY"
+            ],
+            "metadata": {
+              "label": "priv",
+              "question": "Flag private/financial files from metadata only"
+            }
+          },
+          {
+            "skill": "coder",
+            "inputs": [
+              "USER_QUERY"
+            ],
+            "metadata": {
+              "label": "dup",
+              "question": "Compute duplicate groups, total duplicate size and reclaimable space"
+            }
+          },
+          {
+            "skill": "formatter",
+            "inputs": [
+              "n:diag",
+              "n:docs",
+              "n:photos",
+              "n:receipts",
+              "n:priv",
+              "n:dup"
+            ],
+            "metadata": {
+              "label": "out"
+            }
+          }
+        ],
+        "cost": 0.0,
+        "elapsed_s": 5.548720598220825,
+        "provider": "groq",
+        "error": null
+      },
+      "_result_typed": true,
+      "id": "n:1"
+    },
+    {
+      "skill": "pattern_analyzer",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "label": "diag",
+        "question": "Diagnose the current folder organisation"
+      },
+      "status": "complete",
+      "result": {
+        "success": true,
+        "agent_name": "pattern_analyzer",
+        "output": {
+          "highlights": [
+            {
+              "path": "Documents",
+              "score": 90,
+              "label": "excellent",
+              "note": "All files are financial documents, consistently named and kept in a single purpose folder."
+            },
+            {
+              "path": "Projects",
+              "score": 85,
+              "label": "good",
+              "note": "Clear session\u2011based hierarchy with matching README and code files."
+            }
+          ],
+          "plans": {
+            "minimal": {
+              "actions": [
+                "Delete one copy of each duplicate pair (IMG_2098_copy.txt, sunset_dup.txt).",
+                "Delete the installer\u2011extract folder \"Downloads\\SetupTool_v3_extracted\" (4 files)."
+              ],
+              "effort": "~5 min",
+              "reclaimable": "\u2248 60\u202fbytes",
+              "risk": "very_low"
+            },
+            "medium": {
+              "actions": [
+                "Perform all minimal actions.",
+                "Create logical sub\u2011folders and move files:",
+                "  \u2022 Downloads \u2192 Orders (amazon_order_4471.txt, flipkart_2025_tv.txt)",
+                "  \u2022 Downloads \u2192 Bills (electricity_bill_jan.txt, bills\\swiggy_invoice_mar.txt)",
+                "  \u2022 Downloads \u2192 Notes (old_notes_2023.txt, untitled.txt)",
+                "  \u2022 Pictures \u2192 consolidate originals and delete empty \"backup\" folder after dedup.",
+                "  \u2022 Documents \u2192 move all financial files into a new sub\u2011folder \"Financial\" (optional for clearer grouping)."
+              ],
+              "effort": "~15 min",
+              "reclaimable": "\u2248 60\u202fbytes (duplicates + empty backup folder)",
+              "risk": "low",
+              "recommended": true
+            },
+            "best": {
+              "actions": [
+                "Perform all medium actions.",
+                "Introduce a top\u2011level taxonomy mirroring the well\u2011scored Documents pattern:",
+                "  \u2022 Financial (tax, statements, PAN, salary slip)",
+                "  \u2022 Purchases (amazon, flipkart orders)",
+                "  \u2022 Utilities (electricity, swiggy invoices)",
+                "  \u2022 PersonalNotes (old_notes, untitled)",
+                "  \u2022 Images (all picture files, no longer using a \"backup\" sub\u2011folder).",
+                "Rename files to a uniform convention: YYYY\u2011MM\u2011DD_Description.txt (e.g., 2026\u201101\u201101_HDFC_statement.txt).",
+                "Standardise extensions where appropriate (e.g., .txt placeholders for images could be renamed to .jpg if real images).",
+                "Create a README in the root describing the new hierarchy."
+              ],
+              "effort": "~45 min",
+              "reclaimable": "\u2248 60\u202fbytes (same as medium; most gain is organisational, not space)",
+              "risk": "medium"
+            }
+          },
+          "rationale": "The drive mixes well\u2011structured financial and project folders with a loosely organised downloads/pictures area; modest deduplication and clearer grouping will tidy it up."
+        },
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 4.642298221588135,
+        "provider": "cerebras",
+        "error": null
+      },
+      "_result_typed": true,
+      "id": "n:2"
+    },
+    {
+      "skill": "classifier",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "label": "docs",
+        "question": "Classify non\u2011sensitive document files (e.g., .txt in Documents)"
+      },
+      "status": "complete",
+      "result": {
+        "success": true,
+        "agent_name": "classifier",
+        "output": {},
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 8.295451641082764,
+        "provider": "cerebras",
+        "error": null
+      },
+      "_result_typed": true,
+      "id": "n:3"
+    },
+    {
+      "skill": "classifier",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "label": "photos",
+        "question": "Classify photo files (e.g., files in Pictures folder)"
+      },
+      "status": "failed",
+      "result": {
+        "success": false,
+        "agent_name": "classifier",
+        "output": {},
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 0.0,
+        "provider": "",
+        "error": "exception: HTTPStatusError: Server error '503 Service Unavailable' for url 'http://localhost:8108/v1/chat'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/503"
+      },
+      "_result_typed": true,
+      "id": "n:4"
+    },
+    {
+      "skill": "classifier",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "label": "receipts",
+        "question": "Classify receipt files (e.g., bills in Downloads)"
+      },
+      "status": "complete",
+      "result": {
+        "success": true,
+        "agent_name": "classifier",
+        "output": {},
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 6.484814167022705,
+        "provider": "cerebras",
+        "error": null
+      },
+      "_result_typed": true,
+      "id": "n:5"
+    },
+    {
+      "skill": "sensitive_detector",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "label": "priv",
+        "question": "Flag private/financial files from metadata only"
+      },
+      "status": "failed",
+      "result": {
+        "success": false,
+        "agent_name": "sensitive_detector",
+        "output": {},
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 0.0,
+        "provider": "",
+        "error": "exception: HTTPStatusError: Server error '502 Bad Gateway' for url 'http://localhost:8108/v1/chat'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/502"
+      },
+      "_result_typed": true,
+      "id": "n:6"
+    },
+    {
+      "skill": "coder",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "label": "dup",
+        "question": "Compute duplicate groups, total duplicate size and reclaimable space"
+      },
+      "status": "complete",
+      "result": {
+        "success": true,
+        "agent_name": "coder",
+        "output": {},
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 10.499043703079224,
+        "provider": "cerebras",
+        "error": null
+      },
+      "_result_typed": true,
+      "id": "n:7"
+    },
+    {
+      "skill": "formatter",
+      "inputs": [
+        "n:2",
+        "n:3",
+        "n:4",
+        "n:5",
+        "n:6",
+        "n:7"
+      ],
+      "metadata": {
+        "label": "out"
+      },
+      "status": "pending",
+      "id": "n:8"
+    },
+    {
+      "skill": "sandbox_executor",
+      "inputs": [
+        "n:7"
+      ],
+      "metadata": {},
+      "status": "failed",
+      "result": {
+        "success": false,
+        "agent_name": "sandbox_executor",
+        "output": {},
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 1.4543533325195312e-05,
+        "provider": "",
+        "error": "no code in upstream coder output"
+      },
+      "_result_typed": true,
+      "id": "n:9"
+    },
+    {
+      "skill": "planner",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "failure_report": "node=n:9 skill=sandbox_executor reason=upstream_failure error=no code in upstream coder output",
+        "recovers": "n:9",
+        "recovery_reason": "upstream_failure"
+      },
+      "status": "failed",
+      "result": {
+        "success": false,
+        "agent_name": "planner",
+        "output": {},
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 0.0,
+        "provider": "",
+        "error": "exception: HTTPStatusError: Server error '503 Service Unavailable' for url 'http://localhost:8108/v1/chat'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/503"
+      },
+      "_result_typed": true,
+      "id": "n:10"
+    }
+  ],
+  "edges": [
+    {
+      "source": "n:2",
+      "target": "n:8"
+    },
+    {
+      "source": "n:3",
+      "target": "n:8"
+    },
+    {
+      "source": "n:4",
+      "target": "n:8"
+    },
+    {
+      "source": "n:5",
+      "target": "n:8"
+    },
+    {
+      "source": "n:6",
+      "target": "n:8"
+    },
+    {
+      "source": "n:7",
+      "target": "n:8"
+    },
+    {
+      "source": "n:7",
+      "target": "n:9"
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "node_id": "n:3",
+  "skill": "distiller",
+  "status": "failed",
+  "inputs": [
+    "n:2"
+  ],
+  "result": {
+    "success": false,
+    "agent_name": "distiller",
+    "output": {},
+    "artifacts": [],
+    "successors": [],
+    "cost": 0.0,
+    "elapsed_s": 0.0,
+    "provider": "",
+    "error": "exception: HTTPStatusError: Server error '502 Bad Gateway' for url 'http://localhost:8108/v1/chat'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/502"
+  },
+  "prompt_sent": "(exception before prompt-render)",
+  "started_at": 1780254255.810856,
+  "completed_at": 1780254255.8108568,
+  "retries": 0
+}

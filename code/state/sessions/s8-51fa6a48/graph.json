@@ -1,0 +1,1191 @@
+{
+  "directed": true,
+  "multigraph": false,
+  "graph": {},
+  "nodes": [
+    {
+      "skill": "planner",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {},
+      "status": "complete",
+      "result": {
+        "success": true,
+        "agent_name": "planner",
+        "output": {
+          "rationale": "Diagnose overall organization, classify non-sensitive document, photo, and receipt batches in parallel, flag private files via metadata, compute duplicate files and reclaimable space, then assemble a phase\u20111 report with effort plans.",
+          "nodes": [
+            {
+              "skill": "pattern_analyzer",
+              "inputs": [
+                "USER_QUERY"
+              ],
+              "metadata": {
+                "label": "diag",
+                "question": "Assess current folder organisation and suggest improvement levels"
+              }
+            },
+            {
+              "skill": "classifier",
+              "inputs": [
+                "USER_QUERY"
+              ],
+              "metadata": {
+                "label": "docs",
+                "question": "Classify non\u2011sensitive document files"
+              }
+            },
+            {
+              "skill": "classifier",
+              "inputs": [
+                "USER_QUERY"
+              ],
+              "metadata": {
+                "label": "photos",
+                "question": "Classify photo files"
+              }
+            },
+            {
+              "skill": "classifier",
+              "inputs": [
+                "USER_QUERY"
+              ],
+              "metadata": {
+                "label": "receipts",
+                "question": "Classify receipt files"
+              }
+            },
+            {
+              "skill": "sensitive_detector",
+              "inputs": [
+                "USER_QUERY"
+              ],
+              "metadata": {
+                "label": "priv",
+                "question": "Flag private/financial files from metadata only"
+              }
+            },
+            {
+              "skill": "coder",
+              "inputs": [
+                "USER_QUERY"
+              ],
+              "metadata": {
+                "label": "dup",
+                "question": "Compute total duplicate size and reclaimable space based on duplicate_groups"
+              }
+            },
+            {
+              "skill": "formatter",
+              "inputs": [
+                "n:diag",
+                "n:docs",
+                "n:photos",
+                "n:receipts",
+                "n:priv",
+                "n:dup"
+              ],
+              "metadata": {
+                "label": "out"
+              }
+            }
+          ]
+        },
+        "artifacts": [],
+        "successors": [
+          {
+            "skill": "pattern_analyzer",
+            "inputs": [
+              "USER_QUERY"
+            ],
+            "metadata": {
+              "label": "diag",
+              "question": "Assess current folder organisation and suggest improvement levels"
+            }
+          },
+          {
+            "skill": "classifier",
+            "inputs": [
+              "USER_QUERY"
+            ],
+            "metadata": {
+              "label": "docs",
+              "question": "Classify non\u2011sensitive document files"
+            }
+          },
+          {
+            "skill": "classifier",
+            "inputs": [
+              "USER_QUERY"
+            ],
+            "metadata": {
+              "label": "photos",
+              "question": "Classify photo files"
+            }
+          },
+          {
+            "skill": "classifier",
+            "inputs": [
+              "USER_QUERY"
+            ],
+            "metadata": {
+              "label": "receipts",
+              "question": "Classify receipt files"
+            }
+          },
+          {
+            "skill": "sensitive_detector",
+            "inputs": [
+              "USER_QUERY"
+            ],
+            "metadata": {
+              "label": "priv",
+              "question": "Flag private/financial files from metadata only"
+            }
+          },
+          {
+            "skill": "coder",
+            "inputs": [
+              "USER_QUERY"
+            ],
+            "metadata": {
+              "label": "dup",
+              "question": "Compute total duplicate size and reclaimable space based on duplicate_groups"
+            }
+          },
+          {
+            "skill": "formatter",
+            "inputs": [
+              "n:diag",
+              "n:docs",
+              "n:photos",
+              "n:receipts",
+              "n:priv",
+              "n:dup"
+            ],
+            "metadata": {
+              "label": "out"
+            }
+          }
+        ],
+        "cost": 0.0,
+        "elapsed_s": 4.965077638626099,
+        "provider": "groq",
+        "error": null
+      },
+      "_result_typed": true,
+      "id": "n:1"
+    },
+    {
+      "skill": "pattern_analyzer",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "label": "diag",
+        "question": "Assess current folder organisation and suggest improvement levels"
+      },
+      "status": "complete",
+      "result": {
+        "success": true,
+        "agent_name": "pattern_analyzer",
+        "output": {},
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 18.144766330718994,
+        "provider": "gemini",
+        "error": null
+      },
+      "_result_typed": true,
+      "id": "n:2"
+    },
+    {
+      "skill": "classifier",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "label": "docs",
+        "question": "Classify non\u2011sensitive document files"
+      },
+      "status": "failed",
+      "result": {
+        "success": false,
+        "agent_name": "classifier",
+        "output": {},
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 0.0,
+        "provider": "",
+        "error": "exception: ReadTimeout: timed out"
+      },
+      "_result_typed": true,
+      "id": "n:3"
+    },
+    {
+      "skill": "classifier",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "label": "photos",
+        "question": "Classify photo files"
+      },
+      "status": "complete",
+      "result": {
+        "success": true,
+        "agent_name": "classifier",
+        "output": {},
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 438.4901683330536,
+        "provider": "ollama",
+        "error": null
+      },
+      "_result_typed": true,
+      "id": "n:4"
+    },
+    {
+      "skill": "classifier",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "label": "receipts",
+        "question": "Classify receipt files"
+      },
+      "status": "failed",
+      "result": {
+        "success": false,
+        "agent_name": "classifier",
+        "output": {},
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 0.0,
+        "provider": "",
+        "error": "exception: ReadTimeout: timed out"
+      },
+      "_result_typed": true,
+      "id": "n:5"
+    },
+    {
+      "skill": "sensitive_detector",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "label": "priv",
+        "question": "Flag private/financial files from metadata only"
+      },
+      "status": "complete",
+      "result": {
+        "success": true,
+        "agent_name": "sensitive_detector",
+        "output": {},
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 167.88897466659546,
+        "provider": "ollama",
+        "error": null
+      },
+      "_result_typed": true,
+      "id": "n:6"
+    },
+    {
+      "skill": "coder",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "label": "dup",
+        "question": "Compute total duplicate size and reclaimable space based on duplicate_groups"
+      },
+      "status": "complete",
+      "result": {
+        "success": true,
+        "agent_name": "coder",
+        "output": {},
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 12.861398220062256,
+        "provider": "gemini",
+        "error": null
+      },
+      "_result_typed": true,
+      "id": "n:7"
+    },
+    {
+      "skill": "formatter",
+      "inputs": [
+        "n:2",
+        "n:3",
+        "n:4",
+        "n:5",
+        "n:6",
+        "n:7"
+      ],
+      "metadata": {
+        "label": "out"
+      },
+      "status": "pending",
+      "id": "n:8"
+    },
+    {
+      "skill": "sandbox_executor",
+      "inputs": [
+        "n:7"
+      ],
+      "metadata": {},
+      "status": "failed",
+      "result": {
+        "success": false,
+        "agent_name": "sandbox_executor",
+        "output": {},
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 0.0003619194030761719,
+        "provider": "",
+        "error": "no code in upstream coder output"
+      },
+      "_result_typed": true,
+      "id": "n:9"
+    },
+    {
+      "skill": "planner",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "failure_report": "node=n:9 skill=sandbox_executor reason=upstream_failure error=no code in upstream coder output",
+        "recovers": "n:9",
+        "recovery_reason": "upstream_failure"
+      },
+      "status": "complete",
+      "result": {
+        "success": true,
+        "agent_name": "planner",
+        "output": {
+          "rationale": "Diagnose folder layout, classify non-sensitive batches in parallel, flag private files from metadata, compute duplicate size via code, then assemble a phase\u20111 report.",
+          "nodes": [
+            {
+              "skill": "pattern_analyzer",
+              "inputs": [
+                "USER_QUERY"
+              ],
+              "metadata": {
+                "label": "diag",
+                "question": "overall organization diagnosis"
+              }
+            },
+            {
+              "skill": "classifier",
+              "inputs": [
+                "USER_QUERY"
+              ],
+              "metadata": {
+                "label": "docs",
+                "question": "non\u2011sensitive document batch (Documents folder)"
+              }
+            },
+            {
+              "skill": "classifier",
+              "inputs": [
+                "USER_QUERY"
+              ],
+              "metadata": {
+                "label": "photos",
+                "question": "non\u2011sensitive photo batch (Pictures folder)"
+              }
+            },
+            {
+              "skill": "classifier",
+              "inputs": [
+                "USER_QUERY"
+              ],
+              "metadata": {
+                "label": "receipts",
+                "question": "non\u2011sensitive receipt batch (Downloads folder)"
+              }
+            },
+            {
+              "skill": "sensitive_detector",
+              "inputs": [
+                "USER_QUERY"
+              ],
+              "metadata": {
+                "label": "priv",
+                "question": "flag private/financial files from metadata only"
+              }
+            },
+            {
+              "skill": "coder",
+              "inputs": [
+                "USER_QUERY"
+              ],
+              "metadata": {
+                "label": "dup",
+                "question": "compute duplicate files and reclaimable space"
+              }
+            },
+            {
+              "skill": "formatter",
+              "inputs": [
+                "n:diag",
+                "n:docs",
+                "n:photos",
+                "n:receipts",
+                "n:priv",
+                "n:dup"
+              ],
+              "metadata": {
+                "label": "out"
+              }
+            }
+          ]
+        },
+        "artifacts": [],
+        "successors": [
+          {
+            "skill": "pattern_analyzer",
+            "inputs": [
+              "USER_QUERY"
+            ],
+            "metadata": {
+              "label": "diag",
+              "question": "overall organization diagnosis"
+            }
+          },
+          {
+            "skill": "classifier",
+            "inputs": [
+              "USER_QUERY"
+            ],
+            "metadata": {
+              "label": "docs",
+              "question": "non\u2011sensitive document batch (Documents folder)"
+            }
+          },
+          {
+            "skill": "classifier",
+            "inputs": [
+              "USER_QUERY"
+            ],
+            "metadata": {
+              "label": "photos",
+              "question": "non\u2011sensitive photo batch (Pictures folder)"
+            }
+          },
+          {
+            "skill": "classifier",
+            "inputs": [
+              "USER_QUERY"
+            ],
+            "metadata": {
+              "label": "receipts",
+              "question": "non\u2011sensitive receipt batch (Downloads folder)"
+            }
+          },
+          {
+            "skill": "sensitive_detector",
+            "inputs": [
+              "USER_QUERY"
+            ],
+            "metadata": {
+              "label": "priv",
+              "question": "flag private/financial files from metadata only"
+            }
+          },
+          {
+            "skill": "coder",
+            "inputs": [
+              "USER_QUERY"
+            ],
+            "metadata": {
+              "label": "dup",
+              "question": "compute duplicate files and reclaimable space"
+            }
+          },
+          {
+            "skill": "formatter",
+            "inputs": [
+              "n:diag",
+              "n:docs",
+              "n:photos",
+              "n:receipts",
+              "n:priv",
+              "n:dup"
+            ],
+            "metadata": {
+              "label": "out"
+            }
+          }
+        ],
+        "cost": 0.0,
+        "elapsed_s": 6.32576847076416,
+        "provider": "groq",
+        "error": null
+      },
+      "_result_typed": true,
+      "id": "n:10"
+    },
+    {
+      "skill": "pattern_analyzer",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "label": "diag",
+        "question": "overall organization diagnosis"
+      },
+      "status": "complete",
+      "result": {
+        "success": true,
+        "agent_name": "pattern_analyzer",
+        "output": {},
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 18.41544222831726,
+        "provider": "gemini",
+        "error": null
+      },
+      "_result_typed": true,
+      "id": "n:11"
+    },
+    {
+      "skill": "classifier",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "label": "docs",
+        "question": "non\u2011sensitive document batch (Documents folder)"
+      },
+      "status": "failed",
+      "result": {
+        "success": false,
+        "agent_name": "classifier",
+        "output": {},
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 0.0,
+        "provider": "",
+        "error": "exception: ReadTimeout: timed out"
+      },
+      "_result_typed": true,
+      "id": "n:12"
+    },
+    {
+      "skill": "classifier",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "label": "photos",
+        "question": "non\u2011sensitive photo batch (Pictures folder)"
+      },
+      "status": "failed",
+      "result": {
+        "success": false,
+        "agent_name": "classifier",
+        "output": {},
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 0.0,
+        "provider": "",
+        "error": "exception: ReadTimeout: timed out"
+      },
+      "_result_typed": true,
+      "id": "n:13"
+    },
+    {
+      "skill": "classifier",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "label": "receipts",
+        "question": "non\u2011sensitive receipt batch (Downloads folder)"
+      },
+      "status": "complete",
+      "result": {
+        "success": true,
+        "agent_name": "classifier",
+        "output": {},
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 302.52932024002075,
+        "provider": "ollama",
+        "error": null
+      },
+      "_result_typed": true,
+      "id": "n:14"
+    },
+    {
+      "skill": "sensitive_detector",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "label": "priv",
+        "question": "flag private/financial files from metadata only"
+      },
+      "status": "complete",
+      "result": {
+        "success": true,
+        "agent_name": "sensitive_detector",
+        "output": {},
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 582.1176483631134,
+        "provider": "ollama",
+        "error": null
+      },
+      "_result_typed": true,
+      "id": "n:15"
+    },
+    {
+      "skill": "coder",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "label": "dup",
+        "question": "compute duplicate files and reclaimable space"
+      },
+      "status": "complete",
+      "result": {
+        "success": true,
+        "agent_name": "coder",
+        "output": {},
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 19.68777871131897,
+        "provider": "gemini",
+        "error": null
+      },
+      "_result_typed": true,
+      "id": "n:16"
+    },
+    {
+      "skill": "formatter",
+      "inputs": [
+        "n:11",
+        "n:12",
+        "n:13",
+        "n:14",
+        "n:15",
+        "n:16"
+      ],
+      "metadata": {
+        "label": "out"
+      },
+      "status": "pending",
+      "id": "n:17"
+    },
+    {
+      "skill": "sandbox_executor",
+      "inputs": [
+        "n:16"
+      ],
+      "metadata": {},
+      "status": "failed",
+      "result": {
+        "success": false,
+        "agent_name": "sandbox_executor",
+        "output": {},
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 0.00012612342834472656,
+        "provider": "",
+        "error": "no code in upstream coder output"
+      },
+      "_result_typed": true,
+      "id": "n:18"
+    },
+    {
+      "skill": "planner",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "failure_report": "node=n:18 skill=sandbox_executor reason=upstream_failure error=no code in upstream coder output",
+        "recovers": "n:18",
+        "recovery_reason": "upstream_failure"
+      },
+      "status": "complete",
+      "result": {
+        "success": true,
+        "agent_name": "planner",
+        "output": {
+          "rationale": "Diagnose folder layout, classify non-sensitive batches in parallel, quarantine private files, compute duplicate size reclaimable space, then compile a phase\u20111 report with effort plans.",
+          "nodes": [
+            {
+              "skill": "pattern_analyzer",
+              "inputs": [
+                "USER_QUERY"
+              ],
+              "metadata": {
+                "label": "diag",
+                "question": "Diagnose current folder organisation"
+              }
+            },
+            {
+              "skill": "classifier",
+              "inputs": [
+                "USER_QUERY"
+              ],
+              "metadata": {
+                "label": "docs",
+                "question": "Classify non\u2011sensitive document batch (txt files in Documents folder)"
+              }
+            },
+            {
+              "skill": "classifier",
+              "inputs": [
+                "USER_QUERY"
+              ],
+              "metadata": {
+                "label": "photos",
+                "question": "Classify photo batch (txt files in Pictures folder, treat as photos)"
+              }
+            },
+            {
+              "skill": "classifier",
+              "inputs": [
+                "USER_QUERY"
+              ],
+              "metadata": {
+                "label": "receipts",
+                "question": "Classify receipt batch (txt files in Downloads and its subfolders)"
+              }
+            },
+            {
+              "skill": "sensitive_detector",
+              "inputs": [
+                "USER_QUERY"
+              ],
+              "metadata": {
+                "label": "priv",
+                "question": "Flag private/financial files from metadata only"
+              }
+            },
+            {
+              "skill": "coder",
+              "inputs": [
+                "USER_QUERY"
+              ],
+              "metadata": {
+                "label": "dup",
+                "question": "Compute total duplicate file size and reclaimable space from duplicate_groups"
+              }
+            },
+            {
+              "skill": "formatter",
+              "inputs": [
+                "n:diag",
+                "n:docs",
+                "n:photos",
+                "n:receipts",
+                "n:priv",
+                "n:dup"
+              ],
+              "metadata": {
+                "label": "out"
+              }
+            }
+          ]
+        },
+        "artifacts": [],
+        "successors": [
+          {
+            "skill": "pattern_analyzer",
+            "inputs": [
+              "USER_QUERY"
+            ],
+            "metadata": {
+              "label": "diag",
+              "question": "Diagnose current folder organisation"
+            }
+          },
+          {
+            "skill": "classifier",
+            "inputs": [
+              "USER_QUERY"
+            ],
+            "metadata": {
+              "label": "docs",
+              "question": "Classify non\u2011sensitive document batch (txt files in Documents folder)"
+            }
+          },
+          {
+            "skill": "classifier",
+            "inputs": [
+              "USER_QUERY"
+            ],
+            "metadata": {
+              "label": "photos",
+              "question": "Classify photo batch (txt files in Pictures folder, treat as photos)"
+            }
+          },
+          {
+            "skill": "classifier",
+            "inputs": [
+              "USER_QUERY"
+            ],
+            "metadata": {
+              "label": "receipts",
+              "question": "Classify receipt batch (txt files in Downloads and its subfolders)"
+            }
+          },
+          {
+            "skill": "sensitive_detector",
+            "inputs": [
+              "USER_QUERY"
+            ],
+            "metadata": {
+              "label": "priv",
+              "question": "Flag private/financial files from metadata only"
+            }
+          },
+          {
+            "skill": "coder",
+            "inputs": [
+              "USER_QUERY"
+            ],
+            "metadata": {
+              "label": "dup",
+              "question": "Compute total duplicate file size and reclaimable space from duplicate_groups"
+            }
+          },
+          {
+            "skill": "formatter",
+            "inputs": [
+              "n:diag",
+              "n:docs",
+              "n:photos",
+              "n:receipts",
+              "n:priv",
+              "n:dup"
+            ],
+            "metadata": {
+              "label": "out"
+            }
+          }
+        ],
+        "cost": 0.0,
+        "elapsed_s": 11.312177658081055,
+        "provider": "groq",
+        "error": null
+      },
+      "_result_typed": true,
+      "id": "n:19"
+    },
+    {
+      "skill": "pattern_analyzer",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "label": "diag",
+        "question": "Diagnose current folder organisation"
+      },
+      "status": "complete",
+      "result": {
+        "success": true,
+        "agent_name": "pattern_analyzer",
+        "output": {},
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 23.999858856201172,
+        "provider": "gemini",
+        "error": null
+      },
+      "_result_typed": true,
+      "id": "n:20"
+    },
+    {
+      "skill": "classifier",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "label": "docs",
+        "question": "Classify non\u2011sensitive document batch (txt files in Documents folder)"
+      },
+      "status": "failed",
+      "result": {
+        "success": false,
+        "agent_name": "classifier",
+        "output": {},
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 0.0,
+        "provider": "",
+        "error": "exception: ReadError: [WinError 10054] An existing connection was forcibly closed by the remote host"
+      },
+      "_result_typed": true,
+      "id": "n:21"
+    },
+    {
+      "skill": "classifier",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "label": "photos",
+        "question": "Classify photo batch (txt files in Pictures folder, treat as photos)"
+      },
+      "status": "failed",
+      "result": {
+        "success": false,
+        "agent_name": "classifier",
+        "output": {},
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 0.0,
+        "provider": "",
+        "error": "exception: ReadError: [WinError 10054] An existing connection was forcibly closed by the remote host"
+      },
+      "_result_typed": true,
+      "id": "n:22"
+    },
+    {
+      "skill": "classifier",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "label": "receipts",
+        "question": "Classify receipt batch (txt files in Downloads and its subfolders)"
+      },
+      "status": "failed",
+      "result": {
+        "success": false,
+        "agent_name": "classifier",
+        "output": {},
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 0.0,
+        "provider": "",
+        "error": "exception: ReadError: [WinError 10054] An existing connection was forcibly closed by the remote host"
+      },
+      "_result_typed": true,
+      "id": "n:23"
+    },
+    {
+      "skill": "sensitive_detector",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "label": "priv",
+        "question": "Flag private/financial files from metadata only"
+      },
+      "status": "failed",
+      "result": {
+        "success": false,
+        "agent_name": "sensitive_detector",
+        "output": {},
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 0.0,
+        "provider": "",
+        "error": "exception: ReadError: [WinError 10054] An existing connection was forcibly closed by the remote host"
+      },
+      "_result_typed": true,
+      "id": "n:24"
+    },
+    {
+      "skill": "coder",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "label": "dup",
+        "question": "Compute total duplicate file size and reclaimable space from duplicate_groups"
+      },
+      "status": "complete",
+      "result": {
+        "success": true,
+        "agent_name": "coder",
+        "output": {},
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 20.352684497833252,
+        "provider": "gemini",
+        "error": null
+      },
+      "_result_typed": true,
+      "id": "n:25"
+    },
+    {
+      "skill": "formatter",
+      "inputs": [
+        "n:20",
+        "n:21",
+        "n:22",
+        "n:23",
+        "n:24",
+        "n:25"
+      ],
+      "metadata": {
+        "label": "out"
+      },
+      "status": "pending",
+      "id": "n:26"
+    },
+    {
+      "skill": "sandbox_executor",
+      "inputs": [
+        "n:25"
+      ],
+      "metadata": {},
+      "status": "failed",
+      "result": {
+        "success": false,
+        "agent_name": "sandbox_executor",
+        "output": {},
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 1.1205673217773438e-05,
+        "provider": "",
+        "error": "no code in upstream coder output"
+      },
+      "_result_typed": true,
+      "id": "n:27"
+    },
+    {
+      "skill": "planner",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "failure_report": "node=n:27 skill=sandbox_executor reason=upstream_failure error=no code in upstream coder output",
+        "recovers": "n:27",
+        "recovery_reason": "upstream_failure"
+      },
+      "status": "failed",
+      "result": {
+        "success": false,
+        "agent_name": "planner",
+        "output": {},
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 0.0,
+        "provider": "",
+        "error": "exception: ConnectError: [WinError 10061] No connection could be made because the target machine actively refused it"
+      },
+      "_result_typed": true,
+      "id": "n:28"
+    }
+  ],
+  "edges": [
+    {
+      "source": "n:2",
+      "target": "n:8"
+    },
+    {
+      "source": "n:3",
+      "target": "n:8"
+    },
+    {
+      "source": "n:4",
+      "target": "n:8"
+    },
+    {
+      "source": "n:5",
+      "target": "n:8"
+    },
+    {
+      "source": "n:6",
+      "target": "n:8"
+    },
+    {
+      "source": "n:7",
+      "target": "n:8"
+    },
+    {
+      "source": "n:7",
+      "target": "n:9"
+    },
+    {
+      "source": "n:11",
+      "target": "n:17"
+    },
+    {
+      "source": "n:12",
+      "target": "n:17"
+    },
+    {
+      "source": "n:13",
+      "target": "n:17"
+    },
+    {
+      "source": "n:14",
+      "target": "n:17"
+    },
+    {
+      "source": "n:15",
+      "target": "n:17"
+    },
+    {
+      "source": "n:16",
+      "target": "n:17"
+    },
+    {
+      "source": "n:16",
+      "target": "n:18"
+    },
+    {
+      "source": "n:20",
+      "target": "n:26"
+    },
+    {
+      "source": "n:21",
+      "target": "n:26"
+    },
+    {
+      "source": "n:22",
+      "target": "n:26"
+    },
+    {
+      "source": "n:23",
+      "target": "n:26"
+    },
+    {
+      "source": "n:24",
+      "target": "n:26"
+    },
+    {
+      "source": "n:25",
+      "target": "n:26"
+    },
+    {
+      "source": "n:25",
+      "target": "n:27"
+    }
+  ]
+}

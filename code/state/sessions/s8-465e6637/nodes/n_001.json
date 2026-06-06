@@ -1,0 +1,220 @@
+{
+  "node_id": "n:1",
+  "skill": "planner",
+  "status": "complete",
+  "inputs": [
+    "USER_QUERY"
+  ],
+  "result": {
+    "success": true,
+    "agent_name": "planner",
+    "output": {
+      "rationale": "Diagnose folder organisation, flag private files, classify non‑sensitive documents, photos and receipts in parallel with critic verification, then assemble a phase‑1 report with effort plans.",
+      "nodes": [
+        {
+          "skill": "pattern_analyzer",
+          "inputs": [
+            "USER_QUERY"
+          ],
+          "metadata": {
+            "label": "diag",
+            "question": "Assess current folder organisation and suggest minimal/medium/best effort plans"
+          }
+        },
+        {
+          "skill": "sensitive_detector",
+          "inputs": [
+            "USER_QUERY"
+          ],
+          "metadata": {
+            "label": "priv",
+            "question": "Flag private/financial files from metadata only"
+          }
+        },
+        {
+          "skill": "classifier",
+          "inputs": [
+            "USER_QUERY"
+          ],
+          "metadata": {
+            "label": "docs",
+            "question": "Classify non‑sensitive document batch (excluding flagged sensitive candidates)"
+          }
+        },
+        {
+          "skill": "critic",
+          "inputs": [
+            "n:docs"
+          ],
+          "metadata": {
+            "label": "crit_docs",
+            "question": "verify destination matches content type and extension for each classified file"
+          }
+        },
+        {
+          "skill": "classifier",
+          "inputs": [
+            "USER_QUERY"
+          ],
+          "metadata": {
+            "label": "photos",
+            "question": "Classify photo batch (txt files under Pictures and its subfolders)"
+          }
+        },
+        {
+          "skill": "critic",
+          "inputs": [
+            "n:photos"
+          ],
+          "metadata": {
+            "label": "crit_photos",
+            "question": "verify destination matches content type and extension for each classified file"
+          }
+        },
+        {
+          "skill": "classifier",
+          "inputs": [
+            "USER_QUERY"
+          ],
+          "metadata": {
+            "label": "receipts",
+            "question": "Classify receipt batch (txt files in Downloads, e.g., amazon, electricity, flipkart, swiggy invoices)"
+          }
+        },
+        {
+          "skill": "critic",
+          "inputs": [
+            "n:receipts"
+          ],
+          "metadata": {
+            "label": "crit_receipts",
+            "question": "verify destination matches content type and extension for each classified file"
+          }
+        },
+        {
+          "skill": "formatter",
+          "inputs": [
+            "n:diag",
+            "n:docs",
+            "n:crit_docs",
+            "n:photos",
+            "n:crit_photos",
+            "n:receipts",
+            "n:crit_receipts",
+            "n:priv"
+          ],
+          "metadata": {
+            "label": "out"
+          }
+        }
+      ]
+    },
+    "artifacts": [],
+    "successors": [
+      {
+        "skill": "pattern_analyzer",
+        "inputs": [
+          "USER_QUERY"
+        ],
+        "metadata": {
+          "label": "diag",
+          "question": "Assess current folder organisation and suggest minimal/medium/best effort plans"
+        }
+      },
+      {
+        "skill": "sensitive_detector",
+        "inputs": [
+          "USER_QUERY"
+        ],
+        "metadata": {
+          "label": "priv",
+          "question": "Flag private/financial files from metadata only"
+        }
+      },
+      {
+        "skill": "classifier",
+        "inputs": [
+          "USER_QUERY"
+        ],
+        "metadata": {
+          "label": "docs",
+          "question": "Classify non‑sensitive document batch (excluding flagged sensitive candidates)"
+        }
+      },
+      {
+        "skill": "critic",
+        "inputs": [
+          "n:docs"
+        ],
+        "metadata": {
+          "label": "crit_docs",
+          "question": "verify destination matches content type and extension for each classified file"
+        }
+      },
+      {
+        "skill": "classifier",
+        "inputs": [
+          "USER_QUERY"
+        ],
+        "metadata": {
+          "label": "photos",
+          "question": "Classify photo batch (txt files under Pictures and its subfolders)"
+        }
+      },
+      {
+        "skill": "critic",
+        "inputs": [
+          "n:photos"
+        ],
+        "metadata": {
+          "label": "crit_photos",
+          "question": "verify destination matches content type and extension for each classified file"
+        }
+      },
+      {
+        "skill": "classifier",
+        "inputs": [
+          "USER_QUERY"
+        ],
+        "metadata": {
+          "label": "receipts",
+          "question": "Classify receipt batch (txt files in Downloads, e.g., amazon, electricity, flipkart, swiggy invoices)"
+        }
+      },
+      {
+        "skill": "critic",
+        "inputs": [
+          "n:receipts"
+        ],
+        "metadata": {
+          "label": "crit_receipts",
+          "question": "verify destination matches content type and extension for each classified file"
+        }
+      },
+      {
+        "skill": "formatter",
+        "inputs": [
+          "n:diag",
+          "n:docs",
+          "n:crit_docs",
+          "n:photos",
+          "n:crit_photos",
+          "n:receipts",
+          "n:crit_receipts",
+          "n:priv"
+        ],
+        "metadata": {
+          "label": "out"
+        }
+      }
+    ],
+    "cost": 0.0,
+    "elapsed_s": 5.397949695587158,
+    "provider": "groq",
+    "error": null
+  },
+  "prompt_sent": "You are the Planner. Emit the next set of nodes for the orchestrator.\n\nAvailable skills:\n  retriever          search the agent's indexed knowledge base\n  researcher         fetch fresh content from the web (URLs, search)\n  distiller          extract structured fields from raw text\n  summariser         condense long content\n  critic             pass/fail evaluation of an upstream node\n  formatter          render the final user-facing answer (TERMINAL)\n  coder              emit Python (stub; routes to sandbox_executor)\n  sandbox_executor   run Python from coder\n  classifier         categorise a batch of non-sensitive files\n  sensitive_detector flag private files from metadata only (never reads content)\n  pattern_analyzer   diagnose folder organisation; emit minimal/medium/best plans\n  (browser           reserved for Session 9)\n\nOutput (JSON, no markdown):\n{\n  \"rationale\": \"<one sentence>\",\n  \"nodes\": [\n    {\"skill\": \"<name>\",\n     \"inputs\": [\"USER_QUERY\" or \"n:<label>\" or \"art:<id>\"],\n     \"metadata\": {\"label\": \"<short_id>\", \"question\": \"<optional hint>\"}}\n  ]\n}\n\nReference upstream nodes as \"n:<label>\" where label matches a\nsibling's metadata.label. The final node must be a formatter.\n\nWhen the user asks to compare or process N concrete items\n(\"compare A, B, C\" / \"top 3 results\"), emit one node per item so\nthe orchestrator can run them in parallel. Do NOT consolidate.\n\nFILE-ORGANISER TRIAGE. When the user asks to analyse, clean up, or\norganise files or a folder, decompose by handling type so independent\nwork fans out in parallel:\n  - Route file batches that look private (names with salary, statement,\n    bank, tax, aadhaar, pan, passport, .kdbx, .pem) to a\n    `sensitive_detector` node. NEVER route them to a classifier or\n    researcher — their content must not be read.\n  - Route ordinary file batches to `classifier` nodes — one per\n    independent batch (e.g. one for documents, one for images) so they\n    run concurrently.\n  - After EACH `classifier` node, add a `critic` node whose only input\n    is that classifier's label (e.g. `\"inputs\": [\"n:docs\"]`). Set the\n    critic's metadata.question to: \"verify destination matches content\n    type and extension for each classified file\".\n  - The `formatter` MUST list BOTH the classifier label AND its\n    corresponding critic label as inputs (e.g. both \"n:docs\" and\n    \"n:crit_docs\"). The classifier supplies the actual file data; the\n    critic acts as a gate — if a critic fails the formatter is skipped\n    and the orchestrator queues a recovery Planner.\n  - When the user wants a diagnosis or asks \"how should I organise this\"\n    or wants effort options, emit a `pattern_analyzer` node.\n  - When the answer needs computation over files (dedup by hash, total\n    size, count comparisons) AND the SCAN_RESULT does not already contain\n    pre-computed `duplicate_groups`, emit a `coder` node; it routes to\n    sandbox_executor automatically. If `duplicate_groups` is present in\n    SCAN_RESULT, the scanner already computed dedup — do NOT emit coder.\n  - Folders that look like installer extracts or already-organised zones\n    need no per-file work — say so in the rationale and do not emit child\n    nodes to read inside them.\n  - The final node is always a `formatter` that assembles the report.\n  - On critic_fail recovery: FAILURE will contain the critic's rationale\n    naming the misrouted file and its correct destination. Emit a SINGLE\n    corrected `classifier` whose metadata.question says exactly:\n    \"Re-classify this batch. IMPORTANT: <filename> has extension .<ext>\n    and must be routed to Documents/ — do NOT route it to Pictures/ or any\n    image folder regardless of its filename or content.\" Then emit a\n    `formatter` that takes that classifier as input. Do NOT re-emit the\n    whole plan; only fix the specific misrouted file.\n\nWhen the user demands a strict format constraint the writer might\nmiss (\"exactly 5-7-5 syllables\", \"valid JSON\", \"<= 280 characters\"),\ninsert a `critic` node between the writing node and the formatter.\nIts input is the writing node id. Its metadata.question repeats\nthe constraint. If the critic fails, the orchestrator re-plans.\n\nIf MEMORY HITS appear in the prompt, check the `source` field.\nHits with `source: user_query` are stored past queries, NOT stored\nanswers — ignore them for routing purposes and plan normally.\nHits with any other source (fact, tool_outcome, preference) may\ncontain indexed material: prefer a `retriever` or, when the hits\nclearly answer the query already, go straight to a `formatter` that\nsynthesises from MEMORY HITS — do NOT emit a `researcher` to re-fetch\nmaterial the agent has already indexed.\n\nIf FAILURE appears in the prompt, do not re-emit the failing step\non the same inputs.\n\nExample (web):\n{\"rationale\": \"Look it up and answer.\",\n \"nodes\": [\n   {\"skill\":\"researcher\",\"inputs\":[\"USER_QUERY\"],\n    \"metadata\":{\"label\":\"r1\",\"question\":\"...\"}},\n   {\"skill\":\"formatter\",\"inputs\":[\"n:r1\"],\"metadata\":{\"label\":\"out\"}}]}\n\nExample (file organiser, parallel fan-out + privacy split + critic gates):\n{\"rationale\": \"Diagnose, classify docs and images in parallel with critic verification, quarantine private files, then report.\",\n \"nodes\": [\n   {\"skill\":\"pattern_analyzer\",\"inputs\":[\"USER_QUERY\"],\"metadata\":{\"label\":\"diag\"}},\n   {\"skill\":\"classifier\",\"inputs\":[\"USER_QUERY\"],\"metadata\":{\"label\":\"docs\",\"question\":\"document and receipt batch\"}},\n   {\"skill\":\"critic\",\"inputs\":[\"n:docs\"],\"metadata\":{\"label\":\"crit_docs\",\"question\":\"verify destination matches content type and extension\"}},\n   {\"skill\":\"classifier\",\"inputs\":[\"USER_QUERY\"],\"metadata\":{\"label\":\"imgs\",\"question\":\"photo and image batch\"}},\n   {\"skill\":\"critic\",\"inputs\":[\"n:imgs\"],\"metadata\":{\"label\":\"crit_imgs\",\"question\":\"verify destination matches content type and extension\"}},\n   {\"skill\":\"sensitive_detector\",\"inputs\":[\"USER_QUERY\"],\"metadata\":{\"label\":\"priv\"}},\n   {\"skill\":\"formatter\",\"inputs\":[\"n:diag\",\"n:docs\",\"n:crit_docs\",\"n:imgs\",\"n:crit_imgs\",\"n:priv\"],\"metadata\":{\"label\":\"out\"}}]}\n\nUSER_QUERY: Analyse and organise this folder. Diagnose how well it is currently organised, classify each non-sensitive file batch (documents, photos, receipts) in parallel, flag any private/financial files from metadata only (never read their content), compute duplicate files and reclaimable space, and produce a phase-1 report with minimal/medium/best effort plans.\n\nSCAN_RESULT:\n{\n  \"root\": \"C:\\\\Raghu\\\\MyLearnings\\\\EAG_V3\\\\S8-30052026\\\\assignment\\\\FileOrganiser_DAG\\\\demo_messy_drive\",\n  \"scanned_at\": \"2026-06-04 10:53:13\",\n  \"scan_seconds\": 0.014,\n  \"tier0_file_count\": 19,\n  \"files\": [\n    {\n      \"name\": \"Form16_FY2025.txt\",\n      \"ext\": \".txt\",\n      \"size_bytes\": 19,\n      \"path\": \"Documents\\\\Form16_FY2025.txt\",\n      \"modified\": \"2026-05-31\",\n      \"sensitive_candidate\": true\n    },\n    {\n      \"name\": \"HDFC_statement_Jan2026.txt\",\n      \"ext\": \".txt\",\n      \"size_bytes\": 49,\n      \"path\": \"Documents\\\\HDFC_statement_Jan2026.txt\",\n      \"modified\": \"2026-05-31\",\n      \"sensitive_candidate\": true\n    },\n    {\n      \"name\": \"PAN_card.txt\",\n      \"ext\": \".txt\",\n      \"size_bytes\": 14,\n      \"path\": \"Documents\\\\PAN_card.txt\",\n      \"modified\": \"2026-05-31\",\n      \"sensitive_candidate\": true\n    },\n    {\n      \"name\": \"salary_slip_april2026.txt\",\n      \"ext\": \".txt\",\n      \"size_bytes\": 33,\n      \"path\": \"Documents\\\\salary_slip_april2026.txt\",\n      \"modified\": \"2026-05-31\",\n      \"sensitive_candidate\": true\n    },\n    {\n      \"name\": \"amazon_order_4471.txt\",\n      \"ext\": \".txt\",\n      \"size_bytes\": 61,\n      \"path\": \"Downloads\\\\amazon_order_4471.txt\",\n      \"modified\": \"2026-05-31\",\n      \"preview\": \"AMAZON TAX INVOICE Order 4471 USB cable GST 18% Total Rs 499\"\n    },\n    {\n      \"name\": \"electricity_bill_jan.txt\",\n      \"ext\": \".txt\",\n      \"size_bytes\": 52,\n      \"path\": \"Downloads\\\\electricity_bill_jan.txt\",\n      \"modified\": \"2026-05-31\",\n      \"preview\": \"BESCOM electricity bill Jan 2026 amount due Rs 1840\"\n    },\n    {\n      \"name\": \"flipkart_2025_tv.txt\",\n      \"ext\": \".txt\",\n      \"size_bytes\": 51,\n      \"path\": \"Downloads\\\\flipkart_2025_tv.txt\",\n      \"modified\": \"2026-05-31\",\n      \"preview\": \"FLIPKART TAX INVOICE GSTIN 29ABC TV Total Rs 31999\"\n    },\n    {\n      \"name\": \"IMG_20260601_165420.txt\",\n      \"ext\": \".txt\",\n      \"size_bytes\": 234,\n      \"path\": \"Downloads\\\\IMG_20260601_165420.txt\",\n      \"modified\": \"2026-06-04\",\n      \"preview\": \"Team standup notes - 2026-06-01\\nSprint review: 8/10 stories completed this cycle.\\nBlockers: CI pipeline latency affecting nightly builds.\\nNext: Q3 feature planning kickoff on Thursday.\\nAction: Alice to draft technical spec by Friday.\"\n    },\n    {\n      \"name\": \"old_notes_2023.txt\",\n      \"ext\": \".txt\",\n      \"size_bytes\": 4,\n      \"path\": \"Downloads\\\\old_notes_2023.txt\",\n      \"modified\": \"2026-05-31\",\n      \"preview\": \"old\"\n    },\n    {\n      \"name\": \"untitled.txt\",\n      \"ext\": \".txt\",\n      \"size_bytes\": 2,\n      \"path\": \"Downloads\\\\untitled.txt\",\n      \"modified\": \"2026-05-31\",\n      \"preview\": \"x\"\n    },\n    {\n      \"name\": \"swiggy_invoice_mar.txt\",\n      \"ext\": \".txt\",\n      \"size_bytes\": 44,\n      \"path\": \"Downloads\\\\bills\\\\swiggy_invoice_mar.txt\",\n      \"modified\": \"2026-05-31\",\n      \"preview\": \"SWIGGY Restaurant Truffles GST Total Rs 642\"\n    },\n    {\n      \"name\": \"IMG_2098.txt\",\n      \"ext\": \".txt\",\n      \"size_bytes\": 10,\n      \"path\": \"Pictures\\\\IMG_2098.txt\",\n      \"modified\": \"2026-05-31\",\n      \"preview\": \"PHOTO-AAA\"\n    },\n    {\n      \"name\": \"sunset.txt\",\n      \"ext\": \".txt\",\n      \"size_bytes\": 10,\n      \"path\": \"Pictures\\\\sunset.txt\",\n      \"modified\": \"2026-05-31\",\n      \"preview\": \"PHOTO-BBB\"\n    },\n    {\n      \"name\": \"IMG_2098_copy.txt\",\n      \"ext\": \".txt\",\n      \"size_bytes\": 10,\n      \"path\": \"Pictures\\\\backup\\\\IMG_2098_copy.txt\",\n      \"modified\": \"2026-05-31\",\n      \"preview\": \"PHOTO-AAA\"\n    },\n    {\n      \"name\": \"sunset_dup.txt\",\n      \"ext\": \".txt\",\n      \"size_bytes\": 10,\n      \"path\": \"Pictures\\\\backup\\\\sunset_dup.txt\",\n      \"modified\": \"2026-05-31\",\n      \"preview\": \"PHOTO-BBB\"\n    },\n    {\n      \"name\": \"README.md\",\n      \"ext\": \".md\",\n      \"size_bytes\": 5,\n      \"path\": \"Projects\\\\EAGv3\\\\Session7\\\\README.md\",\n      \"modified\": \"2026-05-31\",\n      \"preview\": \"# s7\"\n    },\n    {\n      \"name\": \"flow.py\",\n      \"ext\": \".py\",\n      \"size_bytes\": 12,\n      \"path\": \"Projects\\\\EAGv3\\\\Session7\\\\code\\\\flow.py\",\n      \"modified\": \"2026-05-31\",\n      \"preview\": \"print('s7')\"\n    },\n    {\n      \"name\": \"README.md\",\n      \"ext\": \".md\",\n      \"size_bytes\": 5,\n      \"path\": \"Projects\\\\EAGv3\\\\Session8\\\\README.md\",\n      \"modified\": \"2026-05-31\",\n      \"preview\": \"# s8\"\n    },\n    {\n      \"name\": \"flow.py\",\n      \"ext\": \".py\",\n      \"size_bytes\": 12,\n      \"path\": \"Projects\\\\EAGv3\\\\Session8\\\\code\\\\flow.py\",\n      \"modified\": \"2026-05-31\",\n      \"preview\": \"print('s8')\"\n    }\n  ],\n  \"sensitive_candidates\": [\n    {\n      \"name\": \"Form16_FY2025.txt\",\n      \"ext\": \".txt\",\n      \"size_bytes\": 19,\n      \"path\": \"Documents\\\\Form16_FY2025.txt\",\n      \"modified\": \"2026-05-31\",\n      \"sensitive_candidate\": true\n    },\n    {\n      \"name\": \"HDFC_statement_Jan2026.txt\",\n      \"ext\": \".txt\",\n      \"size_bytes\": 49,\n      \"path\": \"Documents\\\\HDFC_statement_Jan2026.txt\",\n      \"modified\": \"2026-05-31\",\n      \"sensitive_candidate\": true\n    },\n    {\n      \"name\": \"PAN_card.txt\",\n      \"ext\": \".txt\",\n      \"size_bytes\": 14,\n      \"path\": \"Documents\\\\PAN_card.txt\",\n      \"modified\": \"2026-05-31\",\n      \"sensitive_candidate\": true\n    },\n    {\n      \"name\": \"salary_slip_april2026.txt\",\n      \"ext\": \".txt\",\n      \"size_bytes\": 33,\n      \"path\": \"Documents\\\\salary_slip_april2026.txt\",\n      \"modified\": \"2026-05-31\",\n      \"sensitive_candidate\": true\n    }\n  ],\n  \"duplicate_groups\": [\n    {\n      \"hash\": \"dc60fc3044c8\",\n      \"paths\": [\n        \"Pictures\\\\IMG_2098.txt\",\n        \"Pictures\\\\backup\\\\IMG_2098_copy.txt\"\n      ],\n      \"count\": 2\n    },\n    {\n      \"hash\": \"334953bab38c\",\n      \"paths\": [\n        \"Pictures\\\\sunset.txt\",\n        \"Pictures\\\\backup\\\\sunset_dup.txt\"\n      ],\n      \"count\": 2\n    }\n  ],\n  \"skipped_folders\": [\n    {\n      \"path\": \"Downloads\\\\SetupTool_v3_extracted\",\n      \"reason\": \"installer-extract / build dir \\u2014 recognised at folder level, not descended\",\n      \"file_count\": 4\n    }\n  ],\n  \"folder_summary\": [\n    {\n      \"path\": \"Documents\",\n      \"file_count\": 4,\n      \"exts\": [\n        \".txt\"\n      ],\n      \"distinct_ext_count\": 1\n    },\n    {\n      \"path\": \"Downloads\",\n      \"file_count\": 7,\n      \"exts\": [\n        \".txt\"\n      ],\n      \"distinct_ext_count\": 1\n    },\n    {\n      \"path\": \"Pictures\",\n      \"file_count\": 4,\n      \"exts\": [\n        \".txt\"\n      ],\n      \"distinct_ext_count\": 1\n    },\n    {\n      \"path\": \"Projects\",\n      \"file_count\": 4,\n      \"exts\": [\n        \".md\",\n        \".py\"\n      ],\n      \"distinct_ext_count\": 2\n    }\n  ]\n}\n",
+  "started_at": 1780550681.806539,
+  "completed_at": 1780550687.2044892,
+  "retries": 0
+}

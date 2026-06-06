@@ -1,0 +1,23 @@
+{
+  "node_id": "n:21",
+  "skill": "pattern_analyzer",
+  "status": "failed",
+  "inputs": [
+    "USER_QUERY"
+  ],
+  "result": {
+    "success": false,
+    "agent_name": "pattern_analyzer",
+    "output": {},
+    "artifacts": [],
+    "successors": [],
+    "cost": 0.0,
+    "elapsed_s": 0.0,
+    "provider": "",
+    "error": "exception: ReadTimeout: timed out"
+  },
+  "prompt_sent": "(exception before prompt-render)",
+  "started_at": 1780546081.974719,
+  "completed_at": 1780546081.9747205,
+  "retries": 0
+}

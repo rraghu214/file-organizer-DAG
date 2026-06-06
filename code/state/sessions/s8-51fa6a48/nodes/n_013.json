@@ -1,0 +1,23 @@
+{
+  "node_id": "n:13",
+  "skill": "classifier",
+  "status": "failed",
+  "inputs": [
+    "USER_QUERY"
+  ],
+  "result": {
+    "success": false,
+    "agent_name": "classifier",
+    "output": {},
+    "artifacts": [],
+    "successors": [],
+    "cost": 0.0,
+    "elapsed_s": 0.0,
+    "provider": "",
+    "error": "exception: ReadTimeout: timed out"
+  },
+  "prompt_sent": "(exception before prompt-render)",
+  "started_at": 1780240558.8569949,
+  "completed_at": 1780240558.8569965,
+  "retries": 0
+}
