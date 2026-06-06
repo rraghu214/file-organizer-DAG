@@ -7,13 +7,10 @@
 include_paths: []
 
 # Never walk these paths (relative to the scan root, prefix-matched).
-# Files under any listed directory are excluded from the manifest entirely.
 exclude_paths: []
 
 # Zones the user has locked in the UI — never suggested for reorganisation.
-# The Lock toggles on the Dashboard write back to this list automatically.
 locked_zones: []
 
 # Set to true to use the voidtools Everything SDK for Tier-0 (Windows only).
-# Falls back to os.scandir if Everything is not installed.
 use_everything_index: false

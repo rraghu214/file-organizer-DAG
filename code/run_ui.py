@@ -14,4 +14,7 @@ if str(ROOT) not in sys.path:
 from ui.app import start  # noqa: E402
 
 if __name__ == "__main__":
-    start()
+    try:
+        start()
+    except KeyboardInterrupt:
+        pass

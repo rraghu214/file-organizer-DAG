@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import asyncio
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -28,6 +29,150 @@ from .widgets import CATEGORY_COLOR, conf_bar, file_row, stat_card
 
 ROOT = Path(__file__).parent.parent
 APP_PORT = 8110
+
+# ── Warm design system ────────────────────────────────────────────────────────
+# Injected before any page renders. Overrides Quasar cold-gray defaults with
+# the parchment palette from file_organizer_explainer.html.
+ui.add_head_html("""
+<style>
+:root {
+  --fo-bg:        #f9f8f4;
+  --fo-bg2:       #f1efe9;
+  --fo-bg3:       #e8e6de;
+  --fo-text:      #2c2c2a;
+  --fo-text2:     #5f5e5a;
+  --fo-text3:     #888780;
+  --fo-bd:        rgba(0,0,0,0.10);
+  --fo-radius:    10px;
+  --fo-shadow:    0 1px 4px rgba(0,0,0,0.07);
+  --fo-info:      #185fa5;
+  --fo-info-bg:   #e6f1fb;
+  --fo-info-bd:   #b5d4f4;
+  --fo-ok:        #3b6d11;
+  --fo-ok-bg:     #eaf3de;
+  --fo-warn:      #854f0b;
+  --fo-warn-bg:   #faeeda;
+  --fo-danger:    #993c1d;
+  --fo-danger-bg: #faece7;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --fo-bg:        #1e1e1c;
+    --fo-bg2:       #282825;
+    --fo-bg3:       #323230;
+    --fo-text:      #e8e6de;
+    --fo-text2:     #b4b2a9;
+    --fo-text3:     #888780;
+    --fo-bd:        rgba(255,255,255,0.09);
+    --fo-shadow:    0 1px 4px rgba(0,0,0,0.30);
+    --fo-info:      #85b7eb;
+    --fo-info-bg:   #042c53;
+    --fo-info-bd:   #0c447c;
+    --fo-ok:        #97c459;
+    --fo-ok-bg:     #173404;
+    --fo-warn:      #ef9f27;
+    --fo-warn-bg:   #412402;
+    --fo-danger:    #f0997b;
+    --fo-danger-bg: #4a1b0c;
+  }
+}
+
+/* ── Global ── */
+body, .q-page-container, .q-page {
+  background: var(--fo-bg) !important;
+  color: var(--fo-text) !important;
+  font-family: system-ui, -apple-system, 'Segoe UI', sans-serif !important;
+}
+
+/* ── Header ── */
+.q-header {
+  background: var(--fo-bg2) !important;
+  border-bottom: 1px solid var(--fo-bd) !important;
+  box-shadow: var(--fo-shadow) !important;
+  color: var(--fo-text) !important;
+}
+
+/* ── Cards ── */
+.q-card {
+  background: var(--fo-bg2) !important;
+  border: 1px solid var(--fo-bd) !important;
+  border-radius: var(--fo-radius) !important;
+  box-shadow: var(--fo-shadow) !important;
+}
+
+/* ── Tabs ── */
+.q-tabs { background: transparent !important; }
+.q-tab  { color: var(--fo-text2) !important; font-size: 13px !important; font-weight: 500 !important; }
+.q-tab--active { color: var(--fo-info) !important; font-weight: 600 !important; }
+.q-tab__indicator { background: var(--fo-info) !important; height: 2px !important; }
+.q-tab-panels { background: transparent !important; }
+.q-tab-panel  { padding: 0 !important; background: transparent !important; }
+
+/* ── Expansion items ── */
+.q-expansion-item > .q-expansion-item__container > .q-item {
+  background: var(--fo-bg3) !important;
+  border-radius: 7px !important;
+  border: 1px solid var(--fo-bd) !important;
+  padding: 6px 12px !important;
+  font-size: 13px !important;
+  color: var(--fo-text2) !important;
+  min-height: 36px !important;
+}
+.q-expansion-item__content { background: transparent !important; }
+
+/* ── Badges ── */
+.q-badge {
+  font-size: 11px !important;
+  padding: 2px 7px !important;
+  border-radius: 5px !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.01em !important;
+}
+
+/* ── Separator ── */
+.q-separator { background: var(--fo-bd) !important; opacity: 1 !important; }
+
+/* ── Input / Select ── */
+.q-field__control { background: var(--fo-bg2) !important; border-radius: 8px !important; }
+.q-field__native, .q-field__prefix { color: var(--fo-text) !important; }
+.q-field__label { color: var(--fo-text2) !important; font-size: 13px !important; }
+.q-field--outlined .q-field__control:before { border-color: var(--fo-bd) !important; }
+.q-menu { background: var(--fo-bg2) !important; border: 1px solid var(--fo-bd) !important; }
+.q-item { color: var(--fo-text) !important; font-size: 13px !important; }
+.q-item:hover { background: var(--fo-bg3) !important; }
+
+/* ── Buttons ── */
+.q-btn { border-radius: 8px !important; font-size: 13px !important; font-weight: 500 !important; letter-spacing: 0.01em !important; }
+
+/* ── Progress bar ── */
+.q-linear-progress { border-radius: 3px !important; }
+.q-linear-progress__track { background: var(--fo-bg3) !important; opacity: 1 !important; }
+
+/* ── Code / pre ── */
+.q-code, pre, .nicegui-code { background: var(--fo-bg3) !important; border-radius: 7px !important; font-size: 12px !important; border: 1px solid var(--fo-bd) !important; }
+
+/* ── Tailwind text-gray overrides ── */
+.text-gray-800 { color: var(--fo-text)  !important; }
+.text-gray-700 { color: var(--fo-text)  !important; }
+.text-gray-600 { color: var(--fo-text2) !important; }
+.text-gray-500 { color: var(--fo-text2) !important; }
+.text-gray-400 { color: var(--fo-text3) !important; }
+
+/* ── Stat card number ── */
+.text-2xl.font-bold { font-size: 22px !important; color: var(--fo-text) !important; }
+
+/* ── Notification (toast) ── */
+.q-notification { background: var(--fo-bg2) !important; color: var(--fo-text) !important; border: 1px solid var(--fo-bd) !important; border-radius: 8px !important; box-shadow: var(--fo-shadow) !important; }
+
+/* ── Switch ── */
+.q-toggle__track { background: var(--fo-bg3) !important; }
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--fo-bg2); }
+::-webkit-scrollbar-thumb { background: var(--fo-bd); border-radius: 3px; }
+</style>
+""", shared=True)
 
 # ── scan_config helpers ───────────────────────────────────────────────────────
 # Import scanner's config I/O so Lock toggles can persist to scan_config.yaml
@@ -72,10 +217,259 @@ def render_dashboard(session: dict, locked_zones: set[str]) -> None:
             stat_card("Recommended effort", effort or "—", "schedule", "green")
 
     # ── Execution DAG ──────────────────────────────────────────────────────
-    with ui.card().classes("w-full mb-5 shadow-sm"):
-        ui.label("Execution Graph").classes("text-sm font-semibold text-gray-500 mb-2")
-        svg = dag_svg.build(session)
-        ui.html(f'<div style="overflow-x:auto;padding-bottom:4px;">{svg}</div>')
+    # overflow-x:auto overrides Quasar q-card's default overflow:hidden so
+    # wide graphs scroll instead of being clipped.
+    with ui.card().classes("w-full mb-5 shadow-sm").style("overflow-x:auto"):
+        ui.label("Execution Graph (DAG)").classes("text-sm font-semibold text-gray-500 mb-2")
+        ui.label("Click a node to inspect its prompt and output.").classes(
+            "text-xs text-gray-400 mb-3"
+        )
+
+        svg_str, _ordered_ids = dag_svg.build(session)
+
+        # detail_ref[0] will be set to the column element after SVG is laid out.
+        # _show_detail reads it lazily so order of NiceGUI element creation
+        # does not matter — only the order of DOM placement matters.
+        detail_ref: list = [None]
+
+        def _show_uq_detail() -> None:
+            col = detail_ref[0]
+            if col is None:
+                return
+            col.clear()
+            col.style("display:block")
+            query_raw = session.get("query", "")
+            # Separate human-readable prefix from SCAN_RESULT blob
+            m = re.search(r"SCAN_RESULT:", query_raw)
+            human_part = query_raw[:m.start()].strip() if m else query_raw.strip()
+            has_scan = m is not None
+            with col:
+                ui.label("User Query").classes(
+                    "font-mono text-sm font-semibold text-gray-700 mb-2"
+                )
+                if human_part:
+                    ui.label(human_part).classes(
+                        "text-sm text-gray-700 whitespace-pre-wrap bg-gray-50 "
+                        "p-3 rounded border border-gray-100 mb-2"
+                    )
+                if has_scan:
+                    ui.label(
+                        "+ SCAN_RESULT payload attached (file manifest, hashes, "
+                        "duplicate groups — not shown here for brevity)"
+                    ).classes("text-xs text-gray-400 italic")
+
+        def _show_edge_detail(src_nid: str, tgt_nid: str) -> None:
+            col = detail_ref[0]
+            if col is None:
+                return
+            col.clear()
+            col.style("display:block")
+            src = session["nodes"].get(src_nid, {})
+            tgt = session["nodes"].get(tgt_nid, {})
+            src_skill = src.get("skill", src_nid)
+            tgt_skill = tgt.get("skill", tgt_nid)
+            with col:
+                ui.label(
+                    f"{src_skill} ({src_nid})  →  {tgt_skill} ({tgt_nid})"
+                ).classes("font-mono text-sm font-semibold text-gray-700 mb-1")
+                ui.label(
+                    "This edge means the target node declared the source in its "
+                    "inputs list and received its output as context."
+                ).classes("text-xs text-gray-400 mb-3")
+
+                src_out = (src.get("result") or {}).get("output")
+                if src_out is not None:
+                    label = f"Data produced by {src_skill} (flows into {tgt_skill})"
+                    with ui.expansion(label, value=True).classes("w-full"):
+                        ui.code(
+                            json.dumps(src_out, indent=2, default=str)[:2000],
+                            language="json",
+                        ).classes("text-xs w-full")
+                else:
+                    ui.label(f"No output recorded for {src_nid}.").classes(
+                        "text-xs text-gray-400"
+                    )
+
+        def _show_detail(nid: str) -> None:
+            col = detail_ref[0]
+            if col is None:
+                return
+            col.clear()
+            col.style("display:block")
+            node_data = session["nodes"].get(nid)
+            if not node_data:
+                with col:
+                    ui.label(f"No persisted data for {nid}.").classes(
+                        "text-xs text-gray-400"
+                    )
+                return
+            result = node_data.get("result") or {}
+            with col:
+                # Header row
+                status = node_data.get("status", "?")
+                status_color = {
+                    "complete": "green", "failed": "red",
+                    "skipped": "grey", "running": "blue",
+                }.get(status, "grey")
+                with ui.row().classes("items-center gap-3 mb-2 flex-wrap"):
+                    ui.label(
+                        f"{node_data.get('skill', '?')}  ·  {nid}"
+                    ).classes("font-mono text-sm font-semibold text-gray-700")
+                    ui.badge(status, color=status_color)
+                    t_start = node_data.get("started_at")
+                    t_end   = node_data.get("completed_at")
+                    if t_start and t_end:
+                        ui.label(f"{t_end - t_start:.1f}s").classes(
+                            "text-xs text-gray-400"
+                        )
+
+                # Inputs
+                inputs = node_data.get("inputs") or []
+                if inputs:
+                    ui.label(
+                        "Inputs: " + ", ".join(inputs)
+                    ).classes("text-xs text-gray-500 mb-1")
+
+                # Error
+                err = result.get("error") if isinstance(result, dict) else None
+                if err and isinstance(err, str):
+                    with ui.card().classes(
+                        "w-full bg-red-50 border border-red-200 p-2 mb-2"
+                    ):
+                        ui.label("Error").classes(
+                            "text-xs font-semibold text-red-600 mb-1"
+                        )
+                        ui.label(str(err)[:800]).classes(
+                            "text-xs font-mono text-red-700 whitespace-pre-wrap"
+                        )
+
+                # Result output — show whenever the field is present, even if {}
+                output = result.get("output") if isinstance(result, dict) else None
+                if output is not None:
+                    label = "Result output" if output else "Result output (empty)"
+                    with ui.expansion(label, value=False).classes("w-full mb-2"):
+                        ui.code(
+                            json.dumps(output, indent=2, default=str)[:2000],
+                            language="json",
+                        ).classes("text-xs w-full")
+
+                # Prompt sent
+                prompt = node_data.get("prompt_sent")
+                if prompt:
+                    with ui.expansion("Prompt sent to LLM", value=False).classes("w-full"):
+                        ui.label(prompt[:3000]).classes(
+                            "text-xs font-mono text-gray-600 whitespace-pre-wrap "
+                            "bg-gray-50 p-2 rounded"
+                        )
+
+        # js_handler runs client-side: walk from the click target up to the
+        # nearest <g data-nid="..."> and call emit() to send the id to Python.
+        # emit() is NiceGUI's socket.io send function injected into the closure.
+        # Clicking empty space finds no [data-nid] and emits nothing.
+        svg_el = ui.html(
+            f'<div style="overflow-x:auto;padding-bottom:4px;">'
+            f'{svg_str}'
+            f'</div>'
+        )
+
+        def _on_node_click(e) -> None:
+            if not e.args:
+                return
+            raw = e.args[0] if isinstance(e.args, list) else e.args
+            try:
+                val = json.loads(raw) if isinstance(raw, str) else str(raw)
+            except Exception:
+                val = str(raw).strip('"')
+            if not val:
+                return
+            # Edge clicks are encoded as "__EDGE__src::tgt"
+            if val == "__UQ__":
+                _show_uq_detail()
+            elif val.startswith("__EDGE__"):
+                payload = val[len("__EDGE__"):]
+                if "::" in payload:
+                    src, tgt = payload.split("::", 1)
+                    _show_edge_detail(src, tgt)
+            else:
+                _show_detail(val)
+
+        svg_el.on(
+            'click',
+            _on_node_click,
+            js_handler=(
+                "(e) => {"
+                # ── clear previous node highlight ─────────────────────────
+                "  var prev = document.querySelector('[data-dag-sel]');"
+                "  if (prev) {"
+                "    var pr = prev.querySelector('rect');"
+                "    if (pr) {"
+                "      pr.setAttribute('stroke', prev.dataset.origStroke || 'rgba(255,255,255,0.25)');"
+                "      pr.setAttribute('stroke-width', prev.dataset.origSw || '1.2');"
+                "      pr.style.filter = '';"
+                "    }"
+                "    delete prev.dataset.dagSel;"
+                "  }"
+                # ── clear previous edge highlight ─────────────────────────
+                "  var prevEdge = document.querySelector('[data-dag-edge-sel]');"
+                "  if (prevEdge) {"
+                "    var pe = prevEdge.querySelector('.dag-edge-vis');"
+                "    if (pe) { pe.setAttribute('stroke','#cbd5e1'); pe.setAttribute('stroke-width','1.5'); }"
+                "    delete prevEdge.dataset.dagEdgeSel;"
+                "  }"
+                # ── check if a node was clicked ───────────────────────────
+                "  var g = e.target.closest('[data-nid]');"
+                "  if (g) {"
+                "    var rect = g.querySelector('rect');"
+                "    if (rect) {"
+                "      if (!g.dataset.origStroke) g.dataset.origStroke = rect.getAttribute('stroke');"
+                "      if (!g.dataset.origSw)     g.dataset.origSw     = rect.getAttribute('stroke-width');"
+                "      g.dataset.dagSel = '1';"
+                "      rect.setAttribute('stroke','#fff');"
+                "      rect.setAttribute('stroke-width','3');"
+                "      rect.style.filter = 'drop-shadow(0 0 6px rgba(255,255,255,0.85))';"
+                "    }"
+                "    emit(g.dataset.nid);"
+                "    return;"
+                "  }"
+                # ── check if the USER QUERY pill was clicked ──────────────
+                "  var uq = e.target.closest('[data-uq]');"
+                "  if (uq) { emit('__UQ__'); return; }"
+                # ── check if a real edge was clicked ──────────────────────
+                "  var eg = e.target.closest('[data-esrc]');"
+                "  if (eg) {"
+                "    var el = eg.querySelector('.dag-edge-vis');"
+                "    if (el) { el.setAttribute('stroke','#60a5fa'); el.setAttribute('stroke-width','2.5'); }"
+                "    eg.dataset.dagEdgeSel = '1';"
+                "    emit('__EDGE__' + eg.dataset.esrc + '::' + eg.dataset.etgt);"
+                "  }"
+                "}"
+            ),
+        )
+
+        # Legend
+        ui.html(
+            '<div style="display:flex;gap:16px;margin-top:6px;flex-wrap:wrap;">'
+            '<span style="font-size:11px;color:#6b7280;display:flex;align-items:center;gap:5px;">'
+            '<svg width="28" height="10"><line x1="0" y1="5" x2="28" y2="5" '
+            'stroke="#cbd5e1" stroke-width="1.5" marker-end="url(#arr)"/></svg>'
+            'data-dependency edge (click to see what flows through)</span>'
+            '<span style="font-size:11px;color:#6b7280;display:flex;align-items:center;gap:5px;">'
+            '<svg width="28" height="10"><line x1="0" y1="5" x2="28" y2="5" '
+            'stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4,3"/></svg>'
+            'conceptual link to USER QUERY / ANSWER (virtual, not a runtime edge)</span>'
+            '<span style="font-size:11px;color:#6b7280;display:flex;align-items:center;gap:5px;">'
+            '<svg width="14" height="14"><rect x="1" y="1" width="12" height="12" rx="2" '
+            'fill="none" stroke="#fbbf24" stroke-width="2"/></svg>'
+            'node that produced the final answer</span>'
+            '</div>'
+        )
+
+        # Detail panel rendered AFTER the SVG so it appears below it in DOM.
+        detail_ref[0] = (
+            ui.column()
+            .classes("w-full mt-3 border-t border-gray-100 pt-3")
+            .style("display:none")
+        )
 
     # ── Already-organised highlights ───────────────────────────────────────
     if pattern and pattern.get("highlights"):
@@ -773,7 +1167,7 @@ def main_page() -> None:
     with ui.header().classes("bg-white shadow-sm px-6 py-2 z-10"):
         with ui.row().classes("items-center gap-4 w-full"):
             ui.icon("folder_special", color="blue-8").classes("text-2xl")
-            ui.label("FileOrganiser").classes("text-xl font-bold text-gray-800")
+            ui.label("File Organiser Assistant").classes("text-xl font-bold text-gray-800")
             ui.space()
             session_sel = ui.select(
                 options=sessions, value=current["sid"], label="Session",
@@ -850,7 +1244,7 @@ def start() -> None:
         title="FileOrganiser",
         port=APP_PORT,
         reload=False,
-        dark=False,
+        dark=None,   # follow OS dark-mode preference
         favicon="🗂",
         show=True,
     )

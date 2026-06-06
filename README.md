@@ -1,23 +1,19 @@
-# EAGV3 Session 8 — Student Scaffolding
+# File Organizer With DAG (& Dry Runs)
 
-Multi-agent growing-graph orchestrator built on the Session 7 cognitive
+Multi-agent growing-graph orchestrator built on the previous PDMA cognitive
 architecture. The graph itself is the agent loop: each node is a typed
 skill (Planner, Researcher, Distiller, Critic, Formatter, …), edges
 carry the predecessor's `AgentResult`, and the runtime executes ready
 nodes in parallel via `asyncio.gather`.
 
-Your assignment is to ship one missing skill (the **Coder**) so the
-agent can write code, run it in a subprocess sandbox, and feed the
-result back through the graph. Full spec in [ASSIGNMENT.md](ASSIGNMENT.md).
 
 ---
 
 ## Layout
 
 ```
-S8SharedCode/
+FileOrganiser_DAG/
 ├── README.md          ← you are here
-├── ASSIGNMENT.md      ← what you implement, how it gets graded
 ├── .env.example       ← copy to .env, fill in keys you have
 ├── .gitignore
 │
@@ -30,12 +26,20 @@ S8SharedCode/
 │   ├── sandbox.py     ← subprocess Python runner (usability boundary; NOT security)
 │   ├── replay.py      ← stdin-driven trace viewer
 │   ├── schemas.py     ← AgentResult, NodeSpec, NodeState, MemoryItem, …
-│   ├── agent_config.yaml  ← skills catalogue (this is where you confirm Coder wiring)
-│   ├── prompts/       ← one .md per skill. You edit coder.md.
-│   ├── tests/         ← starts with test_recovery.py; you add yours.
+│   ├── agent_config.yaml  ← skills catalogue
+│   ├── scanner.py     ← Tier-0/1 file scanner (structure + cheap signals, no LLM)
+│   ├── executor.py    ← MoveExecutor: dry_run / apply (with undo-log) / undo
+│   ├── scan_config.yaml   ← include/exclude paths, locked zones, index flags
+│   ├── run_organiser.py   ← CLI entry point: scan → DAG pipeline
+│   ├── run_ui.py      ← NiceGUI dashboard entry point (serves on :8110)
+│   ├── gateway.py     ← auto-starts gateway; re-exports LLM client + embed()
+│   ├── prompts/       ← one .md per skill (planner, classifier, sensitive_detector, …)
+│   ├── tests/         ← test_recovery.py + test_file_organizer.py
 │   ├── mcp_server.py  ← MCP tools: web_search, fetch_url, search_knowledge, …
-│   ├── memory.py / vector_index.py / artifacts.py  ← S7 carryover (don't touch)
-│   ├── perception.py / decision.py / action.py     ← S7 carryover (don't touch)
+│   ├── ui/            ← NiceGUI dashboard (app.py, dag_svg.py, session.py, widgets.py)
+│   ├── state/         ← sessions/, scan_state.json (written at runtime)
+│   ├── memory.py / vector_index.py / artifacts.py  ← carry-over (don't touch)
+│   ├── perception.py / decision.py / action.py     ← carry-over (don't touch)
 │   └── sandbox/papers/  ← five arxiv abstracts for indexed-corpus queries
 │
 └── gateway/           ← LLM Gateway V8 (FastAPI). Runs on :8108.
@@ -113,33 +117,31 @@ your head.
 |---|---|
 | `[gateway] launching … failed to start within 45s` | `cd gateway && uv run main.py` in another terminal; read its stderr. Probably a missing API key or port :8108 already taken. |
 | `httpx.HTTPStatusError: '503 Service Unavailable'` | All worker providers in cooldown / unconfigured. Add another key to `.env` or wait a minute. |
-| coder ran but `sandbox_executor` reports `no code in upstream coder output` | Your prompt isn't emitting the JSON shape the orchestrator expects. See ASSIGNMENT.md §"Output contract". |
+| coder ran but `sandbox_executor` reports `no code in upstream coder output` | Your prompt isn't emitting the JSON shape the orchestrator expects. §"Output contract". |
 | The final answer is short / wrong | Run `replay.py <sid>` and inspect what each node actually saw (the `prompt_sent` field captures the exact bytes sent to the gateway). |
 
 ---
 
 ## What NOT to touch
 
-- `agent7_s7_carryover.py` (if present) — the Session 7 single-loop agent kept for reference. Out of scope.
 - `perception.py`, `decision.py`, `action.py`, `memory.py`,
-  `vector_index.py`, `artifacts.py`, `mcp_server.py` — carry over
-  byte-identical from Session 7. The tool-blindness contract on
+  `vector_index.py`, `artifacts.py`, `mcp_server.py` — carry-over
+  files from the single-loop agent. The tool-blindness contract on
   Perception depends on these staying as-is.
 - `gateway/` — treat as a service you call. If you find a real bug,
-  open an issue; do not patch it inside your assignment.
+  open an issue.
 
 ---
 
 ## Provenance and version
 
-This package is the Session 8 build that passes the round-3 review.
-22 unit tests cover the failure-recovery + critic-splice mechanics.
-Five validation queries (hello, S7 carryover Shannon, parallel fan-out
+28 unit tests cover the failure-recovery + critic-splice mechanics.
+Five validation queries (hello, Shannon Wikipedia, parallel fan-out
 populations, graceful-fail nonexistent path, SIGKILL+resume) have been
 verified end-to-end on the same code you have here.
 
 If your `uv run python flow.py "hello"` produces a final answer, the
-build runs cleanly on your machine. The next step is ASSIGNMENT.md.
+build runs cleanly on your machine. The next step is to proceed with the phases.
 
 ---
 
@@ -178,6 +180,84 @@ a "file not found" result, and the formatter correctly reported the failure.
 Resume re-ran coder (4.9 s) + formatter (9.6 s) + sandbox_executor (0.1 s).
 Final answer: Kinshasa is growing fastest at 4.40 % per year.
 
+### Log output
+
+<details>
+<summary><strong>hello — minimal DAG (s8-f6737e25)</strong></summary>
+
+```
+session s8-f6737e25  ─  query: Say hello.
+[memory.read] 8 hit(s) visible to every skill this run
+[n:1] planner            complete (3.9s)
+[n:2] formatter          complete (4.4s)
+FINAL: Hello! How can I assist you today?
+```
+</details>
+
+<details>
+<summary><strong>Query A — Shannon Wikipedia (s8-caab497e)</strong></summary>
+
+```
+session s8-caab497e  -  query: Fetch https://en.wikipedia.org/wiki/Claude_Shannon …
+[n:1] planner            complete (5.9s)
+[n:2] researcher         complete (42.9s)
+[n:3] distiller          complete (4.3s)
+[n:4] formatter          complete (8.9s)
+FINAL: Claude Shannon born 30 Apr 1916, died 24 Feb 2001.
+       Three key contributions: (1) "A Mathematical Theory of Communication" 1948,
+       introducing entropy; (2) defining the bit; (3) channel capacity theorem.
+```
+</details>
+
+<details>
+<summary><strong>Query I — London / Paris / Berlin — parallel fan-out (s8-a7853431)</strong></summary>
+
+```
+session s8-a7853431  -  query: find the populations of London, Paris, and Berlin …
+[n:1] planner              complete   (4.1s)
+[n:2] researcher           complete   (80.1s)   ← parallel
+[n:3] researcher           complete   (52.0s)   ← parallel
+[n:4] researcher           complete   (39.7s)   ← parallel
+[n:5] coder                complete   (4.0s)
+[n:6] formatter            complete   (33.0s)
+[n:7] sandbox_executor     complete   (0.1s)
+FINAL: London ~8,800,000 · Paris ~2,103,778 · Berlin ~3,685,000.
+       Closest pair: Paris and Berlin, difference 1,581,222.
+```
+</details>
+
+<details>
+<summary><strong>Query J — graceful failure (s8-5d61f0e1)</strong></summary>
+
+```
+session s8-5d61f0e1  ─  query: Read /nonexistent/path.txt and tell me what's in it.
+[n:1] planner            complete (3.7s)
+[n:2] coder              complete (3.8s)
+[n:3] formatter          complete (16.1s)
+[n:4] sandbox_executor   complete (0.3s)
+FINAL: The file /nonexistent/path.txt does not exist and cannot be read.
+```
+</details>
+
+<details>
+<summary><strong>Query K — resume after kill (s8-8d8d2867 → s8_K_resumed_v2)</strong></summary>
+
+```
+─── partial run (s8-8d8d2867) ───────────────────────────────────────────────
+[n:1] planner            complete (4.3s)
+[n:2] researcher         complete (36.7s)   ← all 3 complete before kill
+[n:3] researcher         complete (82.4s)
+[n:4] researcher         complete (73.8s)
+[n:5 coder — KILLED; status=running on disk]
+
+─── resume (s8_K_resumed_v2) ────────────────────────────────────────────────
+[n:5] coder              complete (4.9s)    ← re-ran from scratch
+[n:6] formatter          complete (9.6s)    ← n:1–4 NOT re-run
+[n:7] sandbox_executor   complete (0.1s)
+FINAL: Kinshasa growing fastest at 4.40 % per year.
+```
+</details>
+
 ---
 
 ## File Organiser — Quick-start
@@ -200,6 +280,33 @@ cd code && .venv\Scripts\python.exe run_organiser.py
 # Scans demo_messy_drive/, hands the manifest to the DAG,
 # writes a new session to state/sessions/. Reload the dashboard to see it.
 ```
+
+---
+
+## demo_messy_drive vs demo_clean_drive
+
+Session used: **s8-b0dffdf2** (Medium Effort plan, node n:66 formatter output).
+
+| File (original location) | Original folder | Clean destination | Action |
+|---|---|---|---|
+| Form16_FY2025.txt | Documents\ | Private\Finance\Tax\ | moved |
+| HDFC_statement_Jan2026.txt | Documents\ | Private\Finance\BankStatements\ | moved |
+| PAN_card.txt | Documents\ | Private\IDs\ | moved |
+| salary_slip_april2026.txt | Documents\ | Private\Finance\Payroll\ | moved |
+| amazon_order_4471.txt | Downloads\ | Finance\Receipts\2026\ | moved |
+| swiggy_invoice_mar.txt | Downloads\bills\ | Finance\Receipts\2026\ | moved |
+| electricity_bill_jan.txt | Downloads\ | Finance\Utilities\2026\ | moved |
+| flipkart_2025_tv.txt | Downloads\ | Finance\Receipts\2025\ | moved |
+| IMG_20260601_165420.txt | Downloads\ | Documents\Notes\2026\ | moved (critic corrected: not a photo) |
+| old_notes_2023.txt | Downloads\ | Documents\Notes\2023\ | moved |
+| untitled.txt | Downloads\ | Misc\ | moved |
+| IMG_2098.txt | Pictures\ | Pictures\2026\ | moved |
+| sunset.txt | Pictures\ | Pictures\2026\ | moved |
+| IMG_2098_copy.txt | Pictures\backup\ | — | removed (exact duplicate) |
+| sunset_dup.txt | Pictures\backup\ | — | removed (exact duplicate) |
+| SetupTool_v3_extracted\ (4 files) | Downloads\ | — | omitted (stale installer folder) |
+| Projects\EAGv3\Session7\ | Projects\ | Projects\EAGv3\Session7\ | untouched (pattern_analyzer: scored high) |
+| Projects\EAGv3\Session8\ | Projects\ | Projects\EAGv3\Session8\ | untouched (pattern_analyzer: scored high) |
 
 ---
 
@@ -306,9 +413,9 @@ Note: s8-e0cc1855 is referenced in `state/sessions/` — log not captured in `co
 
 ---
 
-## Roadmap — Session 9 forward pointers
+## Roadmap after this
 
-These are intentionally outside this assignment; noted so the reviewer sees the
+These are intentionally not addressed in the current scope; noted so the reviewer sees the
 forward pointers were understood, not bolted on.
 
 - **Resumable tool loops** → a multi-day 2TB scan resumes from file N, not file 1.
@@ -321,7 +428,7 @@ forward pointers were understood, not bolted on.
 
 ---
 
-## Assignment requirements checklist
+## Final checklist
 
 | # | Requirement | Status |
 |---|---|---|
@@ -330,5 +437,3 @@ forward pointers were understood, not bolted on.
 | 3 | Critic verdict: pass, fail, and recovery | ✅ Phase 1 wired; critics in `phase1_pass.log` (s8-b0dffdf2) and `phase1_fail.log` (s8-465e6637) show both fail paths with recovery planners; IMG-misclassification fail captured in session s8-e0cc1855 |
 | 4 | Coder skill + SandboxExecutor | ✅ `prompts/coder.md` implemented; demonstrated in Query I (s8-a7853431): coder emits `{"code":…}`, sandbox runs it, formatter quotes `Paris and Berlin, difference 1,574,000` |
 | 5 | New skill (beyond the original set) | ✅ Three new skills: `classifier`, `sensitive_detector`, `pattern_analyzer` — each a yaml entry + prompt; `flow.py` unchanged |
-| 6 | YouTube demo | ✅ Shot-by-shot script in `demo_script.md`; covers all requirements in ≤ 5 minutes |
-| 7 | README with logs | ✅ This file; real session IDs and timings from `code/logs/`; Phase evidence section above |

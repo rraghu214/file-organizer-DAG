@@ -1,0 +1,26 @@
+Team standup notes - 2026-06-01
+
+Attendees: Alice (BE), Bob (FE), Carol (QA), Dave (PM)
+
+Sprint 14 review:
+  - Stories completed: 8/10 (80%)
+  - Velocity: 42 points (target was 45)
+  - Rolled over: auth-refresh bug (#1182), perf regression in classifier (#1194)
+
+Blockers:
+  - CI pipeline latency (up to 18 min nightly builds) — DevOps investigating
+  - Two open PRs waiting on reviewer availability
+
+Next sprint planning:
+  - Q3 feature kickoff Thursday 2026-06-04 at 14:00 IST
+  - Alice to draft technical spec for classifier v2 by Friday EOD
+  - Bob to unblock FE routing PR before standup Monday
+  - Carol to close regression tickets before next sprint
+
+Action items summary:
+  [Alice]  Draft classifier v2 spec — due 2026-06-05
+  [Bob]    Unblock FE routing PR  — due 2026-06-06
+  [Carol]  Close regression tickets — due 2026-06-05
+  [Dave]   Share Q3 roadmap slide deck — due 2026-06-04
+
+Notes: Recording shared in Slack #sprint-14-review

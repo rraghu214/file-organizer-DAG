@@ -1,4 +1,4 @@
-"""Tests for the Session 8 file-organiser additions.
+"""Tests for the file-organiser additions.
 
 Two surfaces:
   - scanner.scan(): the Tier-0/Tier-1 cheap index. Pins the three

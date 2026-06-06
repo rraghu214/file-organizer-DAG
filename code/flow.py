@@ -1,4 +1,4 @@
-"""Session 8 — growing-graph orchestrator.
+"""Growing-graph DAG orchestrator.
 
 The agent's loop becomes a NetworkX DiGraph. Each node is a skill; edges
 carry typed AgentResult payloads. The graph GROWS at runtime via five
