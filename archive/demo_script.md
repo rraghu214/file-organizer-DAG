@@ -1,5 +1,7 @@
 # Demo Script — File Organiser Agent
 
+> I built an AI agent to organise files so I don't have to.
+
 Target: ≤ 6 minutes total screen time.
 Format: screen-recorded terminal + browser split.
 Narrative flow: **messy problem → clean result → agent trace → privacy → how it was built → 5 base queries.**
@@ -149,10 +151,10 @@ handling modes, recorded side by side in the session JSON."
 
 **Show the DAG SVG. Point out:**
 
-- Critic node **n:5** — red ✗ icon.
-- Recovery Planner node **n:11** branching off n:5 — spliced into the live graph at runtime.
-- Second Critic **n:9** also failing → recovery Planner **n:12**.
-- All branches converge at Formatter **n:44** (185.2 s) — full report still produced.
+- Critic node **n:5** (crit_docs) — red ✗ icon. It checked classifier n:4 (docs batch), which returned empty output.
+- Recovery Planner **n:11** — appears as a **new root node** in the graph (same layer as n:1), not as a child of n:5. The orchestrator re-invokes the planner from scratch; there is no visual edge from n:5 to n:11.
+- Critic **n:9** (crit_receipts) also failing — recovery Planner **n:12** was added, but n:12 returned empty output so no successor nodes came from it.
+- Formatter **n:44** (185.2 s) — the eventual successful output, produced by a later recovery wave (n:26) after cascading retries.
 
 **IMG misclassification story (session s8-e0cc1855):**
 "In a separate run, the classifier routed `IMG_20260601_165420.txt` to `Pictures/`
@@ -271,17 +273,20 @@ and show the `coder:` entry to make this concrete.
 
 ---
 
-### Query J — graceful failure (s8-5d61f0e1) — degenerate DAG
+### Query J — graceful failure (s8-5d61f0e1) — defensive code path
 
 ```
 [n:1 planner 3.7s] → [n:2 coder 3.8s] → [n:4 sandbox_executor 0.3s]
-                           ↓
-                    [n:3 formatter 16.1s]  ← reports failure
+                                               stdout: "File not found: /nonexistent/path.txt"
+                      [n:2 coder] ──────────→ [n:3 formatter 16.1s]  ← reports "file does not exist"
 ```
 
-The Planner recognised the file could not exist and planned accordingly.
-**Concept:** the Planner is a first-class node, not a fixed entry point. It can
-route to failure-reporting paths directly. A degenerate DAG is a valid, correct answer.
+The Planner treated this as a normal file-read task and called the Coder. The Coder wrote a
+`try/except FileNotFoundError` block. The sandbox ran it (exit_code 0) and printed "File not found."
+The formatter read the Coder's output and produced a clean user-facing answer.
+**Concept:** graceful degradation lives inside the code, not in the graph topology. The DAG shape
+is identical to a successful read — all 4 nodes complete with ✓. The "failure" is in the answer
+content, not in the execution path.
 
 ---
 
@@ -319,6 +324,10 @@ cd code && .venv\Scripts\python.exe -m pytest tests/ -q
 
 **28 passed.** `flow.py` untouched. Everything new is a prompt, a yaml entry, or a
 pure-Python helper alongside the orchestrator.
+
+This is still a learning project — the demo drive is tiny, the files are placeholders.
+But I do have an actual 2 TB drive at home that badly needs organising, and that's the
+next honest test. I am hoping to run this on real files and see how far it gets without me having to intervene.
 
 ---
 
