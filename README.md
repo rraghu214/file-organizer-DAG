@@ -9,7 +9,7 @@ nodes in parallel via `asyncio.gather`.
 
 ---
 
-## Layout
+## 1. Layout
 
 ```
 FileOrganiser_DAG/
@@ -53,7 +53,7 @@ FileOrganiser_DAG/
 
 ---
 
-## Quickstart
+## 2. Quickstart
 
 You need: Python 3.11+, [uv](https://docs.astral.sh/uv/), Ollama
 (`brew install ollama` then `ollama pull nomic-embed-text`), and at least
@@ -87,7 +87,7 @@ uv run python replay.py <sid>
 
 ---
 
-## How to think about the architecture
+## 3. How to think about the architecture
 
 The Planner reads the user query and emits a small DAG of skill nodes
 to run. Each ready node fires through the gateway in parallel with its
@@ -111,7 +111,7 @@ your head.
 
 ---
 
-## When things go wrong
+## 4. When things go wrong
 
 | symptom | first place to look |
 |---|---|
@@ -122,7 +122,7 @@ your head.
 
 ---
 
-## What NOT to touch
+## 5. What NOT to touch
 
 - `perception.py`, `decision.py`, `action.py`, `memory.py`,
   `vector_index.py`, `artifacts.py`, `mcp_server.py` — carry-over
@@ -133,7 +133,7 @@ your head.
 
 ---
 
-## Provenance and version
+## 6. Provenance and version
 
 28 unit tests cover the failure-recovery + critic-splice mechanics.
 Five validation queries (hello, Shannon Wikipedia, parallel fan-out
@@ -145,7 +145,7 @@ build runs cleanly on your machine. The next step is to proceed with the phases.
 
 ---
 
-## Phase 0a — Five base query results (2026-06-01)
+## 7. Phase 0a — Five base query results (2026-06-01)
 
 Logs in `code/logs/`. All runs use the gateway on :8108 with providers
 spread across groq, gemini, nvidia, cerebras (soft-pin routing from
@@ -159,7 +159,7 @@ spread across groq, gemini, nvidia, cerebras (soft-pin routing from
 | J — graceful failure | s8-5d61f0e1 | 4 (planner→coder→formatter+sandbox) | ~24s | `logs/query_J.txt` |
 | K — resume after kill | s8-8d8d2867 → s8_K_resumed_v2 | 7 (4 nodes partial + 3 resumed) | ~110s + 15s | `logs/query_K_partial.txt`, `logs/query_K_resume.txt` |
 
-### Node timing detail
+### 7.1 Node timing detail
 
 **Query A (Shannon):** planner 5.9 s · researcher 42.9 s · distiller 4.3 s ·
 formatter 8.9 s
@@ -180,7 +180,7 @@ a "file not found" result, and the formatter correctly reported the failure.
 Resume re-ran coder (4.9 s) + formatter (9.6 s) + sandbox_executor (0.1 s).
 Final answer: Kinshasa is growing fastest at 4.40 % per year.
 
-### Log output
+### 7.2 Log output
 
 <details>
 <summary><strong>hello — minimal DAG (s8-f6737e25)</strong></summary>
@@ -260,7 +260,7 @@ FINAL: Kinshasa growing fastest at 4.40 % per year.
 
 ---
 
-## File Organiser — Quick-start
+## 8. File Organiser — Quick-start
 
 Two commands (gateway must stay up in one terminal while the UI runs in another):
 
@@ -283,7 +283,7 @@ cd code && .venv\Scripts\python.exe run_organiser.py
 
 ---
 
-## demo_messy_drive vs demo_clean_drive
+## 9. demo_messy_drive vs demo_clean_drive
 
 Session used: **s8-b0dffdf2** (Medium Effort plan, node n:66 formatter output).
 
@@ -310,7 +310,7 @@ Session used: **s8-b0dffdf2** (Medium Effort plan, node n:66 formatter output).
 
 ---
 
-## Architecture — three-tier scanner + DAG fan-out
+## 10. Architecture — three-tier scanner + DAG fan-out
 
 The system is built in three tiers, cheapest first, so the expensive LLM only
 ever touches what genuinely needs judgment.
@@ -357,9 +357,9 @@ the session JSON.
 
 ---
 
-## Phase evidence — captured log sessions
+## 11. Phase evidence — captured log sessions
 
-### Phase 1 — critic fail / pass / recovery (2026-06-04)
+### 11.1 Phase 1 — critic fail / pass / recovery (2026-06-04)
 
 Both runs use `run_organiser.py → flow.py` with the gateway on :8108.
 
@@ -401,7 +401,7 @@ Note: s8-e0cc1855 is referenced in `state/sessions/` — log not captured in `co
 
 ---
 
-## Phase 3 features
+## 12. Phase 3 features
 
 | Feature | File | What it does |
 |---|---|---|
@@ -413,7 +413,7 @@ Note: s8-e0cc1855 is referenced in `state/sessions/` — log not captured in `co
 
 ---
 
-## Roadmap after this
+## 13. Roadmap after this
 
 These are intentionally not addressed in the current scope; noted so the reviewer sees the
 forward pointers were understood, not bolted on.
@@ -428,7 +428,7 @@ forward pointers were understood, not bolted on.
 
 ---
 
-## Final checklist
+## 14. Final checklist
 
 | # | Requirement | Status |
 |---|---|---|

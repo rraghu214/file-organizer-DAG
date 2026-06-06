@@ -3,8 +3,8 @@
 .env.local
 
 # Local runtime state — regenerated on each run
-# code/state/sessions/*/
-# !code/state/sessions/.gitkeep
+code/state/sessions/*/
+!code/state/sessions/.gitkeep
 code/state/memory.json
 # code/state/index.faiss
 # code/state/index_ids.json
